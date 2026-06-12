@@ -16,12 +16,21 @@ It teaches exactly **four habits** (/clear, /btw, /rewind, plan mode), each at m
 
 ## Install (30 seconds)
 
+**Terminal (works for everyone, including the desktop app):**
+
+```sh
+claude plugin marketplace add WinterDDo/claude-code-command-autopilot
+claude plugin install command-autopilot@claude-code-command-autopilot
+```
+
+**Or inside a Claude Code CLI session** (note: the `/plugin` command is not available in the desktop app — use the terminal method above):
+
 ```
 /plugin marketplace add WinterDDo/claude-code-command-autopilot
 /plugin install command-autopilot@claude-code-command-autopilot
 ```
 
-Restart Claude Code. Then try the 2-minute tour: ask Claude "give me the autopilot tour".
+Restart Claude Code (quit fully — hooks load at startup). Then try the 2-minute tour: ask Claude "give me the autopilot tour".
 
 ## See it work in 2 minutes
 

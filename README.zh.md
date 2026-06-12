@@ -16,12 +16,21 @@ Command Autopilot 用三招解决：
 
 ## 安装（30 秒）
 
+**终端方式（所有人可用，包括桌面版 App 用户）：**
+
+```sh
+claude plugin marketplace add WinterDDo/claude-code-command-autopilot
+claude plugin install command-autopilot@claude-code-command-autopilot
+```
+
+**或者在 Claude Code 命令行会话里输入**（注意：桌面版 App 没有 `/plugin` 命令，桌面版用户请用上面的终端方式）：
+
 ```
 /plugin marketplace add WinterDDo/claude-code-command-autopilot
 /plugin install command-autopilot@claude-code-command-autopilot
 ```
 
-重启 Claude Code，然后对 Claude 说「带我做一遍 autopilot 引导」，2 分钟看懂全部。
+完全退出并重启 Claude Code（hooks 在启动时加载），然后对 Claude 说「带我做一遍 autopilot 引导」，2 分钟看懂全部。
 
 ## 2 分钟亲眼见效
 
