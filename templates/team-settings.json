@@ -1,0 +1,14 @@
+{
+  "_comment": "Copy these two blocks into your repository's .claude/settings.json (merge by hand if the file already exists). Teammates and Claude Code cloud sessions will be prompted to install Command Autopilot after trusting the workspace.",
+  "extraKnownMarketplaces": {
+    "claude-code-command-autopilot": {
+      "source": {
+        "source": "github",
+        "repo": "WinterDDo/claude-code-command-autopilot"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "command-autopilot@claude-code-command-autopilot": true
+  }
+}

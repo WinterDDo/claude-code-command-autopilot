@@ -1,0 +1,17 @@
+{
+  "name": "claude-code-command-autopilot",
+  "owner": {
+    "name": "Win"
+  },
+  "metadata": {
+    "description": "Command Autopilot — use 100% of Claude Code while memorizing zero commands. Silent automation, right-moment suggestions with benefits, self-evolving to your habits."
+  },
+  "plugins": [
+    {
+      "name": "command-autopilot",
+      "source": "./plugins/command-autopilot",
+      "description": "Your commands on autopilot: silently does what Claude can do itself, hands you the one command only you can press with a one-line benefit, learns your habits, and shows you the value it created.",
+      "version": "0.1.0"
+    }
+  ]
+}
