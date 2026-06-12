@@ -2,7 +2,21 @@
 
 **一条命令不用记，Claude Code 的全部能力为你所用。**
 
-[English](README.md)
+[English](README.md) | 中文 | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
+
+这是给「用 Claude Code 但从来没碰过 `/` 命令」的人做的免费插件：它把所有命令都记熟了，所以你不用记。如果你曾经丢过本可以一键找回的工作，或者眼睁睁看着 Claude 没打招呼就开始大改你的东西——它就是为你准备的。
+
+想了解命令本身？我们还维护着[白话版 Claude Code 命令速查表](docs/claude-code-commands-cheatsheet.md)和 [8 个真正省工夫的 Claude Code 工作流](docs/claude-code-workflows.md)（英文）。
+
+## 装上之后，具体什么会变
+
+| 那个时刻 | 没有 Autopilot | 有 Autopilot |
+|---|---|---|
+| Claude 改坏了东西 | 你不知道有撤销，它一个劲地「修」 | 它先把 **/rewind** 递给你：按两下 Esc，回到改坏之前 |
+| 你提了个大需求 | 它立刻开始改文件 | **自动先出计划**，你批准之前什么都不动 |
+| 你中途换了话题 | 旧上下文拖慢速度还烧钱 | 弹出可点的选择：继续 / 清桌重来 / 分出去，各带一句理由 |
+| 装过的 skills 在吃灰 | 你忘了自己有什么 | 它自动用上并告诉你：「用了你的 pdf skill，直接读了文件」 |
+| 你总是关掉某个建议 | 一般的工具会一直烦你 | 它会察言观色自己安静——它学的是**你** |
 
 Claude Code 有约 100 个内置斜杠命令，加上你装的每一个 skill。新手几乎一个都不认识——于是本可一键倒带的工作丢了，本可清掉的上下文白白烧钱，本该先出计划的大改动直接开干。
 
@@ -83,8 +97,24 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 
 完整体验需要 Python 3.8+。没有 Python 时进入无状态模式：核心行为不变，学习暂停。
 
+## 常见问题
+
+**我的数据会被发到哪里吗？** 不会。零遥测。一切都存在你本机 `~/.claude/command-autopilot/` 的文件里，可打开、可审计、可删除。卸载即清空。
+
+**它会烦我吗？** 硬性契约保证不会：每条回复至多一条建议，同一命令每会话至多一次，你反复关掉的建议会自己淡出。说一句「mute autopilot」彻底静音。
+
+**它花多少钱？** 每条消息注入约 250–450 token 的规则（安静模式约 230，静音为 0）。这是可靠性的真实价格，档位由你控制。
+
+**网页版 / 团队能用吗？** 能——把两小段配置提交到你仓库的 `.claude/settings.json`（[现成片段](templates/team-settings.json)），信任该工作区的所有人（包括云端会话）自动获得。
+
+**我没装 Python 也能用吗？** 能，进入无状态模式：核心行为全部保留，只有学习层暂停，装上 Python 3.8+ 自动恢复。
+
+**怎么卸载？** 运行 `claude plugin uninstall command-autopilot@claude-code-command-autopilot`（或者让 Claude 帮你跑），删掉 `~/.claude/command-autopilot/`，干干净净。
+
+**这和直接在 CLAUDE.md 里写规则有什么区别？** 我们最先试的就是那条路，失败了两次：CLAUDE.md 里的规则会输给其他竞争指令，逐条消息的 hook 注入是唯一被实测证明 100% 到达模型的位置。这个发现加上「零魔法阈值」的学习设计，就是它必须做成插件而不是一段 markdown 的全部原因。细节见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+
 ## 参与贡献
 
-行为写在文本文件里，不在代码里——大部分改进只是改 `rules/*.txt` 的措辞或 `knowledge/*.json` 的条目。迭代纪律见 [docs/TUNING.md](docs/TUNING.md)，提行为改动前先跑 [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。
+行为写在文本文件里，不在代码里——大部分改进只是改 `rules/*.txt` 的措辞或 `knowledge/*.json` 的条目。迭代纪律见 [docs/TUNING.md](docs/TUNING.md)，提行为改动前先跑 [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。翻译习惯卡和 README 是最友好的第一个 PR。
 
 MIT 协议。

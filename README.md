@@ -2,7 +2,21 @@
 
 **Use 100% of Claude Code while memorizing zero commands.**
 
-[中文文档](README.zh.md)
+English | [中文](README.zh.md) | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
+
+A free Claude Code plugin for beginners: it knows all the commands so you don't have to. If you've ever lost work you didn't know you could undo, or watched Claude charge into a big change you wished it had planned first — this is for you.
+
+New to the commands themselves? We also maintain [the plain-English Claude Code command cheat sheet](docs/claude-code-commands-cheatsheet.md) and [8 Claude Code workflows that save real work](docs/claude-code-workflows.md).
+
+## What actually changes after you install it
+
+| The moment | Without Autopilot | With Autopilot |
+|---|---|---|
+| Claude breaks something | You don't know undo exists; Claude keeps "fixing" | It hands you **/rewind** first: press Esc twice, back to before the damage |
+| You ask for something big | Claude starts editing immediately | It **plans first, automatically** — nothing changes until you approve |
+| You switch topics mid-session | Old context slows you down and burns money | Clickable choice appears: continue / clean start / spin off — each with the reason |
+| Skills you installed sit unused | You forgot you have them | It uses them and tells you: "used your pdf skill — read the file directly" |
+| You keep dismissing a suggestion | Most tools nag forever | It reads the room and goes quiet — it learns *you* |
 
 Claude Code has ~100 built-in slash commands, plus every skill you've installed. Beginners know almost none of them — so they lose work they could have rewound with one keystroke, burn context they could have cleared, and watch Claude charge into big edits that deserved a plan first.
 
@@ -96,8 +110,24 @@ Skills included: `tutor` (guided tour) · `doctor` (verify it's working) · `con
 
 Python 3.8+ for the full experience. Without Python, the autopilot runs in stateless mode: core behavior intact, learning paused.
 
+## FAQ
+
+**Is my data sent anywhere?** No. Zero telemetry. Everything lives in local files at `~/.claude/command-autopilot/` that you can open, audit, and delete. Uninstalling removes it all.
+
+**Will it nag me?** Hard contracts say no: at most one suggestion per response, the same command at most once per session, and suggestions you keep dismissing fade out on their own. Saying "mute autopilot" silences it completely.
+
+**What does it cost?** It injects roughly 250–450 tokens of rules per message depending on mode (quiet ≈ 230, muted = 0). That's the honest price of reliability; you control the dial.
+
+**Does it work in Claude Code on the web / for my team?** Yes — commit two small blocks to your repo's `.claude/settings.json` ([snippet here](templates/team-settings.json)) and everyone who trusts the workspace gets it, cloud sessions included.
+
+**I don't have Python — does it still work?** Yes, in stateless mode: all core behavior works, only the learning layer pauses until Python 3.8+ is available.
+
+**How do I uninstall?** Run `claude plugin uninstall command-autopilot@claude-code-command-autopilot` (or ask Claude to do it), delete `~/.claude/command-autopilot/`. Nothing remains.
+
+**How is this different from just writing rules in CLAUDE.md?** We tried that first — twice. Rules in CLAUDE.md lose to competing instructions; per-prompt hook injection is the only placement we could prove reaches the model 100% of the time. That finding, plus the no-magic-thresholds learning design, is the whole reason this is a plugin and not a markdown snippet. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ## Contributing
 
-Behavior lives in text files, not code — most improvements are wording changes to `rules/*.txt` or entries in `knowledge/*.json`. Read [docs/TUNING.md](docs/TUNING.md) for the iteration discipline, run [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) before proposing behavior changes.
+Behavior lives in text files, not code — most improvements are wording changes to `rules/*.txt` or entries in `knowledge/*.json`. Read [docs/TUNING.md](docs/TUNING.md) for the iteration discipline, run [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) before proposing behavior changes. Translations of the habit card and READMEs are the friendliest first PR.
 
 MIT licensed.
