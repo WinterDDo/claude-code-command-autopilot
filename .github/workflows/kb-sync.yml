@@ -1,0 +1,37 @@
+name: Knowledge-base freshness check
+on:
+  schedule:
+    - cron: "0 6 1 * *"  # monthly
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official commands doc and diff against snapshot
+        id: diff
+        run: |
+          mkdir -p .github/kb-snapshot
+          curl -sL https://code.claude.com/docs/en/commands.md -o /tmp/commands-latest.md || exit 0
+          if [ -f .github/kb-snapshot/commands.md ] && diff -q .github/kb-snapshot/commands.md /tmp/commands-latest.md >/dev/null; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            cp /tmp/commands-latest.md .github/kb-snapshot/commands.md
+          fi
+      - name: Commit new snapshot and open an issue
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "kb-sync"
+          git config user.email "actions@github.com"
+          git add .github/kb-snapshot/commands.md
+          git commit -m "kb-sync: official commands doc changed" || exit 0
+          git push
+          gh issue create \
+            --title "KB sync: official command docs changed — review knowledge/commands.json" \
+            --body "The official commands documentation changed since the last snapshot. Review the diff in .github/kb-snapshot/, update plugins/command-autopilot/knowledge/commands.json (and playbooks.json if workflows changed), bump the knowledge version field, and ship a minor release so users get a whats-new announcement."
