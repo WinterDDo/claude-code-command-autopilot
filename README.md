@@ -4,9 +4,9 @@
 
 English | [中文](README.zh.md) | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
-A free Claude Code plugin for beginners: it knows all the commands so you don't have to. If you've ever lost work you didn't know you could undo, or watched Claude charge into a big change you wished it had planned first — this is for you.
+<!-- demo: docs/assets/demo.gif embeds here once recorded (LAUNCH §1 storyboard) -->
 
-New to the commands themselves? We also maintain [the plain-English Claude Code command cheat sheet](docs/claude-code-commands-cheatsheet.md) and [8 Claude Code workflows that save real work](docs/claude-code-workflows.md).
+A free Claude Code plugin for beginners: it knows all the commands so you don't have to. If you've ever lost work you didn't know you could undo, or watched Claude charge into a big change you wished it had planned first — this is for you. Open source, MIT, zero telemetry: everything it learns lives in local files you can open and delete, and saying "mute autopilot" always works.
 
 ## What actually changes after you install it
 
@@ -18,6 +18,17 @@ New to the commands themselves? We also maintain [the plain-English Claude Code 
 | Skills you installed sit unused | You forgot you have them | It uses them and tells you: "used your pdf skill — read the file directly" |
 | You keep dismissing a suggestion | Most tools nag forever | It reads the room and goes quiet — it learns *you* |
 
+**What it actually sounds like:**
+
+```text
+You:    undo that — the file was better before
+Claude: Before I attempt any repair: you can rewind to before that edit.
+        Press Esc twice (/rewind) — it restores the files and the
+        conversation together. Want me to wait?
+```
+
+New to the commands themselves? We also maintain [the plain-English Claude Code command cheat sheet](docs/claude-code-commands-cheatsheet.md) and [8 Claude Code workflows that save real work](docs/claude-code-workflows.md).
+
 Claude Code has ~100 built-in slash commands, plus every skill you've installed. Beginners know almost none of them — so they lose work they could have rewound with one keystroke, burn context they could have cleared, and watch Claude charge into big edits that deserved a plan first.
 
 Command Autopilot fixes this with three moves:
@@ -27,6 +38,8 @@ Command Autopilot fixes this with three moves:
 3. **It evolves with you.** Every suggestion you accept or ignore is local evidence. The autopilot reads the room: what you keep dismissing goes quiet, what helps you gets offered earlier, and roughly every 10 sessions it distills your usage into personalized rules — visible, evidence-backed, deletable.
 
 It teaches exactly **four habits** (/clear, /btw, /rewind, plan mode), each at most a few times, then goes quiet. The goal is that you stop noticing it.
+
+**Just browsing?** Paste [portable/PROMPT.md](portable/PROMPT.md) into claude.ai or any assistant — the core behavior, nothing installed, 60 seconds.
 
 ## Install
 
@@ -38,7 +51,8 @@ Install the Command Autopilot plugin for me:
    (the usual macOS/Linux location). Use the full path in the next steps if needed.
 2. Run: claude plugin marketplace add WinterDDo/claude-code-command-autopilot
 3. Run: claude plugin install command-autopilot@claude-code-command-autopilot
-4. Show me both success confirmations, then remind me to fully quit and reopen Claude Code.
+4. Show me both success confirmations, then remind me to fully quit Claude Code, reopen it,
+   and run the autopilot doctor to verify.
 ```
 
 Claude runs the install and handles the edge cases (CLI not on PATH, etc.) for you. No terminal knowledge needed.
@@ -64,7 +78,12 @@ If `claude` is not found, use `~/.local/bin/claude` instead, or run `./install.s
 
 </details>
 
-Then restart Claude Code (quit fully — hooks load at startup) and try the 2-minute tour: ask Claude "give me the autopilot tour".
+Then restart Claude Code (quit fully — hooks load at startup) and ask Claude: **"check that the autopilot is working"** — the built-in doctor confirms everything is firing end-to-end. Then take the 2-minute tour: "give me the autopilot tour".
+
+**Not working?**
+- Suggestions never appear → you must fully quit and reopen; hooks only load at startup.
+- `/plugin` not found → the desktop app has no `/plugin` command; use the copy-paste install above.
+- Anything else → ask Claude to "run the autopilot doctor" and paste its output into an [issue](https://github.com/WinterDDo/claude-code-command-autopilot/issues).
 
 ## See it work in 2 minutes
 
@@ -98,8 +117,6 @@ Cloud sessions don't load your personal config — so for Claude Code on the web
 
 Everyone who trusts the workspace gets the autopilot — locally and in cloud sessions. (Cloud caveats: settings prompts don't fire there, so defaults apply; learning state resets per cloud session.)
 
-No Claude Code at all? [portable/PROMPT.md](portable/PROMPT.md) carries the core rules to claude.ai, Cursor, or any assistant — paste and go.
-
 ## How it works (for the curious)
 
 One `UserPromptSubmit` hook assembles the context every message: factory rules + your learned rules + a compact evidence digest. Scripts only record and compress — **all judgment belongs to the model**, which is why there are no magic thresholds anywhere. A knowledge base ([commands.json](plugins/command-autopilot/knowledge/commands.json), [playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)) carries every command's one-line benefit and 8 combo playbooks; the model reads it on demand, so it costs nothing per prompt. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
@@ -128,6 +145,6 @@ Python 3.8+ for the full experience. Without Python, the autopilot runs in state
 
 ## Contributing
 
-Behavior lives in text files, not code — most improvements are wording changes to `rules/*.txt` or entries in `knowledge/*.json`. Read [docs/TUNING.md](docs/TUNING.md) for the iteration discipline, run [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) before proposing behavior changes. Translations of the habit card and READMEs are the friendliest first PR.
+**First PR in 5 minutes:** improve one suggestion's wording in `plugins/command-autopilot/rules/*.txt`, or add a command's one-line benefit to `plugins/command-autopilot/knowledge/commands.json`, run the matching step in [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md), submit. README translations are equally welcome. Behavior lives in text files, not code — see [docs/TUNING.md](docs/TUNING.md) for the iteration discipline.
 
 MIT licensed.

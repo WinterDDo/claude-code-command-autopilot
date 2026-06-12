@@ -4,9 +4,9 @@
 
 [English](README.md) | 中文 | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
-这是给「用 Claude Code 但从来没碰过 `/` 命令」的人做的免费插件：它把所有命令都记熟了，所以你不用记。如果你曾经丢过本可以一键找回的工作，或者眼睁睁看着 Claude 没打招呼就开始大改你的东西——它就是为你准备的。
+<!-- demo: docs/assets/demo.gif 录制后嵌入此处（LAUNCH §1 分镜） -->
 
-想了解命令本身？我们还维护着[白话版 Claude Code 命令速查表](docs/claude-code-commands-cheatsheet.md)和 [8 个真正省工夫的 Claude Code 工作流](docs/claude-code-workflows.md)（英文）。
+这是给「用 Claude Code 但从来没碰过 `/` 命令」的人做的免费插件：它把所有命令都记熟了，所以你不用记。如果你曾经丢过本可以一键找回的工作，或者眼睁睁看着 Claude 没打招呼就开始大改你的东西——它就是为你准备的。开源、MIT、零遥测：它学到的一切都存在你本机可打开可删除的文件里，说一句「mute autopilot」永远管用。
 
 ## 装上之后，具体什么会变
 
@@ -18,6 +18,17 @@
 | 装过的 skills 在吃灰 | 你忘了自己有什么 | 它自动用上并告诉你：「用了你的 pdf skill，直接读了文件」 |
 | 你总是关掉某个建议 | 一般的工具会一直烦你 | 它会察言观色自己安静——它学的是**你** |
 
+**它实际说话的样子：**
+
+```text
+你：    撤销刚才的改动，原来的更好
+Claude: 在我尝试任何修复之前：你可以直接回到改动之前。
+        连按两次 Esc（/rewind）——文件和对话一起恢复。
+        需要我等你操作吗？
+```
+
+想了解命令本身？我们还维护着[白话版 Claude Code 命令速查表](docs/claude-code-commands-cheatsheet.md)和 [8 个真正省工夫的 Claude Code 工作流](docs/claude-code-workflows.md)（英文）。
+
 Claude Code 有约 100 个内置斜杠命令，加上你装的每一个 skill。新手几乎一个都不认识——于是本可一键倒带的工作丢了，本可清掉的上下文白白烧钱，本该先出计划的大改动直接开干。
 
 Command Autopilot 用三招解决：
@@ -27,6 +38,8 @@ Command Autopilot 用三招解决：
 3. **越用越懂你。** 你接受或忽略的每个建议都是本地证据。它会察言观色：你总是拒绝的自动安静，对你有用的更早出现；约每 10 个会话做一次蒸馏，把你的使用习惯变成个性化规则——可查看、有证据、随时可删。
 
 它只教**四个习惯**（/clear、/btw、/rewind、计划模式），每个最多提几次，然后闭嘴。终极目标是你感觉不到它的存在。
+
+**只想先感受一下？** 把 [portable/PROMPT.md](portable/PROMPT.md) 粘进 claude.ai 或任何助手——核心行为零安装体验，60 秒。
 
 ## 安装
 
@@ -38,7 +51,8 @@ Command Autopilot 用三招解决：
    （macOS/Linux 的常见位置）。后面的步骤按需使用完整路径。
 2. 运行：claude plugin marketplace add WinterDDo/claude-code-command-autopilot
 3. 运行：claude plugin install command-autopilot@claude-code-command-autopilot
-4. 把两条成功确认给我看，然后提醒我完全退出并重新打开 Claude Code。
+4. 把两条成功确认给我看，然后提醒我完全退出并重新打开 Claude Code，
+   再运行 autopilot doctor 验证安装。
 ```
 
 Claude 会替你执行安装，自动处理各种边缘情况（命令不在 PATH 里等等）。完全不需要懂终端。
@@ -64,7 +78,12 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 
 </details>
 
-然后完全退出并重启 Claude Code（hooks 在启动时加载），对 Claude 说「带我做一遍 autopilot 引导」，2 分钟看懂全部。
+然后完全退出并重启 Claude Code（hooks 在启动时加载），对 Claude 说：**「check autopilot」**——内置的 doctor 会确认全链路正常。再说「带我做一遍 autopilot 引导」，2 分钟看懂全部。
+
+**不工作？**
+- 建议从来不出现 → 必须完全退出再重开，hooks 只在启动时加载。
+- 找不到 `/plugin` → 桌面版 App 没有这个命令，用上面的复制粘贴安装方式。
+- 其他情况 → 让 Claude「跑一下 autopilot doctor」，把输出贴进 [issue](https://github.com/WinterDDo/claude-code-command-autopilot/issues)。
 
 ## 2 分钟亲眼见效
 
@@ -85,7 +104,6 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 
 云端会话不加载个人配置——所以 Claude Code 网页版和团队成员要靠仓库级配置：把 [templates/team-settings.json](templates/team-settings.json) 里的两段合进你仓库的 `.claude/settings.json`，所有信任该工作区的人（含云端会话）都会自动获得 Autopilot。（云端注意：设置弹窗不会出现，使用默认值；学习状态每个云端会话重置。）
 
-完全不用 Claude Code？[portable/PROMPT.md](portable/PROMPT.md) 可以把核心规则手动贴进 claude.ai、Cursor 等任何助手。
 
 ## 工作原理（给好奇的人）
 
@@ -115,6 +133,6 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 
 ## 参与贡献
 
-行为写在文本文件里，不在代码里——大部分改进只是改 `rules/*.txt` 的措辞或 `knowledge/*.json` 的条目。迭代纪律见 [docs/TUNING.md](docs/TUNING.md)，提行为改动前先跑 [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。翻译习惯卡和 README 是最友好的第一个 PR。
+**五分钟完成第一个 PR**：改进 `plugins/command-autopilot/rules/*.txt` 里某条建议的措辞，或给 `plugins/command-autopilot/knowledge/commands.json` 补一条命令收益句，跑一下 [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) 里对应的那步，提交。翻译 README 同样欢迎。行为写在文本文件里，不在代码里——迭代纪律见 [docs/TUNING.md](docs/TUNING.md)。
 
 MIT 协议。
