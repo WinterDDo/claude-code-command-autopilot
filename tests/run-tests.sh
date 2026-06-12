@@ -18,7 +18,9 @@ echo "== smoke: dispatcher without python (stateless fallback) =="
 NOPY="$TMP/nopy-bin"
 mkdir -p "$NOPY"
 for tool in cat dirname sh grep; do
-  src=$(command -v "$tool") && ln -s "$src" "$NOPY/$tool" || true
+  if src=$(command -v "$tool"); then
+    ln -s "$src" "$NOPY/$tool"
+  fi
 done
 OUT=$(printf '{}' | PATH="$NOPY" sh "$HOOKS/run.sh" router "$TMP/data2")
 echo "$OUT" | grep -q "Stateless mode" || { echo "FAIL: no-python fallback"; exit 1; }

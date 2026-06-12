@@ -3,7 +3,7 @@
 # Finds a Python interpreter; without one, degrades to the static core rules.
 MODE="$1"
 DATA="$2"
-DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 
 case "$MODE" in
   router)        SCRIPT="router.py";        SUB="" ;;

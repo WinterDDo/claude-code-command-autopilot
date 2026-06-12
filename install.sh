@@ -4,7 +4,7 @@
 #   /plugin marketplace add WinterDDo/claude-code-command-autopilot
 #   /plugin install command-autopilot@claude-code-command-autopilot
 set -e
-REPO_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 
 if ! command -v claude >/dev/null 2>&1; then
   echo "claude CLI not found. Install Claude Code first: https://code.claude.com"
