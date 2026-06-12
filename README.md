@@ -14,23 +14,43 @@ Command Autopilot fixes this with three moves:
 
 It teaches exactly **four habits** (/clear, /btw, /rewind, plan mode), each at most a few times, then goes quiet. The goal is that you stop noticing it.
 
-## Install (30 seconds)
+## Install
 
-**Terminal (works for everyone, including the desktop app):**
+**Easiest — let Claude install it for you.** Copy this whole block, paste it into any Claude Code conversation, press enter:
+
+```
+Install the Command Autopilot plugin for me:
+1. Locate my claude CLI: try `command -v claude`; if not on PATH, try `~/.local/bin/claude`
+   (the usual macOS/Linux location). Use the full path in the next steps if needed.
+2. Run: claude plugin marketplace add WinterDDo/claude-code-command-autopilot
+3. Run: claude plugin install command-autopilot@claude-code-command-autopilot
+4. Show me both success confirmations, then remind me to fully quit and reopen Claude Code.
+```
+
+Claude runs the install and handles the edge cases (CLI not on PATH, etc.) for you. No terminal knowledge needed.
+
+<details>
+<summary>Manual alternatives</summary>
+
+**Terminal:**
 
 ```sh
 claude plugin marketplace add WinterDDo/claude-code-command-autopilot
 claude plugin install command-autopilot@claude-code-command-autopilot
 ```
 
-**Or inside a Claude Code CLI session** (note: the `/plugin` command is not available in the desktop app — use the terminal method above):
+If `claude` is not found, use `~/.local/bin/claude` instead, or run `./install.sh` from a clone of this repo.
+
+**Inside a Claude Code CLI session** (the `/plugin` command is not available in the desktop app):
 
 ```
 /plugin marketplace add WinterDDo/claude-code-command-autopilot
 /plugin install command-autopilot@claude-code-command-autopilot
 ```
 
-Restart Claude Code (quit fully — hooks load at startup). Then try the 2-minute tour: ask Claude "give me the autopilot tour".
+</details>
+
+Then restart Claude Code (quit fully — hooks load at startup) and try the 2-minute tour: ask Claude "give me the autopilot tour".
 
 ## See it work in 2 minutes
 

@@ -14,23 +14,43 @@ Command Autopilot 用三招解决：
 
 它只教**四个习惯**（/clear、/btw、/rewind、计划模式），每个最多提几次，然后闭嘴。终极目标是你感觉不到它的存在。
 
-## 安装（30 秒）
+## 安装
 
-**终端方式（所有人可用，包括桌面版 App 用户）：**
+**最简单的方式：让 Claude 替你装。** 把下面整段复制，粘贴进任何一个 Claude Code 对话，回车：
+
+```
+帮我安装 Command Autopilot 插件：
+1. 先定位我的 claude 命令行工具：试试 `command -v claude`，找不到就试 `~/.local/bin/claude`
+   （macOS/Linux 的常见位置）。后面的步骤按需使用完整路径。
+2. 运行：claude plugin marketplace add WinterDDo/claude-code-command-autopilot
+3. 运行：claude plugin install command-autopilot@claude-code-command-autopilot
+4. 把两条成功确认给我看，然后提醒我完全退出并重新打开 Claude Code。
+```
+
+Claude 会替你执行安装，自动处理各种边缘情况（命令不在 PATH 里等等）。完全不需要懂终端。
+
+<details>
+<summary>手动方式（备选）</summary>
+
+**终端：**
 
 ```sh
 claude plugin marketplace add WinterDDo/claude-code-command-autopilot
 claude plugin install command-autopilot@claude-code-command-autopilot
 ```
 
-**或者在 Claude Code 命令行会话里输入**（注意：桌面版 App 没有 `/plugin` 命令，桌面版用户请用上面的终端方式）：
+提示找不到 `claude` 时，改用 `~/.local/bin/claude`，或克隆本仓库后运行 `./install.sh`。
+
+**Claude Code 命令行会话内**（桌面版 App 没有 `/plugin` 命令）：
 
 ```
 /plugin marketplace add WinterDDo/claude-code-command-autopilot
 /plugin install command-autopilot@claude-code-command-autopilot
 ```
 
-完全退出并重启 Claude Code（hooks 在启动时加载），然后对 Claude 说「带我做一遍 autopilot 引导」，2 分钟看懂全部。
+</details>
+
+然后完全退出并重启 Claude Code（hooks 在启动时加载），对 Claude 说「带我做一遍 autopilot 引导」，2 分钟看懂全部。
 
 ## 2 分钟亲眼见效
 

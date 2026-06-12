@@ -6,15 +6,23 @@
 set -e
 REPO_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 
-if ! command -v claude >/dev/null 2>&1; then
-  echo "claude CLI not found. Install Claude Code first: https://code.claude.com"
+# Locate the claude CLI: PATH first, then the default install location
+# (desktop-app users often have the binary without it being on PATH).
+CLAUDE_BIN=$(command -v claude 2>/dev/null || true)
+if [ -z "$CLAUDE_BIN" ] && [ -x "$HOME/.local/bin/claude" ]; then
+  CLAUDE_BIN="$HOME/.local/bin/claude"
+fi
+if [ -z "$CLAUDE_BIN" ]; then
+  echo "claude CLI not found (checked PATH and ~/.local/bin/claude)."
+  echo "Install Claude Code first: https://code.claude.com"
   exit 1
 fi
 
+echo "Using claude at: $CLAUDE_BIN"
 echo "Registering local marketplace..."
-claude plugin marketplace add "$REPO_DIR" || true
+"$CLAUDE_BIN" plugin marketplace add "$REPO_DIR" || true
 echo "Installing plugin..."
-claude plugin install command-autopilot@claude-code-command-autopilot
+"$CLAUDE_BIN" plugin install command-autopilot@claude-code-command-autopilot
 
 echo ""
 echo "Done. Restart Claude Code, then say: \"give me the autopilot tour\""
