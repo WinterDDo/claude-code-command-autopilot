@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 — unreleased
+
+- Knowledge base completed: was a hand-picked 33; now the full official set of 117 commands, fetched from code.claude.com/docs and enriched (best-fit scenario + beginner benefit en/zh + leverage flag) by a multi-agent research pass with an adversarial verify. Fixes the root cause behind "/loop was missing" — the KB is now comprehensive, not a curated subset. The monthly kb-sync CI keeps it complete as Claude Code ships new commands.
+
 ## 0.3.0 — unreleased
 
 - Makes the product's core promise actually fire: proactively surfacing high-leverage commands the user can't ask for because they don't know they exist. Two ways, both opt-out via quiet/mute:

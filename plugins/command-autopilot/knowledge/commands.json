@@ -1,40 +1,1071 @@
 {
-  "version": "2026.06",
-  "source": "code.claude.com/docs/en/commands, verified 2026-06-11",
-  "note": "REFERENCE, not a trigger table. Read this to know what capabilities exist and to phrase a benefit in beginner-friendly words; decide what fits the user's task by reasoning fresh each turn, never by matching a stored scenario. user_only=true: only the user can type it (offer it). user_only=false: Claude can do it directly (do it, don't recommend).",
+  "version": "2026.06.2",
+  "source": "Complete built-in command set from code.claude.com/docs/en/commands, fetched & enriched 2026-06-13 (117 commands incl. aliases).",
+  "note": "REFERENCE, not a trigger table. Read this to know what capabilities exist and to phrase a benefit in beginner-friendly words; decide what fits the user's task by reasoning fresh each turn, never by matching a stored scenario. user_only=true: only the user can type it (offer it). user_only=false: Claude can do it directly (do it, don't recommend). leverage=high marks powerful capabilities a beginner likely doesn't know to ask for.",
   "commands": [
-    { "cmd": "/clear", "user_only": true, "when": "starting an unrelated task in an already long session", "benefit_en": "Fresh start: the new task won't drag the old context's noise or cost", "benefit_zh": "新任务不背旧包袱，又快又省", "combos": ["clean-finish"] },
-    { "cmd": "/resume", "user_only": true, "when": "user wants to continue an earlier conversation", "benefit_en": "Reopen a past session exactly where it left off", "benefit_zh": "回到旧会话现场，不用重新解释", "combos": ["clean-finish"] },
-    { "cmd": "/branch", "user_only": true, "when": "user wants to try an alternative without losing the main thread", "benefit_en": "Explore a what-if in a copy; the main thread stays intact", "benefit_zh": "开个副本试方案，主线不受影响", "combos": ["parallel-explore"] },
-    { "cmd": "/fork", "user_only": true, "when": "a side-directive deserves a background agent that knows the full context", "benefit_en": "A background agent inherits this whole conversation and reports back", "benefit_zh": "派个懂全部上下文的分身后台干活", "combos": ["parallel-explore"] },
-    { "cmd": "/compact", "user_only": true, "when": "context is heavy but the same task must continue; best at a phase boundary", "benefit_en": "Free up context while choosing what the summary keeps", "benefit_zh": "腾出空间，还能指定保留重点", "combos": ["long-session-stamina"] },
-    { "cmd": "/context", "user_only": true, "when": "session feels slow or expensive, or before launching heavy work", "benefit_en": "See exactly what is eating the context window", "benefit_zh": "看看上下文被什么吃掉了", "combos": ["long-session-stamina"] },
-    { "cmd": "/btw", "user_only": true, "when": "a side question pops up mid-task", "benefit_en": "Ask asides without polluting this session's context", "benefit_zh": "问题外话，主线零污染", "combos": ["aside-isolation"] },
-    { "cmd": "/export", "user_only": true, "when": "the session produced a record worth keeping or sharing", "benefit_en": "Save the full transcript, not a lossy retelling", "benefit_zh": "存下完整原文，不失真", "combos": ["clean-finish"] },
-    { "cmd": "/rewind", "user_only": true, "when": "an edit broke something or the user dislikes the result; offer BEFORE repairing", "benefit_en": "One step back to before the damage — no manual repair (press Esc twice)", "benefit_zh": "一键回到改坏之前（连按两次 Esc）", "combos": ["safe-big-change"] },
-    { "cmd": "/plan", "user_only": false, "when": "substantial design/build/refactor; Claude enters plan mode itself via EnterPlanMode", "benefit_en": "Review the plan before any file changes; nothing edits until approved", "benefit_zh": "先看计划再动手，批准前不改文件", "combos": ["safe-big-change"] },
-    { "cmd": "/goal", "user_only": true, "when": "multi-turn work with a definable finish line", "benefit_en": "Claude keeps working unprompted until your condition is met", "benefit_zh": "定个完成标准，它自己干到达标", "combos": ["safe-big-change"] },
-    { "cmd": "/model", "user_only": true, "when": "task clearly mismatches the active model; give ONE concrete suggestion", "benefit_en": "Match the brain to the job: depth for hard work, speed for rote work", "benefit_zh": "难活配强脑，小活省成本", "combos": ["pre-heavy-tuneup"] },
-    { "cmd": "/effort", "user_only": true, "when": "a hard problem deserves deeper reasoning, or rote work deserves less", "benefit_en": "Dial reasoning depth to fit the problem", "benefit_zh": "难题调高思考深度", "combos": ["pre-heavy-tuneup"] },
-    { "cmd": "/advisor", "user_only": true, "when": "high-stakes work where a second opinion helps; enabled once, Claude consults it", "benefit_en": "A stronger model double-checks the work at key moments", "benefit_zh": "请个更强的模型当军师", "combos": ["pre-heavy-tuneup"] },
-    { "cmd": "/fast", "user_only": true, "when": "user wants quicker output on supported models", "benefit_en": "Same model, faster output", "benefit_zh": "同样的模型，更快出活", "combos": [] },
-    { "cmd": "/background", "user_only": true, "when": "a long-running task is blocking the user", "benefit_en": "The task keeps running while you do something else", "benefit_zh": "长任务后台跑，你去干别的", "combos": ["unattended"] },
-    { "cmd": "/tasks", "user_only": true, "when": "user wonders about background work", "benefit_en": "Every background task's progress in one place", "benefit_zh": "后台任务进度一览", "combos": ["unattended"] },
-    { "cmd": "/workflows", "user_only": true, "when": "a multi-agent workflow is running", "benefit_en": "Watch multi-agent progress live", "benefit_zh": "多 agent 进度直播", "combos": ["mass-change"] },
-    { "cmd": "/loop", "user_only": false, "when": "a prompt or check should repeat on an interval (watch a deploy, poll status, retry until green); Claude can set this up", "benefit_en": "Run something on repeat without you re-asking each time", "benefit_zh": "让某件事按节奏反复跑，不用你一遍遍催", "combos": ["unattended"] },
-    { "cmd": "/schedule", "user_only": false, "when": "recurring or timed jobs; Claude can set these up directly", "benefit_en": "Set it once; it runs on schedule in the cloud", "benefit_zh": "定好时间，云端自动跑", "combos": ["unattended"] },
-    { "cmd": "/review", "user_only": false, "when": "user asks for code review; Claude invokes the skill directly", "benefit_en": "Catches bugs in the diff before they ship", "benefit_zh": "上线前帮你抓 bug", "combos": ["safe-big-change"] },
-    { "cmd": "/security-review", "user_only": false, "when": "security check requested; Claude invokes the skill directly", "benefit_en": "A security audit of pending changes", "benefit_zh": "改动的安全体检", "combos": ["safe-big-change"] },
-    { "cmd": "/init", "user_only": false, "when": "substantive work starts in a repo with no CLAUDE.md; Claude invokes the skill", "benefit_en": "Teach Claude the project once; every future session benefits", "benefit_zh": "一次记住项目，每个会话受益", "combos": [] },
-    { "cmd": "/doctor", "user_only": true, "when": "Claude Code itself misbehaves (hooks erroring, plugin not loading)", "benefit_en": "Tells apart a broken installation from a broken project", "benefit_zh": "分清是工具坏了还是代码坏了", "combos": [] },
-    { "cmd": "/mcp", "user_only": true, "when": "a connector fails or auth expires; suggest BEFORE retrying workarounds", "benefit_en": "Reconnect or re-auth a failed integration in seconds", "benefit_zh": "连接器断了，几秒接回", "combos": [] },
-    { "cmd": "/permissions", "user_only": true, "when": "the same safe command keeps triggering approval popups", "benefit_en": "Stop repeated permission popups for commands you trust", "benefit_zh": "让放心的命令不再反复弹窗", "combos": [] },
-    { "cmd": "/usage", "user_only": true, "when": "rate-limit warnings, or before a big batch run", "benefit_en": "See how much plan headroom is left before committing to heavy work", "benefit_zh": "开干重活前看看额度余量", "combos": ["pre-heavy-tuneup"] },
-    { "cmd": "/install-github-app", "user_only": true, "when": "a public repo starts receiving issues/PRs without the GitHub App", "benefit_en": "@claude triages your GitHub issues and PRs for you", "benefit_zh": "让 @claude 替你处理 issue 和 PR", "combos": [] },
-    { "cmd": "/bug", "user_only": true, "when": "a confirmed Claude Code product defect was just worked around", "benefit_en": "One command files the report with diagnostics attached", "benefit_zh": "一键上报，自动附诊断", "combos": [] },
-    { "cmd": "/diff", "user_only": true, "when": "user wants to see what changed before committing", "benefit_en": "Every uncommitted change, one interactive view", "benefit_zh": "改了什么，一目了然", "combos": ["safe-big-change"] },
-    { "cmd": "/insights", "user_only": true, "when": "wrapping up a substantial session", "benefit_en": "An analysis report of how this session went", "benefit_zh": "这次会话的复盘报告", "combos": ["clean-finish"] },
-    { "cmd": "/recap", "user_only": true, "when": "user needs a quick record of what happened", "benefit_en": "One-line summary of the session", "benefit_zh": "一句话总结本次会话", "combos": ["clean-finish"] },
-    { "cmd": "/powerup", "user_only": true, "when": "user wants to learn Claude Code features hands-on", "benefit_en": "Interactive lessons with animated demos, better than docs", "benefit_zh": "官方互动教学，比文档直观", "combos": [] }
+    {
+      "cmd": "/add-dir",
+      "user_only": true,
+      "when": "you need Claude to read or edit files in another folder this session",
+      "benefit_en": "Open up a second folder for this session, no restart",
+      "benefit_zh": "临时多开一个文件夹，不用重启",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/advisor",
+      "user_only": true,
+      "when": "high-stakes work where a second opinion helps; enabled once, Claude consults it",
+      "benefit_en": "A stronger model double-checks the work at key moments",
+      "benefit_zh": "请个更强的模型当军师",
+      "leverage": "normal",
+      "combos": [
+        "pre-heavy-tuneup"
+      ]
+    },
+    {
+      "cmd": "/agents",
+      "user_only": true,
+      "when": "you want to set up or tweak the helper agents Claude delegates side tasks to",
+      "benefit_en": "Set up the helper agents Claude can hand work off to",
+      "benefit_zh": "配置 Claude 能派活的小助手",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/allowed-tools",
+      "user_only": true,
+      "when": "same as /permissions (this is its alias): a safe command keeps asking for approval",
+      "benefit_en": "Stop repeated permission popups for commands you trust",
+      "benefit_zh": "让放心的命令不再反复弹窗（同 /permissions）",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/android",
+      "user_only": true,
+      "when": "you want the Claude app on an Android phone (alias of /mobile)",
+      "benefit_en": "Scan a QR code to get the Claude Android app",
+      "benefit_zh": "扫码下载安卓版 Claude",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/app",
+      "user_only": true,
+      "when": "you started in the terminal but want to keep going in the Desktop app (Mac/Windows)",
+      "benefit_en": "Move this session into the Desktop app, unbroken",
+      "benefit_zh": "把会话搬到桌面应用继续",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/autofix-pr",
+      "user_only": true,
+      "when": "your PR's CI keeps failing or reviewers leave comments and you don't want to babysit it",
+      "benefit_en": "A cloud agent watches your PR and pushes fixes on its own",
+      "benefit_zh": "云端分身盯着 PR，自动推修复",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/background",
+      "user_only": true,
+      "when": "a long task is tying up your terminal and you want it back",
+      "benefit_en": "Send the whole session to the background and free your terminal",
+      "benefit_zh": "整个会话转后台，腾出终端",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/bashes",
+      "user_only": true,
+      "when": "you started long-running commands in the background and want to see or stop them",
+      "benefit_en": "See and manage everything still running in the background",
+      "benefit_zh": "查看并管理后台任务",
+      "leverage": "normal",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/batch",
+      "user_only": false,
+      "when": "the same repetitive change spans many files; Claude can run this skill to parallelize it",
+      "benefit_en": "Splits a sweeping change into parallel agents, one PR each",
+      "benefit_zh": "大改拆成并行小队，各开各的 PR",
+      "leverage": "high",
+      "combos": [
+        "mass-change"
+      ]
+    },
+    {
+      "cmd": "/bg",
+      "user_only": true,
+      "when": "a long task is tying up your terminal and you want it back (short for /background)",
+      "benefit_en": "Send the whole session to the background and free your terminal",
+      "benefit_zh": "整个会话转后台，腾出终端（/background 简写）",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/branch",
+      "user_only": true,
+      "when": "user wants to try an alternative without losing the main thread",
+      "benefit_en": "Explore a what-if in a copy; the main thread stays intact",
+      "benefit_zh": "开个副本试方案，主线不受影响",
+      "leverage": "normal",
+      "combos": [
+        "parallel-explore"
+      ]
+    },
+    {
+      "cmd": "/btw",
+      "user_only": true,
+      "when": "a side question pops up mid-task",
+      "benefit_en": "Ask asides without polluting this session's context",
+      "benefit_zh": "问题外话，主线零污染",
+      "leverage": "normal",
+      "combos": [
+        "aside-isolation"
+      ]
+    },
+    {
+      "cmd": "/bug",
+      "user_only": true,
+      "when": "same as /feedback — you hit a bug and want to report it",
+      "benefit_en": "Same as /feedback — report a bug",
+      "benefit_zh": "和 /feedback 一样，报告 bug",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/cd",
+      "user_only": true,
+      "when": "you want to move this session into a different project folder without losing context",
+      "benefit_en": "Move the session to another folder, cache and history kept",
+      "benefit_zh": "整个会话搬到别的目录，缓存历史都留着",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/checkpoint",
+      "user_only": true,
+      "when": "an edit broke something, or you want to return to a saved point (same as /rewind)",
+      "benefit_en": "Roll code and chat back to an earlier checkpoint",
+      "benefit_zh": "把代码和对话退回到之前存档点",
+      "leverage": "normal",
+      "combos": [
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/chrome",
+      "user_only": true,
+      "when": "you want Claude to see or act in your Chrome browser and need to set it up",
+      "benefit_en": "Open the settings that let Claude work inside Chrome",
+      "benefit_zh": "打开让 Claude 接管 Chrome 的设置",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/claude-api",
+      "user_only": false,
+      "when": "building with the Claude/Anthropic SDK, or migrating that code to a newer model; Claude loads it itself",
+      "benefit_en": "Loads correct API reference so your Claude code is right, not guessed",
+      "benefit_zh": "加载官方 API 参考，代码不靠猜",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/clear",
+      "user_only": true,
+      "when": "starting an unrelated task in an already long session",
+      "benefit_en": "Fresh start: the new task won't drag the old context's noise or cost",
+      "benefit_zh": "新任务不背旧包袱，又快又省",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/code-review",
+      "user_only": false,
+      "when": "code review requested before shipping; Claude invokes the skill, and ultra runs a deep cloud review",
+      "benefit_en": "Catches bugs and cleanups in the diff, and can fix them for you",
+      "benefit_zh": "抓改动里的 bug 和冗余，还能直接帮你修",
+      "leverage": "high",
+      "combos": [
+        "safe-big-change",
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/color",
+      "user_only": true,
+      "when": "you run several sessions at once and want to tell their windows apart",
+      "benefit_en": "Color the prompt bar so you don't confuse sessions",
+      "benefit_zh": "给输入栏上色，多窗口不弄混",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/compact",
+      "user_only": true,
+      "when": "context is heavy but the same task must continue; best at a phase boundary",
+      "benefit_en": "Free up context while choosing what the summary keeps",
+      "benefit_zh": "腾出空间，还能指定保留重点",
+      "leverage": "normal",
+      "combos": [
+        "long-session-stamina"
+      ]
+    },
+    {
+      "cmd": "/config",
+      "user_only": true,
+      "when": "you want to change theme, model, output style, or other preferences",
+      "benefit_en": "One place to adjust how Claude Code looks and behaves",
+      "benefit_zh": "一处调好外观、模型和偏好",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/context",
+      "user_only": true,
+      "when": "the chat is getting long or sluggish and you want to see what's filling the window",
+      "benefit_en": "See what's eating your context, with cleanup tips",
+      "benefit_zh": "看清上下文被谁占满",
+      "leverage": "normal",
+      "combos": [
+        "long-session-stamina",
+        "pre-heavy-tuneup"
+      ]
+    },
+    {
+      "cmd": "/continue",
+      "user_only": true,
+      "when": "you want to jump back into an earlier conversation instead of starting over",
+      "benefit_en": "Reopen a past conversation right where you left off",
+      "benefit_zh": "回到之前的对话接着聊",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/copy",
+      "user_only": true,
+      "when": "you want to paste Claude's last answer or one of its code blocks somewhere else",
+      "benefit_en": "Grab the last reply or a code block to clipboard",
+      "benefit_zh": "一键复制上条回复",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/cost",
+      "user_only": true,
+      "when": "you want to check this session's spend, plan limits, and usage stats",
+      "benefit_en": "See your cost, plan limits, and usage at a glance",
+      "benefit_zh": "查花费和用量额度",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/debug",
+      "user_only": false,
+      "when": "Claude itself is misbehaving and you need logs to find out why",
+      "benefit_en": "Turns on logging and reads it to find the glitch",
+      "benefit_zh": "开日志排查工具故障",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/deep-research",
+      "user_only": false,
+      "when": "a question needs many web sources cross-checked, not one quick search",
+      "benefit_en": "Searches widely, checks sources, writes a cited report",
+      "benefit_zh": "多源交叉核查出带引用报告",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/desktop",
+      "user_only": true,
+      "when": "you started in the terminal but want to keep going in the Desktop app (Mac/Windows)",
+      "benefit_en": "Move this session into the Desktop app, unbroken",
+      "benefit_zh": "把会话搬到桌面应用继续",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/diff",
+      "user_only": true,
+      "when": "before committing or shipping, to eyeball exactly what changed",
+      "benefit_en": "Browse every change, by file or by Claude turn",
+      "benefit_zh": "逐文件看改了什么",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/doctor",
+      "user_only": true,
+      "when": "the install feels off or right after setup, to verify everything is healthy",
+      "benefit_en": "Health-checks your install and offers to fix issues",
+      "benefit_zh": "体检安装并一键修复",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/effort",
+      "user_only": true,
+      "when": "a task is harder or simpler than usual and you want to dial thinking up or down",
+      "benefit_en": "Dial Claude's thinking up for hard work, down to save cost",
+      "benefit_zh": "调节思考深度，难题调高",
+      "leverage": "high",
+      "combos": [
+        "pre-heavy-tuneup",
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/exit",
+      "user_only": true,
+      "when": "you're done for now, or want to leave a background session running while you close the terminal",
+      "benefit_en": "Leave cleanly; any background work keeps running",
+      "benefit_zh": "干净退出，后台任务继续跑",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/export",
+      "user_only": true,
+      "when": "you want to save or paste the whole chat somewhere — a doc, a teammate, a ticket",
+      "benefit_en": "Save the whole chat as text to a file or clipboard",
+      "benefit_zh": "把整段对话存成文本或复制走",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/fast",
+      "user_only": true,
+      "when": "you're iterating live and replies feel slow — flip it on for speed, off when you care about cost",
+      "benefit_en": "Up to 2.5x faster replies (costs more per token)",
+      "benefit_zh": "回复快到 2.5 倍（更费钱）",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/feedback",
+      "user_only": true,
+      "when": "something broke or you have an idea — send it to Anthropic with your session attached",
+      "benefit_en": "Report a bug or idea with session context attached",
+      "benefit_zh": "带着会话上下文反馈问题或建议",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/fewer-permission-prompts",
+      "user_only": false,
+      "when": "you keep clicking Approve on the same safe commands and want the interruptions to stop",
+      "benefit_en": "Auto-allowlists your safe commands so it stops asking",
+      "benefit_zh": "把常用安全命令加白名单，不再反复问",
+      "leverage": "high",
+      "combos": [
+        "unattended",
+        "long-session-stamina",
+        "pre-heavy-tuneup"
+      ]
+    },
+    {
+      "cmd": "/focus",
+      "user_only": true,
+      "when": "the screen is noisy and you just want your prompt, a one-line tool summary, and the answer",
+      "benefit_en": "Hides the clutter — shows just prompt and final answer",
+      "benefit_zh": "只看提问和结果，隐藏中间噪音",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/fork",
+      "user_only": true,
+      "when": "you want a side task explored in the background, with full context, while you keep working the main thread",
+      "benefit_en": "Hands a side task to a background helper; you keep going",
+      "benefit_zh": "把支线任务丢给后台，自己继续干",
+      "leverage": "high",
+      "combos": [
+        "parallel-explore",
+        "aside-isolation"
+      ]
+    },
+    {
+      "cmd": "/goal",
+      "user_only": true,
+      "when": "you have a big multi-step job with a clear finish line and want Claude to keep going on its own",
+      "benefit_en": "Set the finish line once; Claude works until it's met",
+      "benefit_zh": "定好终点，自动干到完成",
+      "leverage": "high",
+      "combos": [
+        "long-session-stamina",
+        "unattended",
+        "mass-change"
+      ]
+    },
+    {
+      "cmd": "/heapdump",
+      "user_only": true,
+      "when": "Claude Code is using a lot of memory or feels sluggish and you want to report why",
+      "benefit_en": "Saves a memory snapshot to your Desktop for diagnosis",
+      "benefit_zh": "把内存快照存到桌面查问题",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/help",
+      "user_only": true,
+      "when": "you are new or forget what a command does and want the full list",
+      "benefit_en": "Shows every command and quick help in one place",
+      "benefit_zh": "一处看全部命令和帮助",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/hooks",
+      "user_only": true,
+      "when": "you want to see what automatic actions run before or after tools",
+      "benefit_en": "Shows the automatic rules wired to tool events",
+      "benefit_zh": "查看绑定在工具上的自动规则",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/ide",
+      "user_only": true,
+      "when": "you want Claude Code connected to your editor or to check that link",
+      "benefit_en": "Connects to your editor and shows the link status",
+      "benefit_zh": "连接编辑器并查看状态",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/init",
+      "user_only": false,
+      "when": "first time in a project with no CLAUDE.md, to teach Claude the codebase",
+      "benefit_en": "Creates a project guide so Claude understands your code",
+      "benefit_zh": "生成项目说明，让 Claude 懂你的代码",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/insights",
+      "user_only": true,
+      "when": "you want to see how you actually use Claude Code and where you hit friction",
+      "benefit_en": "Reports your usage patterns and where you get stuck",
+      "benefit_zh": "分析你的使用习惯和卡点",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/install-github-app",
+      "user_only": true,
+      "when": "you want Claude to review pull requests and respond on your GitHub repo",
+      "benefit_en": "Sets up Claude to work on your GitHub repo automatically",
+      "benefit_zh": "让 Claude 自动处理你的 GitHub 仓库",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/install-slack-app",
+      "user_only": true,
+      "when": "you want to use Claude Code from inside Slack with your team",
+      "benefit_en": "Connects Claude to Slack so you can use it there",
+      "benefit_zh": "把 Claude 接入 Slack 团队使用",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/ios",
+      "user_only": true,
+      "when": "you want the Claude app on an iPhone or iPad (alias of /mobile)",
+      "benefit_en": "Scan a QR code to get the Claude iPhone app",
+      "benefit_zh": "扫码下载 iPhone 版 Claude",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/keybindings",
+      "user_only": true,
+      "when": "the default keyboard shortcuts annoy you and you want to change them",
+      "benefit_en": "Opens your shortcuts file to remap any key",
+      "benefit_zh": "打开快捷键文件，自由改键",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/login",
+      "user_only": true,
+      "when": "you are signed out, switching accounts, or a session asks you to authenticate",
+      "benefit_en": "Sign in to your Anthropic account so Claude can run",
+      "benefit_zh": "登录账号，才能开始用",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/logout",
+      "user_only": true,
+      "when": "you want to sign out, e.g. on a shared or borrowed machine",
+      "benefit_en": "Sign out of your account to protect access",
+      "benefit_zh": "退出登录，保护账号安全",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/loop",
+      "user_only": false,
+      "when": "a prompt or check should repeat on an interval (watch a deploy, poll status, retry until green); Claude can set this up",
+      "benefit_en": "Run something on repeat without you re-asking each time",
+      "benefit_zh": "让某件事按节奏反复跑，不用你一遍遍催",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/mcp",
+      "user_only": true,
+      "when": "a connector fails or auth expires; suggest BEFORE retrying workarounds",
+      "benefit_en": "Reconnect or re-auth a failed integration in seconds",
+      "benefit_zh": "连接器断了，几秒接回",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/memory",
+      "user_only": false,
+      "when": "you want to save a lasting project fact or preference, or check what auto-memory stored; Claude can edit it directly",
+      "benefit_en": "Save facts once so every future session remembers them",
+      "benefit_zh": "记一次，以后每次都记得",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/mobile",
+      "user_only": true,
+      "when": "you want to keep working from your phone away from the desk",
+      "benefit_en": "Scan a QR code to get the Claude phone app",
+      "benefit_zh": "扫码下载手机版 Claude",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/model",
+      "user_only": true,
+      "when": "task clearly mismatches the active model; give ONE concrete suggestion",
+      "benefit_en": "Match the brain to the job and save it as your default",
+      "benefit_zh": "难活配强脑，还存成默认",
+      "leverage": "normal",
+      "combos": [
+        "pre-heavy-tuneup"
+      ]
+    },
+    {
+      "cmd": "/new",
+      "user_only": true,
+      "when": "starting an unrelated task in an already long session (same as /clear)",
+      "benefit_en": "Fresh start: the new task won't drag the old context's noise or cost",
+      "benefit_zh": "新任务不背旧包袱（等同 /clear）",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/passes",
+      "user_only": true,
+      "when": "a friend wants to try Claude Code and your account shows the option",
+      "benefit_en": "Gift a friend a free week of Claude Code",
+      "benefit_zh": "送朋友一周免费体验",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/permissions",
+      "user_only": true,
+      "when": "the same safe command keeps triggering approval popups",
+      "benefit_en": "Stop repeated permission popups for commands you trust",
+      "benefit_zh": "让放心的命令不再反复弹窗",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/plan",
+      "user_only": false,
+      "when": "substantial design/build/refactor; Claude enters plan mode itself via EnterPlanMode",
+      "benefit_en": "Review the plan before any file changes; nothing edits until approved",
+      "benefit_zh": "先看计划再动手，批准前不改文件",
+      "leverage": "high",
+      "combos": [
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/plugin",
+      "user_only": true,
+      "when": "you want to install, enable, disable, or browse Claude Code plugins",
+      "benefit_en": "Add or manage plugins from one menu",
+      "benefit_zh": "一个菜单装好用好插件",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/powerup",
+      "user_only": true,
+      "when": "user wants to learn Claude Code features hands-on",
+      "benefit_en": "Interactive lessons with animated demos, better than docs",
+      "benefit_zh": "官方互动教学，比文档直观",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/pr-comments",
+      "user_only": false,
+      "when": "you want a pull request's review comments; the command was removed, so just ask Claude and it fetches them",
+      "benefit_en": "See a PR's review comments without leaving the terminal",
+      "benefit_zh": "不离终端就看 PR 评论（命令已下线，直接让它取）",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/privacy-settings",
+      "user_only": true,
+      "when": "a Pro or Max subscriber wants to check or change how their data is used",
+      "benefit_en": "View and adjust your privacy choices in one place",
+      "benefit_zh": "一处查看和调整隐私设置",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/proactive",
+      "user_only": false,
+      "when": "you want Claude to keep running a check on its own while the session stays open (alias of /loop)",
+      "benefit_en": "Same as /loop: keep a task running unprompted",
+      "benefit_zh": "等同 /loop：让任务自己反复跑",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/quit",
+      "user_only": true,
+      "when": "same as /exit — you want to close Claude Code (just a second name for it)",
+      "benefit_en": "Same as /exit — close the session",
+      "benefit_zh": "和 /exit 一样，退出会话",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/radio",
+      "user_only": true,
+      "when": "you want background lo-fi music while you work",
+      "benefit_en": "Open lo-fi focus radio in your browser",
+      "benefit_zh": "浏览器里放干活背景音乐",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/rc",
+      "user_only": true,
+      "when": "you want to keep steering this terminal session from your phone or another device",
+      "benefit_en": "Continue this session from your phone or another device",
+      "benefit_zh": "用手机或别的设备接着干这个会话",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/recap",
+      "user_only": true,
+      "when": "user needs a quick record of what happened",
+      "benefit_en": "One-line summary of the session",
+      "benefit_zh": "一句话总结本次会话",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/release-notes",
+      "user_only": true,
+      "when": "you just updated Claude Code and want to see what changed in this version",
+      "benefit_en": "See what's new in any version, picked from a list",
+      "benefit_zh": "翻看任意版本更新了啥",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/reload-plugins",
+      "user_only": true,
+      "when": "you changed a plugin's files and want it to take effect without quitting Claude",
+      "benefit_en": "Apply plugin edits instantly, no restart needed",
+      "benefit_zh": "改完插件立刻生效，不用重启",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/reload-skills",
+      "user_only": true,
+      "when": "you added or edited a skill on disk and want it usable right now",
+      "benefit_en": "Pick up new or changed skills without restarting",
+      "benefit_zh": "新加的技能马上能用，不用重启",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/remote-control",
+      "user_only": true,
+      "when": "you want to keep steering this terminal session from your phone or another device",
+      "benefit_en": "Continue this session from your phone or another device",
+      "benefit_zh": "用手机或别的设备接着干这个会话",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/remote-env",
+      "user_only": true,
+      "when": "before running cloud agents, to set which environment they use by default",
+      "benefit_en": "Set the default machine your cloud agents run in",
+      "benefit_zh": "设定云端任务默认在哪运行",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/rename",
+      "user_only": true,
+      "when": "you want this session labeled so you can find it later in the resume list",
+      "benefit_en": "Give this session a name so it's easy to find later",
+      "benefit_zh": "给会话起名，以后好找",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/reset",
+      "user_only": true,
+      "when": "starting an unrelated task in an already long session (same as /clear)",
+      "benefit_en": "Fresh start: the new task won't drag the old context's noise or cost",
+      "benefit_zh": "新任务不背旧包袱（等同 /clear）",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/resume",
+      "user_only": true,
+      "when": "you want to jump back into an earlier conversation instead of starting over",
+      "benefit_en": "Reopen a past conversation right where you left off",
+      "benefit_zh": "回到之前的对话接着聊",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/review",
+      "user_only": false,
+      "when": "a pull request is open and you want it read over before merging",
+      "benefit_en": "Get a pull request checked over before you merge it",
+      "benefit_zh": "合并前先把 PR 审一遍",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/rewind",
+      "user_only": true,
+      "when": "an edit broke something, or you want to return to a pre-edit state",
+      "benefit_en": "One step back to before the damage, no manual repair",
+      "benefit_zh": "一键回到改坏之前，不用手工修",
+      "leverage": "normal",
+      "combos": [
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/routines",
+      "user_only": false,
+      "when": "you want to view or manage your cloud routines (same as /schedule); Claude can run it directly",
+      "benefit_en": "Manage your recurring cloud jobs in one place",
+      "benefit_zh": "统一管理你的云端定时任务",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/run",
+      "user_only": false,
+      "when": "you want to see a change actually working in the running app, not just in tests; Claude invokes the skill",
+      "benefit_en": "Launches your real app so you can watch the change work",
+      "benefit_zh": "把真应用跑起来，亲眼看改动生效",
+      "leverage": "high",
+      "combos": [
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/run-skill-generator",
+      "user_only": false,
+      "when": "plain /run cannot launch the app because it needs a database, env file, or multi-step build; Claude records the recipe once",
+      "benefit_en": "Teaches Claude how to launch your app once, reused forever",
+      "benefit_zh": "教会 Claude 怎么启动你的应用，一次记住",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/sandbox",
+      "user_only": true,
+      "when": "you want Claude to run commands freely without approving each one, with a safety boundary",
+      "benefit_en": "Let Claude run commands safely without constant approval popups",
+      "benefit_zh": "让 Claude 在安全圈内自由跑命令，少弹窗",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/schedule",
+      "user_only": false,
+      "when": "recurring or timed jobs that should run in the cloud; Claude sets these up directly",
+      "benefit_en": "Set it once, it runs on schedule in the cloud",
+      "benefit_zh": "定好时间，云端按时自动跑",
+      "leverage": "high",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/scroll-speed",
+      "user_only": true,
+      "when": "the mouse wheel scrolls too fast or too slow in fullscreen mode",
+      "benefit_en": "Tune mouse wheel scroll speed to your liking",
+      "benefit_zh": "把鼠标滚轮速度调到顺手",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/security-review",
+      "user_only": false,
+      "when": "you want a security check of pending changes before shipping; Claude invokes the skill directly",
+      "benefit_en": "A security audit of your changes before they ship",
+      "benefit_zh": "改动上线前做一次安全体检",
+      "leverage": "normal",
+      "combos": [
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/settings",
+      "user_only": true,
+      "when": "you want to change theme, model, output style, or other preferences (same as /config)",
+      "benefit_en": "One place to adjust how Claude Code looks and behaves",
+      "benefit_zh": "一处调好外观和偏好（等同 /config）",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/setup-bedrock",
+      "user_only": true,
+      "when": "your company runs Claude through Amazon Bedrock and you need to connect it the first time",
+      "benefit_en": "Walks you through connecting Claude to Amazon Bedrock",
+      "benefit_zh": "向导式接好 Bedrock 账号",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/setup-vertex",
+      "user_only": true,
+      "when": "your company runs Claude through Google Vertex AI and you need to connect it the first time",
+      "benefit_en": "Walks you through connecting Claude to Google Vertex AI",
+      "benefit_zh": "向导式接好 Vertex 账号",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/share",
+      "user_only": true,
+      "when": "same as /feedback — you want to share your conversation",
+      "benefit_en": "Same as /feedback — share your conversation",
+      "benefit_zh": "和 /feedback 一样，分享对话",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/simplify",
+      "user_only": false,
+      "when": "right after finishing a change, to tidy it before sharing or committing",
+      "benefit_en": "Cleans up your new code without hunting for bugs",
+      "benefit_zh": "只清理刚写的代码，不查 bug",
+      "leverage": "high",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/skills",
+      "user_only": true,
+      "when": "you want to see what skills exist or hide one that keeps getting in the way",
+      "benefit_en": "See every skill and hide ones you don't want",
+      "benefit_zh": "查看并隐藏技能",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/stats",
+      "user_only": true,
+      "when": "you want to see how much you have used and your activity at a glance",
+      "benefit_en": "Opens your usage and activity numbers",
+      "benefit_zh": "打开用量统计页",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/status",
+      "user_only": true,
+      "when": "you want to check your version, model, account, or whether you are connected",
+      "benefit_en": "Shows version, model, account, and connection state",
+      "benefit_zh": "查看版本、模型、账号、连接",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/statusline",
+      "user_only": true,
+      "when": "you want the bar at the bottom to show info you care about, like branch or model",
+      "benefit_en": "Sets up the info bar at the bottom",
+      "benefit_zh": "定制底部状态栏显示",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/stickers",
+      "user_only": true,
+      "when": "you want free Claude Code stickers mailed to you",
+      "benefit_en": "Order free Claude Code stickers",
+      "benefit_zh": "领取免费贴纸",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/stop",
+      "user_only": true,
+      "when": "a background session is still running and you want to halt it for good",
+      "benefit_en": "Stops a background session but keeps its work",
+      "benefit_zh": "停掉后台会话，保留成果",
+      "leverage": "normal",
+      "combos": [
+        "unattended"
+      ]
+    },
+    {
+      "cmd": "/tasks",
+      "user_only": true,
+      "when": "several things are running in the background and you want to see or manage them",
+      "benefit_en": "One place to watch and manage all background work",
+      "benefit_zh": "统一查看管理后台任务",
+      "leverage": "high",
+      "combos": [
+        "unattended",
+        "parallel-explore"
+      ]
+    },
+    {
+      "cmd": "/team-onboarding",
+      "user_only": true,
+      "when": "a new teammate joins and you want a ramp-up guide built from how you actually use the project",
+      "benefit_en": "Auto-writes a new-hire guide from your recent work",
+      "benefit_zh": "自动生成新人上手指南",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/teleport",
+      "user_only": true,
+      "when": "you ran a session on the web and want to continue it in your terminal with full local access",
+      "benefit_en": "Pulls a web session into your terminal to keep going",
+      "benefit_zh": "把网页会话拉回终端继续",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/terminal-setup",
+      "user_only": true,
+      "when": "Shift+Enter does not make a newline in your editor's terminal (VS Code, Cursor, Zed)",
+      "benefit_en": "Fixes Shift+Enter and shortcuts in your editor terminal",
+      "benefit_zh": "修好编辑器里的快捷键",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/theme",
+      "user_only": true,
+      "when": "the colors are hard to read or clash with your terminal, including color-blind needs",
+      "benefit_en": "Switch colors so text is easy to read",
+      "benefit_zh": "换配色让文字更好读",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/tp",
+      "user_only": true,
+      "when": "you ran a session on the web and want to continue it in your terminal with full local access",
+      "benefit_en": "Pulls a web session into your terminal to keep going",
+      "benefit_zh": "把网页会话拉回终端继续",
+      "leverage": "high"
+    },
+    {
+      "cmd": "/tui",
+      "user_only": true,
+      "when": "you want a roomier full-screen layout instead of the default inline view",
+      "benefit_en": "Switch to a full-screen layout, keeping your chat",
+      "benefit_zh": "切换全屏界面，对话不丢",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/ultraplan",
+      "user_only": true,
+      "when": "before a big or risky change you want a thorough plan drafted in the cloud while you keep working",
+      "benefit_en": "Drafts a big-change plan in the cloud, terminal stays free",
+      "benefit_zh": "云端起草大改方案，终端不占用",
+      "leverage": "high",
+      "combos": [
+        "safe-big-change",
+        "parallel-explore"
+      ]
+    },
+    {
+      "cmd": "/ultrareview",
+      "user_only": false,
+      "when": "before merging, you want a deep multi-agent review to catch bugs you might miss",
+      "benefit_en": "Deep cloud review catches bugs before you merge",
+      "benefit_zh": "合并前云端深查 bug",
+      "leverage": "high",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/undo",
+      "user_only": true,
+      "when": "you dislike the last change and want it reversed (same as /rewind)",
+      "benefit_en": "Undo the last change without fixing it by hand",
+      "benefit_zh": "撤销刚才的改动，不用手动改回",
+      "leverage": "normal",
+      "combos": [
+        "safe-big-change"
+      ]
+    },
+    {
+      "cmd": "/upgrade",
+      "user_only": true,
+      "when": "you keep hitting usage limits and want more capacity on a higher plan",
+      "benefit_en": "Open the page to move to a higher plan",
+      "benefit_zh": "打开页面升级套餐",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/usage",
+      "user_only": true,
+      "when": "you want to know what this session cost or how much of your plan you have left",
+      "benefit_en": "See your cost and plan limits at a glance",
+      "benefit_zh": "一眼看清花费和额度",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/usage-credits",
+      "user_only": true,
+      "when": "you hit your plan's usage limit mid-task and need to keep going",
+      "benefit_en": "Keep working past your limit by adding credits",
+      "benefit_zh": "额度用完也能继续干活",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/verify",
+      "user_only": false,
+      "when": "you just made a code change and want proof it actually works in the running app",
+      "benefit_en": "Builds and runs your app to prove the change works",
+      "benefit_zh": "真跑一遍，确认改动有效",
+      "leverage": "normal",
+      "combos": [
+        "clean-finish"
+      ]
+    },
+    {
+      "cmd": "/vim",
+      "user_only": true,
+      "when": "you want Vim-style text editing in the prompt (this command was removed)",
+      "benefit_en": "Removed — set Vim editing via /config Editor mode instead",
+      "benefit_zh": "已移除，改用 /config 设编辑模式",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/voice",
+      "user_only": true,
+      "when": "you'd rather talk than type your prompt",
+      "benefit_en": "Speak your prompt instead of typing it",
+      "benefit_zh": "用说话代替打字",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/web-setup",
+      "user_only": true,
+      "when": "you want to use Claude Code in your browser and need to link GitHub",
+      "benefit_en": "Links your GitHub so Claude Code works on the web",
+      "benefit_zh": "连上 GitHub，网页版可用",
+      "leverage": "normal"
+    },
+    {
+      "cmd": "/workflows",
+      "user_only": true,
+      "when": "big background work is fanned out across agents and you want to watch or pause it",
+      "benefit_en": "Watch, pause, resume, or save your background workflows",
+      "benefit_zh": "盯住后台任务，随时暂停继续",
+      "leverage": "high",
+      "combos": [
+        "unattended",
+        "parallel-explore"
+      ]
+    }
   ]
 }

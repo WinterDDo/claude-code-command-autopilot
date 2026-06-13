@@ -1,6 +1,6 @@
 {
   "name": "command-autopilot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Use 100% of Claude Code while memorizing zero commands. Auto-runs what Claude can do itself, suggests the right command at the right moment with a one-line benefit, learns from your behavior, and proves its value with a verifiable ledger.",
   "author": {
     "name": "Win"
