@@ -58,7 +58,10 @@ class TrackerTests(unittest.TestCase):
         self.assertNotIn("self_used", cmds["/clear"],
                          "tool_result content must never count as user self-use")
         self.assertEqual(cmds["/rewind"]["self_used"], 1)
-        self.assertEqual(state["counters"]["habits"]["btw"]["tips_shown"], 1)
+        # prose markers must NOT be counted as teaching: the fixture's
+        # "Tip: /btw ..." assistant line must produce no habit tip event.
+        self.assertNotIn("btw", state["counters"].get("habits", {}),
+                         "discussing a command in prose must never count as a habit tip")
         self.assertEqual(state["milestones"].get("first_auto_plan_mode"), "pending")
         events = (self.tmp / "events.jsonl").read_text()
         self.assertIn("value_auto_plan_mode", events)

@@ -21,7 +21,6 @@ import apcommon as ap
 
 HABITS = {"/clear": "clear", "/btw": "btw", "/rewind": "rewind", "/plan": "plan"}
 COMMAND_RE = re.compile(r"/(clear|btw|rewind|plan|compact|context|export|resume|branch|fork|goal|model|effort|advisor|fast|background|tasks|workflows|schedule|mcp|permissions|usage|diff|insights|recap|powerup)\b")
-TIP_MARKERS = ("Tip:", "tip:", "💡", "提示", "小技巧")
 SCAN_TAIL_BYTES = 200_000
 
 
@@ -76,7 +75,6 @@ def handle_stop(state, data_dir, payload):
         # tool_result lines also carry "type":"user"; file paths inside them
         # (src/export/x.js, app/context/y.ts) must never count as self-use.
         is_user = ('"type":"user"' in raw or '"type": "user"' in raw) and '"tool_result"' not in raw
-        is_assistant = '"type":"assistant"' in raw or '"type": "assistant"' in raw
 
         if '"name": "EnterPlanMode"' in raw or '"name":"EnterPlanMode"' in raw:
             record(state, data_dir, "value_auto_plan_mode", "/plan")
@@ -90,12 +88,10 @@ def handle_stop(state, data_dir, payload):
             if "User dismissed" in raw:
                 dismissed_all = True
 
-        if is_assistant and any(marker in raw for marker in TIP_MARKERS):
-            for token, habit in HABITS.items():
-                if token in raw:
-                    ap.bump(state["counters"], "habits", habit, "tips_shown")
-                    record(state, data_dir, "habit_tip_shown", habit)
-
+        # NOTE: we deliberately do NOT infer "a habit was taught" from prose
+        # markers — that counted ordinary discussion of a command as teaching
+        # (e.g. "/plan" mentioned beside the word "tip"). Only structural truth
+        # is recorded: offers (AskUserQuestion), outcomes, and real self-use below.
         if is_user:
             for match in COMMAND_RE.findall(raw):
                 cmd = "/" + match

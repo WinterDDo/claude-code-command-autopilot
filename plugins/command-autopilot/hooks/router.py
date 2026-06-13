@@ -55,8 +55,8 @@ def build_digest(state):
         if bits:
             lines.append("%s: %s (%s)" % (cmd, ", ".join(bits), fmt_recency(c.get("last", ""))))
     for habit, h in sorted(state["counters"].get("habits", {}).items()):
-        if h.get("tips_shown") or h.get("self_used"):
-            lines.append("habit %s: tipped %d, self-used %d" % (habit, h.get("tips_shown", 0), h.get("self_used", 0)))
+        if h.get("self_used"):
+            lines.append("habit %s: self-used %d (already adopted — no need to point it out)" % (habit, h["self_used"]))
     skills = [(s, c) for s, c in state["counters"].get("skills", {}).items() if c.get("invoked")]
     skills.sort(key=lambda x: -x[1]["invoked"])
     for name, c in skills[:5]:
