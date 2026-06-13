@@ -38,7 +38,7 @@ Command Autopilot fixes this with three moves:
 2. **It hands you the command before the moment, never after.** Commands only you can press (/rewind, /clear...) arrive as clickable choices at the exact fork they resolve — each with a one-line benefit, so you know why you're pressing it.
 3. **It evolves with you.** Every suggestion you accept or ignore is local evidence. The autopilot reads the room: what you keep dismissing goes quiet, what helps you gets offered earlier, and roughly every 10 sessions it distills your usage into personalized rules — visible, evidence-backed, deletable.
 
-It teaches exactly **four habits** (/clear, /btw, /rewind, plan mode), each at most a few times, then goes quiet. The goal is that you stop noticing it.
+It never runs through a fixed checklist of tips. It reasons about each turn, points something out at most once when it genuinely helps, and otherwise stays quiet. The goal is that you stop noticing it.
 
 **Just browsing?** Paste [portable/PROMPT.md](portable/PROMPT.md) into claude.ai or any assistant — the core behavior, nothing installed, 60 seconds.
 
