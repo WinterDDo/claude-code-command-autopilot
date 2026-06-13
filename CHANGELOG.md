@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 — unreleased
+
+- Makes the product's core promise actually fire: proactively surfacing high-leverage commands the user can't ask for because they don't know they exist. Two ways, both opt-out via quiet/mute:
+  - **In the moment**: the unlock rule is now a CAPABILITY CHECKPOINT — before any multi-step, repetitive, or long-horizon task, bias toward surfacing Workflow / parallel /fork / /goal / /loop / background BEFORE doing it the slow way. It is explicitly NOT gated by the hygiene silence-default (which was suppressing it — even Claude itself ran Workflows all session without ever offering them).
+  - **Once, proactively**: from the 2nd session on, a one-time introduction of the high-leverage commands you've never used (what each is, what it does for your work, how to try). Fires once ever; never nags.
+- Added /loop to the knowledge base (was missing). whats-new skill now also covers never-used high-leverage built-in commands.
+- Anti-regression intact: ≤1 suggestion/reply, a command you keep declining stops being offered, mute/quiet valves. Honest cost updated: ~300–500 tokens in teaching/normal (quiet ≈ 300), README adjusted to match.
+
 ## 0.2.2 — unreleased
 
 - Cloud/web fix: suggestions no longer depend on the clickable AskUserQuestion popup, which does not reliably render in web/cloud sessions (interactive prompts are suppressed there — the likely reason cloud users never saw a suggestion). The guidance now degrades gracefully: clickable options where the environment renders them, plain-text questions otherwise. The suggestion reaches the user in every environment.

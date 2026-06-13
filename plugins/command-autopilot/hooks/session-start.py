@@ -136,6 +136,25 @@ def main():
                      "offer to run the evolve skill to distill it into personalized rules.")
         state["evolve"]["events_since_distill"] = 0  # re-arm after one announcement
 
+    # One-time power-command introduction: from the 2nd session on, if the user
+    # has never used or been offered the high-leverage commands, introduce them
+    # ONCE — these are the capabilities a beginner can't ask for because they
+    # don't know they exist. Fires once ever (flag), never nags.
+    if not state.get("power_intro_done") and len(state.get("sessions", {})) >= 2:
+        cmds = state.get("counters", {}).get("commands", {})
+        HIGH_LEVERAGE = ["/workflows", "/goal", "/loop", "/fork", "/branch", "/background"]
+        unused = [c for c in HIGH_LEVERAGE
+                  if not (cmds.get(c, {}).get("self_used") or cmds.get(c, {}).get("suggested"))]
+        if unused:
+            joined = ", ".join(unused[:4])
+            if zh:
+                notes.append(("[AUTOPILOT one-time] 借这次机会主动介绍：用户多步骤工作做得不少，但这几个高杠杆命令从没用过：%s。"
+                              "读 knowledge/commands.json + playbooks.json，用大白话讲清其中 2-3 个是什么、对他这种工作有什么用、怎么试一次。仅此一次，别堆清单、别说教。") % joined)
+            else:
+                notes.append(("[AUTOPILOT one-time] Proactively introduce: the user does multi-step work but has never used these high-leverage commands: %s. "
+                              "Read knowledge/commands.json + playbooks.json and explain 2-3 of them in plain words — what each is, what it does for THEIR kind of work, how to try one. Once only, no list-dumping, no lecturing.") % joined)
+            state["power_intro_done"] = True
+
     # Print BEFORE saving: if stdout fails, the one-time flags are not yet
     # consumed and the announcements survive for the next session.
     if notes:

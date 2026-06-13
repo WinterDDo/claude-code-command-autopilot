@@ -25,5 +25,8 @@ Record each step ✅/❌. English inputs shown; Chinese equivalents in parenthes
 | 16 | unlock (cheap) | ask something research-heavy, e.g. "compare three approaches to X across the docs" | Just uses a sub-agent / deep research and says so in one line — no popup for the cheap reversible path |
 | 17 | no over-trigger | ask a plain small task, e.g. "fix this typo" | Does it directly; no capability popup, no habit nagging |
 | 18 | cognition not catalog | ask "why did you suggest that?" right after an unlock offer | Explains it reasoned about THIS task's leverage, not a preset rule; the answer is task-specific |
+| 19 | capability checkpoint | give a clearly multi-step/repetitive task ("rename this across the repo", "research X across all docs") | BEFORE acting it surfaces the high-leverage path (Workflow / parallel / /goal / /loop) with the trade-off — does not silently just-do-the-big-thing |
+| 20 | one-time power intro | on the 2nd+ session (seed sessions in state if needed), with high-leverage commands never used | A single proactive intro of 2-3 unused power commands appears ONCE; not again on later sessions (power_intro_done flag) |
+| 21 | not nagging | decline a surfaced capability 2-3 times across replies | It stops offering that one (evidence down-ranks it); other behavior unaffected |
 
 Cleanup: delete test.md (or /rewind), delete the test memory entry, `config.py set muted false`.

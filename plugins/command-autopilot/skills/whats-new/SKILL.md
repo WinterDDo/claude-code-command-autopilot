@@ -13,5 +13,8 @@ Read `${CLAUDE_PLUGIN_ROOT}/knowledge/commands.json` and `playbooks.json`. Compa
 ## Installed-but-unused skills
 Read `~/.claude/command-autopilot/skills-index.json`; cross-reference with `state.json` skill counters. Skills with zero invocations are dormant value the user already owns. Pick the 1-2 most relevant to their evidence profile: "You installed X — it can ... — next time you ..., I'll use it automatically."
 
+## High-leverage commands the user has never used
+The biggest gap for most users is the powerful commands they don't know exist. Read `${CLAUDE_PLUGIN_ROOT}/knowledge/commands.json` + `playbooks.json`, cross-reference `state.json` command counters, and surface the high-leverage ones with zero usage — Workflow orchestration, parallel `/fork`, `/goal`, `/loop`, `/background`. For each: what it is → what it does for THEIR kind of work → the one-line way to try it. This is the "you can't ask for what you don't know exists" gap — lead with it.
+
 ## Rules
 Max 5 items total per run. Relevance over completeness; the rest stays for next time. End with: "Ask again any time — this list updates itself."

@@ -112,7 +112,7 @@ Then fully quit and reopen Claude Code — rules and hooks load at startup. (Clo
 
 ## Honest cost
 
-The autopilot injects its rules into every prompt: roughly 250–450 tokens depending on mode (quiet ≈ 230, muted = 0). That is the price of the one placement that demonstrably works. You control the dial: `teaching` → `normal` → `quiet` → mute.
+The autopilot injects its rules into every prompt: roughly 300–500 tokens depending on mode (quiet ≈ 300, muted = 0). That is the price of the one placement that demonstrably works. You control the dial: `teaching` → `normal` → `quiet` → mute.
 
 ## Works in the cloud and for teams
 
@@ -149,7 +149,7 @@ Python 3.8+ for the full experience. Without Python, the autopilot runs in state
 
 **Will it nag me?** Hard contracts say no: at most one suggestion per response, the same command at most once per session, and suggestions you keep dismissing fade out on their own. Saying "mute autopilot" silences it completely.
 
-**What does it cost?** It injects roughly 250–450 tokens of rules per message depending on mode (quiet ≈ 230, muted = 0). That's the honest price of reliability; you control the dial.
+**What does it cost?** It injects roughly 300–500 tokens of rules per message depending on mode (quiet ≈ 300, muted = 0). That's the honest price of reliability; you control the dial.
 
 **Does it work in Claude Code on the web / for my team?** Yes — commit two small blocks to your repo's `.claude/settings.json` ([snippet here](templates/team-settings.json)) and everyone who trusts the workspace gets it, cloud sessions included.
 

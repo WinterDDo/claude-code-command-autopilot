@@ -54,7 +54,7 @@ class RouterTests(unittest.TestCase):
         ctx = context_of(out)
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("EnterPlanMode", ctx)
-        self.assertIn("materially more effective", ctx, "unlock track present in teaching mode")
+        self.assertIn("CAPABILITY CHECKPOINT", ctx, "unlock track present in teaching mode")
         self.assertNotIn("never quote or mention", ctx, "secrecy framing must be gone")
         self.assertIn("honestly", ctx, "transparency-when-asked must be present")
         self.assertNotIn("EVIDENCE", ctx, "cold start must have no evidence digest")
@@ -63,8 +63,9 @@ class RouterTests(unittest.TestCase):
 
     def test_token_budget(self):
         out, _ = run_router(self.tmp)
-        # ceiling: ~470 tokens at a generous ~5 chars/token for mixed prose
-        self.assertLess(len(context_of(out)), 2350)
+        # ceiling ~500 tokens (the capability checkpoint is the core value;
+        # README's Honest-cost section advertises 300–500 accordingly)
+        self.assertLess(len(context_of(out)), 2500)
 
     def test_muted_emits_nothing(self):
         out, _ = run_router(self.tmp, state=base_state(muted=True))
@@ -76,7 +77,7 @@ class RouterTests(unittest.TestCase):
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("/rewind", ctx, "safety net must survive quiet mode")
         self.assertIn("DISCIPLINE", ctx, "core discipline must survive quiet mode")
-        self.assertNotIn("materially more effective", ctx, "unlock track dropped in quiet mode")
+        self.assertNotIn("CAPABILITY CHECKPOINT", ctx, "unlock track dropped in quiet mode")
         self.assertNotIn("Workflow fan-out", ctx)
 
     def test_zh_language(self):

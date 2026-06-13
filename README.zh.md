@@ -112,7 +112,7 @@ claude plugin update command-autopilot@claude-code-command-autopilot
 
 ## 成本（如实披露）
 
-它在每条消息注入约 250–450 token 的规则（安静模式约 230，静音为 0）。这是唯一被实测证明可靠的注入位置的代价。档位由你控制：teaching → normal → quiet → 静音。
+它在每条消息注入约 300–500 token 的规则（安静模式约 300，静音为 0）。这是唯一被实测证明可靠的注入位置的代价。档位由你控制：teaching → normal → quiet → 静音。
 
 ## 云端与团队
 
@@ -137,7 +137,7 @@ claude plugin update command-autopilot@claude-code-command-autopilot
 
 **它会烦我吗？** 硬性契约保证不会：每条回复至多一条建议，同一命令每会话至多一次，你反复关掉的建议会自己淡出。说一句「mute autopilot」彻底静音。
 
-**它花多少钱？** 每条消息注入约 250–450 token 的规则（安静模式约 230，静音为 0）。这是可靠性的真实价格，档位由你控制。
+**它花多少钱？** 每条消息注入约 300–500 token 的规则（安静模式约 300，静音为 0）。这是可靠性的真实价格，档位由你控制。
 
 **网页版 / 团队能用吗？** 能——把两小段配置提交到你仓库的 `.claude/settings.json`（[现成片段](templates/team-settings.json)），信任该工作区的所有人（包括云端会话）自动获得。
 
