@@ -2,11 +2,12 @@
 
 ## Design philosophy (Karpathy-style)
 
+0. **Cognition every turn, not a scenario library.** The autopilot does NOT carry a "if the task looks like X, suggest command Y" lookup table — that approach is brittle, endless to maintain, and the opposite of intelligent. Instead, every turn the model reads what the user is actually doing and reasons fresh: can I do this myself? would a higher-leverage capability make THIS task materially better? The knowledge base is *reference* (what exists, how to phrase its benefit), never a trigger table. This is why the rules are a short thinking discipline, not a catalog — and why fixing "it never suggested the powerful commands" meant *removing* the narrow triggers that gated capability-consideration, not adding more.
 1. **The model is the runtime.** Intent, timing, and phrasing judgments belong to the model. Scripts only do state and IO — no keyword regex anywhere.
 2. **Knowledge is data.** Command benefits, combo playbooks, and rule wording live in JSON/text. Tuning behavior means editing text, not code.
 3. **The prompt is the weights.** The injected block is this system's learnable parameter. Self-evolution = gradient descent in prompt space: usage logs are training data, periodic distillation is the optimizer step, learned rules are weights, contradiction demotion is regularization, idle decay is forgetting.
 4. **Thin harness, pay-per-use.** Hard token budget per prompt; the full knowledge base is lazy-loaded by the model (Read tool) only when recommending.
-5. **Silence is the default.** A suggestion needs a reason to exist. Mechanical things are *contracts* (≤1 suggestion/response, instant mute), never *judgments* (no "dismissed twice → banned forever" thresholds).
+5. **Silence is the default — but not for capability discovery.** A hygiene suggestion needs a reason to exist. But high-leverage capabilities the user doesn't know exist (Workflow orchestration, sub-agents, /goal, parallel /fork) are the whole point of the product: the user can't ask for what they've never heard of. So the per-turn cognition actively asks "would a more effective capability fit THIS task?" and surfaces it — cheap+reversible ones it just uses; costly or control-handover ones it offers via AskUserQuestion before acting and waits. Evidence DOWN-ranks capabilities the user keeps declining; it is never a precondition for first exposure (a brand-new user has zero evidence for everything). Mechanical things are *contracts* (≤1 suggestion/response, instant mute), never *judgments* (no "dismissed twice → banned forever" thresholds).
 
 ## Empirical laws this design is built on
 

@@ -1,7 +1,7 @@
 {
   "version": "2026.06",
   "source": "code.claude.com/docs/en/commands, verified 2026-06-11",
-  "note": "user_only=true means only the user can type it (recommend, never run). user_only=false means Claude can achieve it directly (Skill tool or harness tool) — do it, don't recommend.",
+  "note": "REFERENCE, not a trigger table. Read this to know what capabilities exist and to phrase a benefit in beginner-friendly words; decide what fits the user's task by reasoning fresh each turn, never by matching a stored scenario. user_only=true: only the user can type it (offer it). user_only=false: Claude can do it directly (do it, don't recommend).",
   "commands": [
     { "cmd": "/clear", "user_only": true, "when": "starting an unrelated task in an already long session", "benefit_en": "Fresh start: the new task won't drag the old context's noise or cost", "benefit_zh": "新任务不背旧包袱，又快又省", "combos": ["clean-finish"] },
     { "cmd": "/resume", "user_only": true, "when": "user wants to continue an earlier conversation", "benefit_en": "Reopen a past session exactly where it left off", "benefit_zh": "回到旧会话现场，不用重新解释", "combos": ["clean-finish"] },

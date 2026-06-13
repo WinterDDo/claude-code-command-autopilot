@@ -97,11 +97,12 @@ def main():
         rules_path = PLUGIN_ROOT / "rules" / "core.en.txt"
     sections = parse_sections(rules_path.read_text(encoding="utf-8"))
 
+    # core (self-help + discipline) and safety are always present; the unlock
+    # track (proactively surfacing high-leverage capabilities) is dropped in
+    # quiet mode, where the autopilot only helps silently and guards /rewind.
     parts = [sections.get("core", ""), sections.get("safety", "")]
     if mode in ("normal", "teaching"):
-        parts.append(sections.get("recommend", ""))
-    if mode == "teaching":
-        parts.append(sections.get("teach", ""))
+        parts.append(sections.get("unlock", ""))
     text = "\n".join(p for p in parts if p)
 
     if not state["config"].get("enable_plan_gate", True):

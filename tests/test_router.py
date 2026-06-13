@@ -54,7 +54,7 @@ class RouterTests(unittest.TestCase):
         ctx = context_of(out)
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("EnterPlanMode", ctx)
-        self.assertIn("TEACH", ctx)
+        self.assertIn("materially more effective", ctx, "unlock track present in teaching mode")
         self.assertNotIn("EVIDENCE", ctx, "cold start must have no evidence digest")
         self.assertNotIn("#=SECTION", ctx, "section markers must not leak")
         self.assertLess(elapsed, 1.0)
@@ -68,13 +68,14 @@ class RouterTests(unittest.TestCase):
         out, _ = run_router(self.tmp, state=base_state(muted=True))
         self.assertEqual(out, {})
 
-    def test_quiet_drops_teach_and_recommend(self):
+    def test_quiet_drops_unlock_keeps_core_and_safety(self):
         out, _ = run_router(self.tmp, state=base_state(aggressiveness="quiet"))
         ctx = context_of(out)
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("/rewind", ctx, "safety net must survive quiet mode")
-        self.assertNotIn("TEACH", ctx)
-        self.assertNotIn("RECOMMEND BEFORE ACTING", ctx)
+        self.assertIn("DISCIPLINE", ctx, "core discipline must survive quiet mode")
+        self.assertNotIn("materially more effective", ctx, "unlock track dropped in quiet mode")
+        self.assertNotIn("Workflow fan-out", ctx)
 
     def test_zh_language(self):
         out, _ = run_router(self.tmp, state=base_state(language="zh"))

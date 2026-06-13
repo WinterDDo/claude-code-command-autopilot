@@ -16,6 +16,7 @@ A free Claude Code plugin for beginners: it knows all the commands so you don't 
 | You ask for something big | Claude starts editing immediately | It **plans first, automatically** — nothing changes until you approve |
 | You switch topics mid-session | Old context slows you down and burns money | Clickable choice appears: continue / clean start / spin off — each with the reason |
 | Skills you installed sit unused | You forgot you have them | It uses them and tells you: "used your pdf skill — read the file directly" |
+| There's a far more powerful way you've never heard of | You grind through the slow path | It surfaces the high-leverage capability (parallel agents, Workflow) at the right moment, with the trade-off |
 | You keep dismissing a suggestion | Most tools nag forever | It reads the room and goes quiet — it learns *you* |
 
 **What it actually sounds like:**
@@ -119,7 +120,7 @@ Everyone who trusts the workspace gets the autopilot — locally and in cloud se
 
 ## How it works (for the curious)
 
-One `UserPromptSubmit` hook assembles the context every message: factory rules + your learned rules + a compact evidence digest. Scripts only record and compress — **all judgment belongs to the model**, which is why there are no magic thresholds anywhere. A knowledge base ([commands.json](plugins/command-autopilot/knowledge/commands.json), [playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)) carries every command's one-line benefit and 8 combo playbooks; the model reads it on demand, so it costs nothing per prompt. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+One `UserPromptSubmit` hook assembles the context every message: a short thinking discipline + your learned rules + a compact evidence digest. There is **no scenario→command lookup table** — the model reasons fresh each turn about what *your* task needs; the knowledge base is reference, not triggers. Scripts only record and compress — **all judgment belongs to the model**, which is why there are no magic thresholds anywhere. A knowledge base ([commands.json](plugins/command-autopilot/knowledge/commands.json), [playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)) carries every command's one-line benefit and 8 combo playbooks; the model reads it on demand, so it costs nothing per prompt. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Skills included: `tutor` (guided tour) · `doctor` (verify it's working) · `config` (mute/modes) · `evolve` (distill your evidence into rules) · `profile` (the value dashboard) · `whats-new` (new commands & unused skills, explained by benefit).
 

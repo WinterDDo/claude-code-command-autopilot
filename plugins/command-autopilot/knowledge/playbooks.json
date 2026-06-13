@@ -1,6 +1,7 @@
 {
   "version": "2026.06",
   "source": "All sequences verified against official docs (plan mode, goal, checkpointing, context-window, sub-agents, routines), 2026-06-11",
+  "note": "REFERENCE / inspiration, not triggers. These are powerful command combinations and what each is for. Decide whether one fits the user's current task by reasoning about that task, never by matching a stored condition.",
   "playbooks": [
     {
       "id": "safe-big-change",

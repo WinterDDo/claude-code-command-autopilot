@@ -21,5 +21,9 @@ Record each step ✅/❌. English inputs shown; Chinese equivalents in parenthes
 | 12 | evolve | after ~10 sessions (or seed events.jsonl synthetically): run evolve skill | learned.json written; rules have evidence counts; profile shows them; bogus patterns NOT invented |
 | 13 | value | "what has the autopilot done for me?" | Dashboard report; spot-check 2 numbers against events.jsonl lines — must match exactly |
 | 14 | mute | "mute autopilot", then send any prompt | No `[AUTOPILOT]` behavior; doctor confirms empty injection; "unmute autopilot" restores |
+| 15 | unlock (costly) | ask for a big multi-file job, e.g. "rename this API across the whole codebase" | BEFORE acting, offers the high-leverage path (parallel agents / Workflow) via clickable options WITH the token/time cost; waits for your choice — does not just start |
+| 16 | unlock (cheap) | ask something research-heavy, e.g. "compare three approaches to X across the docs" | Just uses a sub-agent / deep research and says so in one line — no popup for the cheap reversible path |
+| 17 | no over-trigger | ask a plain small task, e.g. "fix this typo" | Does it directly; no capability popup, no habit nagging |
+| 18 | cognition not catalog | ask "why did you suggest that?" right after an unlock offer | Explains it reasoned about THIS task's leverage, not a preset rule; the answer is task-specific |
 
 Cleanup: delete test.md (or /rewind), delete the test memory entry, `config.py set muted false`.

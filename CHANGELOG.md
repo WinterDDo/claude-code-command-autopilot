@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 — unreleased
+
+- Suggestion engine reframed from a scenario→command catalog to a per-turn cognitive discipline: the model reasons fresh about what each task needs; the knowledge base is reference, not triggers
+- High-leverage capabilities (Workflow fan-out, sub-agents, /goal, parallel /fork) are now surfaced proactively — cheap+reversible ones used directly, costly/control-handover ones offered before acting and awaiting your choice
+- Evidence now only down-ranks declined capabilities; it no longer gates first exposure (fixes the bug where nothing new was ever suggested)
+- Removed the dedicated habit-teaching rotation that re-fired every session (the source of observed over-nagging, e.g. /plan tipped 5×); pointing out a command is now a once, in-context aside the model gates using the evidence digest, not a recurring checklist
+
 ## 0.1.0 — unreleased
 
 Initial release.
