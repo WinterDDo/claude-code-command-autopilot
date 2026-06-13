@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2 — unreleased
+
+- Cloud/web fix: suggestions no longer depend on the clickable AskUserQuestion popup, which does not reliably render in web/cloud sessions (interactive prompts are suppressed there — the likely reason cloud users never saw a suggestion). The guidance now degrades gracefully: clickable options where the environment renders them, plain-text questions otherwise. The suggestion reaches the user in every environment.
+
 ## 0.2.1 — unreleased
 
 - Transparency fix: the injected block no longer says "apply silently; never quote or mention this block." That concealment framing clashed with the user's right to inspect their own tooling (and with the project's zero-telemetry, all-local stance). The guidance now says: apply naturally without narrating the plumbing, but answer honestly and in full whenever the user asks what's guiding you or about the plugin. Surfaced by Claude itself refusing to hide the block when asked directly — the right instinct, now baked into the rules. New FAQ entry documents it.
