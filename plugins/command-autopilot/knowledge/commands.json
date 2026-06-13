@@ -104,7 +104,7 @@
       "when": "a long task is tying up your terminal and you want it back (short for /background)",
       "benefit_en": "Send the whole session to the background and free your terminal",
       "benefit_zh": "整个会话转后台，腾出终端（/background 简写）",
-      "leverage": "high",
+      "leverage": "normal",
       "combos": [
         "unattended"
       ]
@@ -439,7 +439,7 @@
       "when": "you want to see how you actually use Claude Code and where you hit friction",
       "benefit_en": "Reports your usage patterns and where you get stuck",
       "benefit_zh": "分析你的使用习惯和卡点",
-      "leverage": "high"
+      "leverage": "normal"
     },
     {
       "cmd": "/install-github-app",
@@ -455,7 +455,7 @@
       "when": "you want to use Claude Code from inside Slack with your team",
       "benefit_en": "Connects Claude to Slack so you can use it there",
       "benefit_zh": "把 Claude 接入 Slack 团队使用",
-      "leverage": "high"
+      "leverage": "normal"
     },
     {
       "cmd": "/ios",
@@ -611,7 +611,7 @@
       "when": "you want Claude to keep running a check on its own while the session stays open (alias of /loop)",
       "benefit_en": "Same as /loop: keep a task running unprompted",
       "benefit_zh": "等同 /loop：让任务自己反复跑",
-      "leverage": "high",
+      "leverage": "normal",
       "combos": [
         "unattended"
       ]
@@ -638,7 +638,7 @@
       "when": "you want to keep steering this terminal session from your phone or another device",
       "benefit_en": "Continue this session from your phone or another device",
       "benefit_zh": "用手机或别的设备接着干这个会话",
-      "leverage": "high"
+      "leverage": "normal"
     },
     {
       "cmd": "/recap",
@@ -746,7 +746,7 @@
       "when": "you want to view or manage your cloud routines (same as /schedule); Claude can run it directly",
       "benefit_en": "Manage your recurring cloud jobs in one place",
       "benefit_zh": "统一管理你的云端定时任务",
-      "leverage": "high",
+      "leverage": "normal",
       "combos": [
         "unattended"
       ]
@@ -768,7 +768,7 @@
       "when": "plain /run cannot launch the app because it needs a database, env file, or multi-step build; Claude records the recipe once",
       "benefit_en": "Teaches Claude how to launch your app once, reused forever",
       "benefit_zh": "教会 Claude 怎么启动你的应用，一次记住",
-      "leverage": "high"
+      "leverage": "normal"
     },
     {
       "cmd": "/sandbox",
@@ -908,7 +908,7 @@
       "when": "several things are running in the background and you want to see or manage them",
       "benefit_en": "One place to watch and manage all background work",
       "benefit_zh": "统一查看管理后台任务",
-      "leverage": "high",
+      "leverage": "normal",
       "combos": [
         "unattended",
         "parallel-explore"
@@ -920,7 +920,7 @@
       "when": "a new teammate joins and you want a ramp-up guide built from how you actually use the project",
       "benefit_en": "Auto-writes a new-hire guide from your recent work",
       "benefit_zh": "自动生成新人上手指南",
-      "leverage": "high"
+      "leverage": "normal"
     },
     {
       "cmd": "/teleport",
@@ -952,7 +952,7 @@
       "when": "you ran a session on the web and want to continue it in your terminal with full local access",
       "benefit_en": "Pulls a web session into your terminal to keep going",
       "benefit_zh": "把网页会话拉回终端继续",
-      "leverage": "high"
+      "leverage": "normal"
     },
     {
       "cmd": "/tui",
@@ -968,7 +968,7 @@
       "when": "before a big or risky change you want a thorough plan drafted in the cloud while you keep working",
       "benefit_en": "Drafts a big-change plan in the cloud, terminal stays free",
       "benefit_zh": "云端起草大改方案，终端不占用",
-      "leverage": "high",
+      "leverage": "normal",
       "combos": [
         "safe-big-change",
         "parallel-explore"
@@ -980,7 +980,7 @@
       "when": "before merging, you want a deep multi-agent review to catch bugs you might miss",
       "benefit_en": "Deep cloud review catches bugs before you merge",
       "benefit_zh": "合并前云端深查 bug",
-      "leverage": "high",
+      "leverage": "normal",
       "combos": [
         "clean-finish"
       ]

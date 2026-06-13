@@ -59,9 +59,12 @@ class PowerIntroTests(unittest.TestCase):
         self.assertNotIn("never used these high-leverage commands", ctx2)
 
     def test_power_intro_skips_already_used_commands(self):
+        # mark EVERY KB high-leverage command as used (single source of truth)
+        sys.path.insert(0, str(REPO / "plugins" / "command-autopilot" / "hooks"))
+        import apcommon as ap
+        high = ap.kb_high_leverage(str(REPO / "plugins" / "command-autopilot"))
         st = state_with_sessions(2)
-        st["counters"] = {"commands": {c: {"self_used": 1} for c in
-                          ["/workflows", "/goal", "/loop", "/fork", "/branch", "/background"]},
+        st["counters"] = {"commands": {c: {"self_used": 1} for c in high},
                           "skills": {}, "habits": {}}
         ctx = run_ss(self.tmp, {"session_id": "new"}, state=st)
         # all high-leverage commands used -> nothing to introduce

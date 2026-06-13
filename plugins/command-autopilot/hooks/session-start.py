@@ -45,6 +45,7 @@ def scan_skills():
     roots = [
         (Path.home() / ".claude" / "skills", "user"),
         (Path.home() / ".claude" / "plugins", "plugin"),
+        (Path.cwd() / ".claude" / "skills", "project"),
     ]
     count = 0
     for root, source in roots:
@@ -142,8 +143,10 @@ def main():
     # don't know they exist. Fires once ever (flag), never nags.
     if not state.get("power_intro_done") and len(state.get("sessions", {})) >= 2:
         cmds = state.get("counters", {}).get("commands", {})
-        HIGH_LEVERAGE = ["/workflows", "/goal", "/loop", "/fork", "/branch", "/background"]
-        unused = [c for c in HIGH_LEVERAGE
+        # derive the high-leverage pool from the KB (single source of truth),
+        # not a hard-coded subset — so the intro can cover all 30+, not 6
+        high_leverage = ap.kb_high_leverage(PLUGIN_ROOT)
+        unused = [c for c in high_leverage
                   if not (cmds.get(c, {}).get("self_used") or cmds.get(c, {}).get("suggested"))]
         if unused:
             joined = ", ".join(unused[:4])

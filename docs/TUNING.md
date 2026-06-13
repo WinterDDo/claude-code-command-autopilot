@@ -21,6 +21,10 @@ Behavior lives in text, not code. This file is how maintainers and contributors 
 4. **One failure → tune the wording and retest. The same step failing twice in a row → it's a design problem, not a wording problem. Stop editing text and rethink the mechanism.**
 5. Token check: `python3 plugins/command-autopilot/hooks/router.py <tmpdir> <<< '{"prompt":"x"}' | wc -c` — teaching mode must stay under ~2300 chars (~470 tokens).
 
+## Single source of truth (a hard rule)
+
+Command and leverage data lives in exactly one place: `knowledge/commands.json`. Hooks must **never** hard-code a parallel list of commands — derive at runtime via `apcommon.kb_command_names()` / `apcommon.kb_high_leverage()`. We learned this the hard way: a hand-picked 33-command list shipped with /loop missing, and separate hard-coded subsets in the tracker (26 commands) and the power-intro (6) silently went blind to most of the catalog. `tests/test_kb_single_source.py` guards the invariant — if a subset drifts from the KB, it goes red. When Claude Code ships new commands, update only `commands.json` (the monthly kb-sync CI opens that PR); everything else follows.
+
 ## Hard lines (do not cross in any PR)
 
 - No keyword/regex intent detection in scripts. The model judges; scripts record.

@@ -11,7 +11,7 @@
       "name": "command-autopilot",
       "source": "./plugins/command-autopilot",
       "description": "Your commands on autopilot: silently does what Claude can do itself, hands you the one command only you can press with a one-line benefit, learns your habits, and shows you the value it created.",
-      "version": "0.3.1"
+      "version": "0.4.0"
     }
   ]
 }

@@ -9,6 +9,35 @@ from pathlib import Path
 SCHEMA = 1
 SESSION_RETENTION_DAYS = 7
 
+# Single source of truth: command/leverage data lives ONLY in knowledge/commands.json.
+# Hooks must never hard-code a parallel command subset — derive from the KB here.
+# Minimal fallback if the KB can't be read (enhancement-only: never error).
+_FALLBACK_CMDS = ["/clear", "/btw", "/rewind", "/plan", "/compact", "/context",
+                  "/workflows", "/goal", "/fork", "/background", "/tasks", "/usage"]
+
+
+def load_kb_commands(plugin_root):
+    """Return the list of command records from knowledge/commands.json (or [] on failure)."""
+    try:
+        kb = json.loads((Path(plugin_root) / "knowledge" / "commands.json").read_text(encoding="utf-8"))
+        return kb.get("commands", [])
+    except Exception:
+        return []
+
+
+def kb_command_names(plugin_root):
+    """All command tokens without the leading slash, e.g. {'clear','code-review',...}."""
+    cmds = [c.get("cmd", "") for c in load_kb_commands(plugin_root)]
+    names = {c[1:] for c in cmds if c.startswith("/") and len(c) > 1}
+    return names or {c[1:] for c in _FALLBACK_CMDS}
+
+
+def kb_high_leverage(plugin_root):
+    """Commands flagged leverage=high in the KB (the power-intro candidate pool)."""
+    hi = [c["cmd"] for c in load_kb_commands(plugin_root)
+          if c.get("leverage") == "high" and c.get("cmd")]
+    return hi or ["/workflows", "/goal", "/loop", "/fork", "/background"]
+
 DEFAULT_STATE = {
     "schema": SCHEMA,
     "config": {

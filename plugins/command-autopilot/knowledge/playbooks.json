@@ -1,71 +1,232 @@
 {
-  "version": "2026.06",
-  "source": "All sequences verified against official docs (plan mode, goal, checkpointing, context-window, sub-agents, routines), 2026-06-11",
-  "note": "REFERENCE / inspiration, not triggers. These are powerful command combinations and what each is for. Decide whether one fits the user's current task by reasoning about that task, never by matching a stored condition.",
+  "version": "2026.06.2",
+  "source": "Expanded & verified 2026-06-13 from the full 117-command set + official docs.",
+  "note": "REFERENCE / inspiration, not triggers. Powerful command combinations and what each is for. Decide whether one fits the user's current task by reasoning about that task, never by matching a stored condition.",
   "playbooks": [
     {
       "id": "safe-big-change",
-      "name_en": "Safe big change",
-      "name_zh": "安全大改",
-      "steps": ["plan mode (Claude enters it automatically, or Shift+Tab)", "approve the plan", "/goal <success condition>", "/diff to inspect", "if anything breaks: /rewind"],
-      "benefit_en": "Big changes get a review gate, a finish line, and an undo button",
-      "benefit_zh": "大改动有审查、有标准、有后悔药"
+      "name_en": "Safe Big Change",
+      "name_zh": "安全大改造",
+      "steps": [
+        "/plan describe the change so Claude designs before editing",
+        "/branch snapshot the conversation before approving",
+        "approve the plan and let Claude implement",
+        "/goal set the success condition for the change",
+        "/diff review every changed file and per-turn change",
+        "/rewind roll code and conversation back if it goes wrong"
+      ],
+      "benefit_en": "Design first, keep a safety net, review before you trust it.",
+      "benefit_zh": "先设计，留后路，再信任。"
     },
     {
       "id": "long-session-stamina",
-      "name_en": "Long session stamina",
+      "name_en": "Long Session Stamina",
       "name_zh": "长会话续航",
-      "steps": ["/context to see usage", "/compact <what to keep> at a phase boundary", "continue the same task with room to breathe"],
-      "benefit_en": "Outlive the context window without losing the decisions that matter",
-      "benefit_zh": "活过上下文上限，关键决定一个不丢"
+      "steps": [
+        "/context check where the context window is being spent",
+        "/rewind pick Summarize from here to compress early setup",
+        "/compact summarize with focus instructions at a phase boundary",
+        "/btw ask side questions so they never enter history",
+        "continue the same task with room to breathe"
+      ],
+      "benefit_en": "Outlive the context window without losing decisions that matter.",
+      "benefit_zh": "活过上下文上限，关键决定不丢。"
     },
     {
       "id": "parallel-explore",
-      "name_en": "Parallel exploration",
+      "name_en": "Parallel Exploration",
       "name_zh": "并行探索",
-      "steps": ["/branch to try option A yourself", "/fork <directive> to send a context-aware agent after option B", "main thread keeps moving"],
-      "benefit_en": "Compare two approaches without betting the session on either",
-      "benefit_zh": "两个方案同时试，主线不押注"
+      "steps": [
+        "/branch switch into a copy to try approach A yourself",
+        "/fork send a background subagent after approach B",
+        "keep working in the main thread while the fork runs",
+        "/tasks watch what is running in the background",
+        "compare both results when the fork returns"
+      ],
+      "benefit_en": "Compare two approaches at once without betting the session.",
+      "benefit_zh": "两个方案同时试，主线不押注。"
     },
     {
       "id": "pre-heavy-tuneup",
-      "name_en": "Pre-heavy-task tuneup",
-      "name_zh": "重活前调校",
-      "steps": ["/usage to check headroom", "/model or /effort to match the task", "/advisor on for a second opinion", "then start"],
-      "benefit_en": "Expensive work starts with the right brain and a safety reviewer",
-      "benefit_zh": "贵的活配对的脑子，还有军师盯着"
+      "name_en": "Pre-Heavy Tuneup",
+      "name_zh": "重活前调优",
+      "steps": [
+        "/usage check headroom before the heavy task",
+        "/model pick the strongest model for the work",
+        "/effort raise reasoning to high or max",
+        "/advisor on for a second-opinion model",
+        "/clear start clean if context is already crowded"
+      ],
+      "benefit_en": "Expensive work starts with the right brain and a reviewer.",
+      "benefit_zh": "贵的活配对的脑子，还有军师盯着。"
     },
     {
       "id": "clean-finish",
-      "name_en": "Clean finish",
-      "name_zh": "收尾三连",
-      "steps": ["/export to keep the record", "/recap or /insights for the summary", "/clear for the next task (old session stays reachable via /resume)"],
-      "benefit_en": "Close a task with a record, a summary, and a clean desk",
-      "benefit_zh": "留档、总结、清桌，一气呵成"
+      "name_en": "Clean Finish",
+      "name_zh": "干净收尾",
+      "steps": [
+        "/diff review the final uncommitted changes",
+        "/code-review scan the diff for bugs, add --fix to apply",
+        "/recap generate a one-line summary of the session",
+        "/export save the conversation for the record",
+        "/clear start fresh for the next task"
+      ],
+      "benefit_en": "Close a task with review, a record, and a clean desk.",
+      "benefit_zh": "审查、留档、清桌，一气呵成。"
     },
     {
       "id": "aside-isolation",
-      "name_en": "Aside isolation",
-      "name_zh": "题外话隔离",
-      "steps": ["/btw <question> any time mid-task"],
-      "benefit_en": "Curiosity answered, zero pollution of the main thread",
-      "benefit_zh": "好奇心满足了，主线一点不脏"
+      "name_en": "Aside Isolation",
+      "name_zh": "岔题隔离",
+      "steps": [
+        "/btw ask the quick aside without touching history",
+        "press f in the overlay to fork it into a full session",
+        "/branch explore the tangent in a separate copy if it grows",
+        "/resume return to the original conversation when done"
+      ],
+      "benefit_en": "Curiosity answered, zero pollution of the main thread.",
+      "benefit_zh": "好奇心满足，主线一点不脏。"
     },
     {
       "id": "unattended",
-      "name_en": "Unattended work",
+      "name_en": "Unattended Work",
       "name_zh": "无人值守",
-      "steps": ["/schedule for recurring jobs (Claude can set this up for you)", "/background to detach a long task", "/tasks to check progress later"],
-      "benefit_en": "Work continues while you sleep; you just read the results",
-      "benefit_zh": "你睡觉它干活，醒来看结果"
+      "steps": [
+        "/goal set a finish condition so Claude works across turns",
+        "/background detach the session and free your terminal",
+        "claude agents monitor the detached session from anywhere",
+        "/loop 5m poll a long-running step until it is done",
+        "/schedule set up a recurring cloud routine for maintenance"
+      ],
+      "benefit_en": "Work continues while you step away; you read the results.",
+      "benefit_zh": "你离开它干活，回来看结果。"
     },
     {
       "id": "mass-change",
-      "name_en": "Mass change",
-      "name_zh": "大规模并改",
-      "steps": ["describe the repetitive change across many files", "Claude orchestrates parallel agents (or /batch)", "/workflows to watch progress"],
-      "benefit_en": "A hundred-file chore becomes one instruction plus a progress bar",
-      "benefit_zh": "百个文件的体力活，一句话加一个进度条"
+      "name_en": "Mass Change",
+      "name_zh": "大规模批改",
+      "steps": [
+        "/batch describe the codebase-wide change in plain language",
+        "review the decomposed plan of 5 to 30 independent units",
+        "approve to spawn one background subagent per unit in a worktree",
+        "/workflows watch progress, pause, or resume the run",
+        "each unit runs its tests and opens its own pull request"
+      ],
+      "benefit_en": "A hundred-file chore becomes one instruction plus a progress bar.",
+      "benefit_zh": "百个文件的体力活，一句话加进度条。"
+    },
+    {
+      "id": "deep-research",
+      "name_en": "Deep Research",
+      "name_zh": "深度调研",
+      "steps": [
+        "/deep-research ask the question; it fans out web searches",
+        "let it fetch and cross-check sources adversarially",
+        "/workflows watch the run, pause or resume as needed",
+        "receive the synthesized, cited report",
+        "/export save the report, then /clear before building"
+      ],
+      "benefit_en": "Decide on cross-checked sources, not one quick search.",
+      "benefit_zh": "靠多来源交叉核查下判断，不是一次浅搜。"
+    },
+    {
+      "id": "debug-failure",
+      "name_en": "Debug a Failure",
+      "name_zh": "排查故障",
+      "steps": [
+        "/debug enable debug logging and describe the issue",
+        "/branch snapshot before trying fixes so you can compare",
+        "let Claude find the root cause, then apply a fix",
+        "/effort up or /advisor on if the same fix keeps failing",
+        "/run launch the app to see the fix working, not just tests",
+        "/rewind discard a dead end and retry cleanly"
+      ],
+      "benefit_en": "Chase the root cause; change the brain before repeating.",
+      "benefit_zh": "追根因，反复失败就换脑子，别重复试。"
+    },
+    {
+      "id": "pr-review-fix",
+      "name_en": "PR Review and Fix",
+      "name_zh": "PR 审查与修复",
+      "steps": [
+        "/review read the pull request locally in your session",
+        "/code-review ultra run a deep multi-agent cloud review",
+        "/code-review --comment post findings as inline PR comments",
+        "/code-review --fix apply the findings to your working tree",
+        "/autofix-pr let a cloud session keep CI green on its own"
+      ],
+      "benefit_en": "Take a PR to green without babysitting CI.",
+      "benefit_zh": "把 PR 推到全绿，不用盯着 CI。"
+    },
+    {
+      "id": "cross-device-handoff",
+      "name_en": "Cross-Device Handoff",
+      "name_zh": "跨设备接力",
+      "steps": [
+        "/teleport pull a web session down into this terminal",
+        "/remote-control steer this local session from claude.ai",
+        "/desktop continue the same session in the desktop app",
+        "/rename label the session so it is easy to find again",
+        "/resume reopen the conversation by name or ID elsewhere"
+      ],
+      "benefit_en": "Move one piece of work across web, terminal, and desktop.",
+      "benefit_zh": "工作在网页、终端、桌面间搬，线索不断。"
+    },
+    {
+      "id": "security-pass-before-ship",
+      "name_en": "Security Pass Before Ship",
+      "name_zh": "上线前安全过审",
+      "steps": [
+        "/diff see exactly what is about to ship",
+        "/security-review scan for injection, auth, and data risks",
+        "/code-review high run a broad bug review at higher effort",
+        "fix the flagged issues, then re-run /security-review",
+        "/review the open PR before merging"
+      ],
+      "benefit_en": "Catch security holes before they reach users, not after.",
+      "benefit_zh": "漏洞触达用户前抓住，而非事后。"
+    },
+    {
+      "id": "resume-past-work",
+      "name_en": "Resume Past Work",
+      "name_zh": "续接旧任务",
+      "steps": [
+        "/resume reopen an earlier conversation by name or ID",
+        "/context check how much window the restored session uses",
+        "/compact summarize with focus instructions if it is heavy",
+        "/rewind jump back to the exact checkpoint you left off",
+        "/goal restate the finish condition, then continue"
+      ],
+      "benefit_en": "Pick up exactly where you left off, no re-explaining.",
+      "benefit_zh": "精确接上断点，不用从头解释。"
+    },
+    {
+      "id": "first-session-setup",
+      "name_en": "First Session Setup",
+      "name_zh": "首次进项目",
+      "steps": [
+        "/init generate a starter CLAUDE.md guide for the repo",
+        "/memory refine the project memory with facts that matter",
+        "/mcp connect any MCP servers the project needs",
+        "/agents set up the subagents Claude can delegate to",
+        "/permissions set the allow, ask, and deny rules you want"
+      ],
+      "benefit_en": "Set up a repo so every later session runs smoother.",
+      "benefit_zh": "配好仓库，让此后每个会话都更顺。"
+    },
+    {
+      "id": "frictionless-autonomy",
+      "name_en": "Frictionless Autonomy",
+      "name_zh": "少弹窗放手跑",
+      "steps": [
+        "/fewer-permission-prompts allowlist your safe commands",
+        "/goal set the success condition as the finish line",
+        "/background detach the session to run on its own",
+        "/tasks check in on progress when you return",
+        "/usage confirm you have headroom for the run"
+      ],
+      "benefit_en": "Stop approving popups so a goal-driven run can finish.",
+      "benefit_zh": "别再点弹窗，让定好目标的任务跑完。"
     }
   ]
 }

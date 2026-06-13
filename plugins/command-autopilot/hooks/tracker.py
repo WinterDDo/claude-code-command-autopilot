@@ -19,8 +19,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import apcommon as ap
 
+PLUGIN_ROOT = Path(__file__).resolve().parent.parent
 HABITS = {"/clear": "clear", "/btw": "btw", "/rewind": "rewind", "/plan": "plan"}
-COMMAND_RE = re.compile(r"/(clear|btw|rewind|plan|compact|context|export|resume|branch|fork|goal|model|effort|advisor|fast|background|tasks|workflows|schedule|mcp|permissions|usage|diff|insights|recap|powerup)\b")
+# Recognize EVERY command in the KB (single source of truth), not a hard-coded
+# subset — otherwise self-use of most commands is invisible to the learning loop.
+# Longest-first so multi-word commands (code-review) win over prefixes.
+_NAMES = sorted(ap.kb_command_names(PLUGIN_ROOT), key=len, reverse=True)
+COMMAND_RE = re.compile(r"/(" + "|".join(re.escape(n) for n in _NAMES) + r")\b")
 SCAN_TAIL_BYTES = 200_000
 
 

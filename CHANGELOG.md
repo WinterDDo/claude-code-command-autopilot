@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — unreleased
+
+- Single source of truth, enforced. "/loop was missing" turned out to be a pattern: several hooks hard-coded their own command subsets that drifted from the knowledge base. Fixed all of them to derive from `knowledge/commands.json` at runtime:
+  - Tracker now recognizes all 117 commands (was 26) — the learning loop was blind to self-use of 91 commands, including everything the user actually typed this session.
+  - The one-time power-command intro now draws from the KB's leverage=high set (19 after cleanup, was a hard-coded 6).
+  - Skill scan now also covers project-level `.claude/skills` (was user + plugins only).
+- `leverage` flags cleaned up: demoted aliases and view/report commands so "high-leverage" means genuinely powerful capabilities.
+- New `tests/test_kb_single_source.py` guards the invariant — if any hook's command set drifts from the KB, it goes red. Principle documented in TUNING.md and ARCHITECTURE.md.
+- Playbooks expanded from 8 to a comprehensive verified set (same multi-agent method as the command catalog).
+
 ## 0.3.1 — unreleased
 
 - Knowledge base completed: was a hand-picked 33; now the full official set of 117 commands, fetched from code.claude.com/docs and enriched (best-fit scenario + beginner benefit en/zh + leverage flag) by a multi-agent research pass with an adversarial verify. Fixes the root cause behind "/loop was missing" — the KB is now comprehensive, not a curated subset. The monthly kb-sync CI keeps it complete as Claude Code ships new commands.
