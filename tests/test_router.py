@@ -55,6 +55,8 @@ class RouterTests(unittest.TestCase):
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("EnterPlanMode", ctx)
         self.assertIn("materially more effective", ctx, "unlock track present in teaching mode")
+        self.assertNotIn("never quote or mention", ctx, "secrecy framing must be gone")
+        self.assertIn("honestly", ctx, "transparency-when-asked must be present")
         self.assertNotIn("EVIDENCE", ctx, "cold start must have no evidence digest")
         self.assertNotIn("#=SECTION", ctx, "section markers must not leak")
         self.assertLess(elapsed, 1.0)
@@ -79,7 +81,7 @@ class RouterTests(unittest.TestCase):
 
     def test_zh_language(self):
         out, _ = run_router(self.tmp, state=base_state(language="zh"))
-        self.assertIn("静默执行", context_of(out))
+        self.assertIn("计划模式", context_of(out))  # zh-only rendering of plan mode
 
     def test_plan_gate_off(self):
         out, _ = run_router(self.tmp, state=base_state(enable_plan_gate=False))

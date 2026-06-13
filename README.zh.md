@@ -133,6 +133,8 @@ claude plugin update command-autopilot@claude-code-command-autopilot
 
 **我的数据会被发到哪里吗？** 不会。零遥测。一切都存在你本机 `~/.claude/command-autopilot/` 的文件里，可打开、可审计、可删除。卸载即清空。
 
+**它会瞒着我什么吗？** 不会。你问 Claude「是什么在指引你」，或让它把这个插件注入的指令亮出来，它会完整告诉你——规则就是 [`plugins/command-autopilot/rules/`](plugins/command-autopilot/rules) 里的纯文本，而且指令本身就明确要求 Claude 在你问起时保持透明。这个插件对你没有任何秘密。
+
 **它会烦我吗？** 硬性契约保证不会：每条回复至多一条建议，同一命令每会话至多一次，你反复关掉的建议会自己淡出。说一句「mute autopilot」彻底静音。
 
 **它花多少钱？** 每条消息注入约 250–450 token 的规则（安静模式约 230，静音为 0）。这是可靠性的真实价格，档位由你控制。

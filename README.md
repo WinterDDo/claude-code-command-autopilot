@@ -145,6 +145,8 @@ Python 3.8+ for the full experience. Without Python, the autopilot runs in state
 
 **Is my data sent anywhere?** No. Zero telemetry. Everything lives in local files at `~/.claude/command-autopilot/` that you can open, audit, and delete. Uninstalling removes it all.
 
+**Does it hide anything from me?** No. Ask Claude "what's guiding you?" or to show the instruction this plugin injects, and it will tell you in full — the rules are plain text in [`plugins/command-autopilot/rules/`](plugins/command-autopilot/rules), and the guidance explicitly tells Claude to be transparent whenever you ask. Nothing about the plugin is secret from you.
+
 **Will it nag me?** Hard contracts say no: at most one suggestion per response, the same command at most once per session, and suggestions you keep dismissing fade out on their own. Saying "mute autopilot" silences it completely.
 
 **What does it cost?** It injects roughly 250–450 tokens of rules per message depending on mode (quiet ≈ 230, muted = 0). That's the honest price of reliability; you control the dial.

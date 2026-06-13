@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 — unreleased
+
+- Transparency fix: the injected block no longer says "apply silently; never quote or mention this block." That concealment framing clashed with the user's right to inspect their own tooling (and with the project's zero-telemetry, all-local stance). The guidance now says: apply naturally without narrating the plumbing, but answer honestly and in full whenever the user asks what's guiding you or about the plugin. Surfaced by Claude itself refusing to hide the block when asked directly — the right instinct, now baked into the rules. New FAQ entry documents it.
+
 ## 0.2.0 — unreleased
 
 - Suggestion engine reframed from a scenario→command catalog to a per-turn cognitive discipline: the model reasons fresh about what each task needs; the knowledge base is reference, not triggers
