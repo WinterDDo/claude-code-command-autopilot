@@ -86,6 +86,19 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 - 找不到 `/plugin` → 桌面版 App 没有这个命令，用上面的复制粘贴安装方式。
 - 其他情况 → 让 Claude「跑一下 autopilot doctor」，把输出贴进 [issue](https://github.com/WinterDDo/claude-code-command-autopilot/issues)。
 
+## 更新
+
+对 Claude 说一句：**「把 command-autopilot 插件更新到最新版」**，它会替你跑下面三步。
+
+手动做（或者你遇到「已是最新版本」——那说明你本地的 marketplace 清单是旧的，要**先**刷新它）：
+
+```sh
+claude plugin marketplace update claude-code-command-autopilot   # 先从 GitHub 刷新目录
+claude plugin update command-autopilot@claude-code-command-autopilot
+```
+
+然后完全退出并重开 Claude Code——规则和 hooks 在启动时加载。（云端会话每次都重新克隆仓库，所以会自动拿到新版。）
+
 ## 2 分钟亲眼见效
 
 1. 提个大需求：「帮我给这个项目设计并实现一个统计功能」→ Claude **自己进入计划模式**，碰任何文件之前先给你计划。拒绝掉，什么都没发生。

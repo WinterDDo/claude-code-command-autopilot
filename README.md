@@ -86,6 +86,19 @@ Then restart Claude Code (quit fully — hooks load at startup) and ask Claude: 
 - `/plugin` not found → the desktop app has no `/plugin` command; use the copy-paste install above.
 - Anything else → ask Claude to "run the autopilot doctor" and paste its output into an [issue](https://github.com/WinterDDo/claude-code-command-autopilot/issues).
 
+## Updating
+
+Ask Claude: **"update the command-autopilot plugin to the latest version."** It runs the three steps below for you.
+
+Doing it by hand (or if you hit "already at the latest version" — that means your local copy of the marketplace is stale, so refresh it *first*):
+
+```sh
+claude plugin marketplace update claude-code-command-autopilot   # refresh the catalog from GitHub
+claude plugin update command-autopilot@claude-code-command-autopilot
+```
+
+Then fully quit and reopen Claude Code — rules and hooks load at startup. (Cloud sessions always clone the repo fresh, so they pick up new versions on their own.)
+
 ## See it work in 2 minutes
 
 1. Ask for something big: *"design and build a statistics feature for this project."* → Claude enters **plan mode by itself**, before touching any file. Reject the plan; nothing changed.
