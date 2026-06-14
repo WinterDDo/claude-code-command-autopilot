@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 — unreleased
+
+- Cloud copilot is now present every turn, not just once. The vendored cloud hook injected the rules only at SessionStart — in a long session it aged out, so cloud never surfaced workflow/goal/loop. It now wires BOTH UserPromptSubmit (per-prompt, matching the local plugin) and SessionStart (guaranteed-to-run fallback) to one script that stamps the firing event into its output. Worst case = old behavior; best case = full per-prompt parity with local. Guard upgraded to use $CLAUDE_CODE_REMOTE: cloud always injects; locally with the plugin installed it stays silent (no double).
+
 ## 0.4.0 — unreleased
 
 - Single source of truth, enforced. "/loop was missing" turned out to be a pattern: several hooks hard-coded their own command subsets that drifted from the knowledge base. Fixed all of them to derive from `knowledge/commands.json` at runtime:
