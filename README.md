@@ -1,23 +1,23 @@
 # Command Autopilot for Claude Code
 
-**Use 100% of Claude Code while memorizing zero commands.**
+**Use all of Claude Code — not just the few commands you know.**
 
 English | [中文](README.zh.md) | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
 <!-- demo: docs/assets/demo.gif embeds here once recorded (LAUNCH §1 storyboard) -->
 
-A free Claude Code plugin for beginners: it knows all the commands so you don't have to. If you've ever lost work you didn't know you could undo, or watched Claude charge into a big change you wished it had planned first — this is for you. Open source, MIT, zero telemetry: everything it learns lives in local files you can open and delete, and saying "mute autopilot" always works.
+Claude Code can fan out parallel agents, chase a goal on its own, run multi-step workflows, research across the web — and almost nobody uses any of it, because **you can't ask for what you don't know exists.** Command Autopilot watches what you're actually doing and surfaces the high-leverage move at the moment it would help — then learns which ones you keep. The small stuff (undo, context hygiene) it just handles; that's the floor, not the pitch. Open source, MIT, zero telemetry.
 
-## What actually changes after you install it
+## What it makes possible
 
 | The moment | Without Autopilot | With Autopilot |
 |---|---|---|
-| Claude breaks something | You don't know undo exists; Claude keeps "fixing" | It hands you **/rewind** first: press Esc twice, back to before the damage |
-| You ask for something big | Claude starts editing immediately | It **plans first, automatically** — nothing changes until you approve |
-| You switch topics mid-session | Old context slows you down and burns money | Clickable choice appears: continue / clean start / spin off — each with the reason |
-| Skills you installed sit unused | You forgot you have them | It uses them and tells you: "used your pdf skill — read the file directly" |
-| There's a far more powerful way you've never heard of | You grind through the slow path | It surfaces the high-leverage capability (parallel agents, Workflow) at the right moment, with the trade-off |
-| You keep dismissing a suggestion | Most tools nag forever | It reads the room and goes quiet — it learns *you* |
+| A big, multi-file, or repetitive job | You grind through it one step at a time | It offers to **fan out parallel agents / a Workflow** before starting — with the token cost, your call |
+| A task that should just run to the finish | You babysit it turn by turn | It offers **/goal** so Claude works to the finish on its own |
+| A question that needs real research | One shallow search | It runs **deep multi-source research** and hands you a cited answer |
+| Skills you installed but forgot | They sit unused | It **uses them** and says which one just helped: "used your pdf skill — read the file directly" |
+| You keep declining a suggestion | Most tools nag forever | It reads the room and drops that one — it learns *you* |
+| The basics — undo, context, asides | You never learned the commands | Handled quietly: **/rewind** before any repair, **/clear** at topic switches, **/btw** for asides |
 
 **What it actually sounds like:**
 
@@ -30,13 +30,11 @@ Claude: Before I attempt any repair: you can rewind to before that edit.
 
 New to the commands themselves? We also maintain [the plain-English Claude Code command cheat sheet](docs/claude-code-commands-cheatsheet.md) and [8 Claude Code workflows that save real work](docs/claude-code-workflows.md).
 
-Claude Code has ~100 built-in slash commands, plus every skill you've installed. Beginners know almost none of them — so they lose work they could have rewound with one keystroke, burn context they could have cleared, and watch Claude charge into big edits that deserved a plan first.
+Claude Code has ~100 built-in slash commands plus every skill you've installed, and the most powerful ones — orchestration, parallelism, autonomy — are exactly the ones nobody discovers. Command Autopilot closes that gap with three moves:
 
-Command Autopilot fixes this with three moves:
-
-1. **It does, instead of recommending.** What Claude can do itself, it just does: big changes automatically enter plan mode before any file is touched, preferences get written to memory, your installed skills get used (and it tells you, in one line, which skill just helped you).
-2. **It hands you the command before the moment, never after.** Commands only you can press (/rewind, /clear...) arrive as clickable choices at the exact fork they resolve — each with a one-line benefit, so you know why you're pressing it.
-3. **It evolves with you.** Every suggestion you accept or ignore is local evidence. The autopilot reads the room: what you keep dismissing goes quiet, what helps you gets offered earlier, and roughly every 10 sessions it distills your usage into personalized rules — visible, evidence-backed, deletable.
+1. **It surfaces the powerful move you'd never think to ask for.** Before a big, repetitive, or long-running task, it offers the high-leverage path — parallel agents, a Workflow, an autonomous /goal, deep research — with the trade-off, so you choose it instead of grinding the slow way.
+2. **It does the rest itself, instead of recommending.** What Claude can do on its own it just does: big changes enter plan mode before any file is touched, preferences get written to memory, your installed skills get used (and it says which one helped). The safety basics (/rewind, /clear, /btw) are handed over at the exact moment, never as a lecture.
+3. **It evolves with you.** Every suggestion you take or skip is local evidence. What you keep declining goes quiet; what helps gets offered earlier; roughly every 10 sessions it distills your usage into personalized rules — visible, evidence-backed, deletable.
 
 It never runs through a fixed checklist of tips. It reasons about each turn, points something out at most once when it genuinely helps, and otherwise stays quiet. The goal is that you stop noticing it.
 
