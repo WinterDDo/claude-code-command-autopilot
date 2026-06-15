@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 — unreleased
+
+- Activation, not just presence. v0.4.x made the rules present every turn, but real-session testing showed presence does not equal the model acting. Two changes make the capability checkpoint fire at the decision moment:
+  - **Layer 1 (rule rewrite):** the checkpoint now triggers on a countable behavioral cue (about to launch a SECOND unit of work toward one goal), with a hard "you MUST offer that one option, then wait", and it closes the leak where using one cheap subagent counted as discharging the duty. When nothing fits, it stays silent — no ritual line.
+  - **Layer 2 (new PostToolUse moment-nudge):** a hook on the subagent tools (Agent/Task) and plan-exit (ExitPlanMode) injects the offer at the instant the model is about to grind multi-part work — keyed on a structural fact, never a task classification. Once per session; silent in quiet/mute. Cloud-vendored as pure sh (`cloud/cloud-nudge.sh`) so cloud sessions get it too.
+- Honest scope: fires only when the model spawns a subagent or exits plan mode AND the remaining work is genuinely independent or repetitive; it correctly stays silent on coupled pipelines (build table -> API -> UI -> tests is one thread, not a fan-out). Simulation A/B: Layer-1 wording alone barely moved the offer rate; the Layer-2 moment-nudge lifted it from ~0 to high on non-obvious independent tasks (canary, repeat-across-items) with zero false-firing on coupled/trivial work. Mechanism confirmed firing in a live session via the events ledger.
+
 ## 0.4.1 — 2026-06-14
 
 - Cloud copilot is now present every turn, not just once. The vendored cloud hook injected the rules only at SessionStart — in a long session it aged out, so cloud never surfaced workflow/goal/loop. It now wires BOTH UserPromptSubmit (per-prompt, matching the local plugin) and SessionStart (guaranteed-to-run fallback) to one script that stamps the firing event into its output. Worst case = old behavior; best case = full per-prompt parity with local. Guard upgraded to use $CLAUDE_CODE_REMOTE: cloud always injects; locally with the plugin installed it stays silent (no double). Confirmed in a real cloud session (2026-06-14): the cloud runs the repo-committed UserPromptSubmit hook, so per-prompt parity is achieved, not just the fallback.

@@ -10,6 +10,7 @@ case "$MODE" in
   session-start) SCRIPT="session-start.py"; SUB="" ;;
   tracker-stop)  SCRIPT="tracker.py";       SUB="stop" ;;
   tracker-skill) SCRIPT="tracker.py";       SUB="skill" ;;
+  nudge-subagent) SCRIPT="nudge_subagent.py"; SUB="" ;;
   *) exit 0 ;;
 esac
 

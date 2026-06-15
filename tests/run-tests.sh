@@ -30,4 +30,11 @@ echo "== smoke: garbage stdin exits 0 =="
 printf 'garbage' | sh "$HOOKS/run.sh" tracker-stop "$TMP/data3" > /dev/null
 echo ok
 
+echo "== smoke: subagent nudge fires once per session =="
+OUT=$(printf '{"tool_name":"Agent","session_id":"nudge001"}' | sh "$HOOKS/run.sh" nudge-subagent "$TMP/data4")
+echo "$OUT" | grep -q "fan-out" || { echo "FAIL: subagent nudge did not fire"; exit 1; }
+OUT2=$(printf '{"tool_name":"Agent","session_id":"nudge001"}' | sh "$HOOKS/run.sh" nudge-subagent "$TMP/data4")
+[ -z "$OUT2" ] || { echo "FAIL: nudge must be once per session"; exit 1; }
+echo ok
+
 echo "ALL TESTS PASSED"
