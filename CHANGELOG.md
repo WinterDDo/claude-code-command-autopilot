@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.5.0 — unreleased
+## 0.5.0 — 2026-06-15
 
 - First-principles refocus: the co-pilot IS the per-turn prompt, not a pile of triggers. The whole value is a few well-calibrated words that make a capable model surface a better move when (and only when) one genuinely helps — for anyone, beginner to expert.
   - **The unlock rule is now a BETTER-MOVE CHECK, not a fan-out nudge.** Every turn, before committing to an approach, the model silently asks "is there a materially better move for THIS task?" — a command, combo, skill, workflow, OR a pattern from the user's own past. DEFAULT IS SILENCE; it surfaces at most one move, and only if it clears four AND-ed filters (concrete · not-already-chosen · materially better · non-obvious now), biased to observable moments (a risky/irreversible op, a fitting capability never used, visible repetition, being stuck). Cheap+reversible → just do it; costly/control-handover → RECOMMEND it as a clickable AskUserQuestion choice and let the user decide. This is what makes it valuable to experts too: recalling your OWN forgotten best practice at the moment it applies counts, and is often the best move.
