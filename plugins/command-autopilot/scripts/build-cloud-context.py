@@ -50,7 +50,7 @@ def main():
     doc = build()
     out.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
     ctx = doc["hookSpecificOutput"]["additionalContext"]
-    assert "CAPABILITY CHECKPOINT" in ctx, "unlock section missing from generated cloud context"
+    assert "BETTER-MOVE CHECK" in ctx, "unlock section missing from generated cloud context"
     assert "[AUTOPILOT]" in ctx, "core section missing"
     assert "/rewind" in ctx, "safety section missing"
     print("wrote %s (%d chars, all 3 sections present)" % (out, len(ctx)))

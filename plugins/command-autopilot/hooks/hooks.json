@@ -46,16 +46,6 @@
             "async": true
           }
         ]
-      },
-      {
-        "matcher": "Agent|Task|ExitPlanMode",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/run.sh\" nudge-subagent \"$HOME/.claude/command-autopilot\"",
-            "timeout": 5
-          }
-        ]
       }
     ]
   }

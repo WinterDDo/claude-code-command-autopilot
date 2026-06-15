@@ -54,10 +54,10 @@ class RouterTests(unittest.TestCase):
         ctx = context_of(out)
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("EnterPlanMode", ctx)
-        self.assertIn("CAPABILITY CHECKPOINT", ctx, "unlock track present in teaching mode")
+        self.assertIn("BETTER-MOVE CHECK", ctx, "unlock track present in teaching mode")
         self.assertNotIn("never quote or mention", ctx, "secrecy framing must be gone")
         self.assertIn("honestly", ctx, "transparency-when-asked must be present")
-        self.assertNotIn("EVIDENCE", ctx, "cold start must have no evidence digest")
+        self.assertNotIn("observed behavior", ctx, "cold start must have no evidence digest")
         self.assertNotIn("#=SECTION", ctx, "section markers must not leak")
         self.assertLess(elapsed, 1.0)
 
@@ -77,8 +77,8 @@ class RouterTests(unittest.TestCase):
         self.assertIn("[AUTOPILOT]", ctx)
         self.assertIn("/rewind", ctx, "safety net must survive quiet mode")
         self.assertIn("DISCIPLINE", ctx, "core discipline must survive quiet mode")
-        self.assertNotIn("CAPABILITY CHECKPOINT", ctx, "unlock track dropped in quiet mode")
-        self.assertNotIn("Workflow fan-out", ctx)
+        self.assertNotIn("BETTER-MOVE CHECK", ctx, "unlock track dropped in quiet mode")
+        self.assertNotIn("MATERIALLY BETTER", ctx)
 
     def test_zh_language(self):
         out, _ = run_router(self.tmp, state=base_state(language="zh"))
