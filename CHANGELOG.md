@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1 — 2026-06-16
+
+- The better-move check's observable-signals list now explicitly names "a long task to drive autonomously to a PR (/goal)". So when you ask for a long task carried all the way to a finished PR, it reliably recommends /goal up front instead of leaving you to remember it. Validated: lifts /goal recommendation on that scenario from ~10/12 to 12/12 with no new false-positives, and no silence regressions. One phrase, no new machinery.
+
 ## 0.5.0 — 2026-06-15
 
 - First-principles refocus: the co-pilot IS the per-turn prompt, not a pile of triggers. The whole value is a few well-calibrated words that make a capable model surface a better move when (and only when) one genuinely helps — for anyone, beginner to expert.
