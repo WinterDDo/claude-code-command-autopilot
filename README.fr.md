@@ -1,42 +1,59 @@
 # Command Autopilot pour Claude Code
 
-**Utilisez Claude Code à 100 % sans mémoriser une seule commande.**
+**Utilisez tout Claude Code, pas seulement les quelques commandes que vous connaissez.**
 
 [English](README.md) | [中文](README.zh.md) | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | Français | [Deutsch](README.de.md)
 
-Conçu pour celles et ceux qui utilisent Claude Code sans jamais avoir touché aux commandes `/`. Si vous avez déjà perdu du travail sans savoir que vous pouviez l'annuler, ou regardé Claude se lancer tête baissée dans une grosse modification que vous auriez aimé voir planifiée d'abord, ce projet est fait pour vous.
+<!-- demo: docs/assets/demo.gif embeds here once recorded (LAUNCH §1 storyboard) -->
 
-## Ce qui change concrètement après l'installation
+Claude Code sait déployer des agents en parallèle, poursuivre un objectif tout seul, exécuter des workflows en plusieurs étapes, mener des recherches sur le web. Mais sur le moment, même les experts retombent dans le réflexe de tout faire à la main. Command Autopilot observe ce que vous faites réellement et, au bon moment, **présente les quelques actions à fort effet de levier qui conviennent, sous forme de menu où vous choisissez.** Les petites choses (annulation, hygiène du contexte), il s'en occupe simplement. Ce n'est pas réservé aux débutants qui n'ont jamais entendu parler des commandes : même un utilisateur chevronné oublie la meilleure action sous la charge, et cette 10ᵉ fois est tout l'enjeu. Open source, MIT, zéro télémétrie.
+
+## Ce que cela rend possible
 
 | Le moment | Sans Autopilot | Avec Autopilot |
 |---|---|---|
-| Claude casse quelque chose | Vous ignorez que l'annulation existe ; Claude continue à « réparer » | Il vous tend d'abord **/rewind** : deux fois Échap, et vous revoilà avant les dégâts |
-| Vous demandez quelque chose de gros | Claude se met à modifier immédiatement | Il **planifie d'abord, automatiquement** : rien ne change tant que vous n'avez pas validé |
-| Vous changez de sujet en pleine session | L'ancien contexte vous ralentit et vous coûte de l'argent | Un choix cliquable apparaît : continuer / repartir à neuf / ouvrir une session dédiée, chacun avec sa raison |
-| Les skills que vous avez installés dorment | Vous aviez oublié que vous les aviez | Il les utilise et vous le dit : « votre skill pdf a servi : fichier lu directement » |
-| Vous ignorez sans cesse une suggestion | La plupart des outils insistent indéfiniment | Il comprend le message et se tait : il apprend à *vous* connaître |
+| Une tâche grosse, multi-fichiers ou répétitive | Vous l'abattez une étape à la fois | Il présente un **menu de chemins plus rapides** (agents parallèles, un Workflow, /background) avant de commencer, avec les compromis ; vous choisissez |
+| Une tâche qui devrait simplement aller jusqu'au bout | Vous la surveillez tour par tour | Il propose **/goal** pour que Claude aille jusqu'au bout tout seul |
+| Une question qui demande une vraie recherche | Une seule recherche superficielle | Il mène une **recherche approfondie multi-sources** et vous remet une réponse sourcée |
+| Des skills installés mais oubliés | Ils restent inutilisés | Il les **utilise** et dit lequel vient d'aider : « votre skill pdf a servi : fichier lu directement » |
+| Vous refusez sans cesse une suggestion | La plupart des outils insistent indéfiniment | Il comprend le message et abandonne celle-là : il apprend à *vous* connaître |
+| Les bases (annulation, contexte, apartés) | Vous n'avez jamais appris les commandes | Géré discrètement : **/rewind** avant toute réparation, **/clear** aux changements de sujet, **/btw** pour les apartés |
 
-Claude Code propose une centaine de commandes slash intégrées, plus tous les skills que vous avez installés. Les débutants n'en connaissent presque aucune : ils perdent donc du travail qu'une seule touche aurait pu restaurer, gaspillent du contexte qu'ils auraient pu nettoyer, et regardent Claude foncer dans de grosses modifications qui méritaient d'abord un plan.
+**À quoi cela ressemble vraiment :**
 
-Command Autopilot règle cela en trois gestes :
+```text
+You:    add a contacts feature — table, API, form, and tests
+Claude: Before I start, a few faster ways to run this — your call:
+          1. /goal — I drive it to a finished PR on my own
+          2. Parallel agents — build the independent parts at once
+          3. Just proceed normally
+        (pick one, or say "go")
+```
 
-1. **Il agit au lieu de recommander.** Ce que Claude peut faire lui-même, il le fait, tout simplement : les grosses modifications passent automatiquement en mode plan avant de toucher au moindre fichier, vos préférences sont notées en mémoire, vos skills installés sont utilisés (et il vous dit, en une ligne, lequel vient de vous aider).
-2. **Il vous tend la commande avant le moment décisif, jamais après.** Les commandes que vous seul pouvez utiliser (/rewind, /clear...) arrivent sous forme de choix cliquables, pile au croisement qu'elles résolvent, chacune avec son bénéfice en une ligne, pour que vous sachiez pourquoi vous appuyez.
-3. **Il évolue avec vous.** Chaque suggestion acceptée ou ignorée est une preuve, conservée en local. L'autopilote lit l'ambiance : ce que vous rejetez régulièrement se tait, ce qui vous aide arrive plus tôt, et environ toutes les 10 sessions il condense votre usage en règles personnalisées, visibles, appuyées sur des preuves, et supprimables.
+Vous débutez avec les commandes elles-mêmes ? Nous maintenons aussi [l'antisèche des commandes Claude Code en langage clair](docs/claude-code-commands-cheatsheet.md) (en anglais) et [8 workflows Claude Code qui font gagner un vrai travail](docs/claude-code-workflows.md) (en anglais).
 
-Il enseigne exactement **quatre habitudes** (/clear, /btw, /rewind, le mode plan), chacune quelques fois tout au plus, puis se fait oublier. L'objectif : que vous cessiez de le remarquer.
+Claude Code propose une centaine de commandes slash intégrées, plus chaque skill que vous avez installé, et les plus puissantes (orchestration, parallélisme, autonomie) sont précisément celles que personne ne découvre. Command Autopilot comble cet écart en trois gestes :
+
+1. **Au bon moment, il présente vos options sous forme de menu.** Avant une tâche grosse, répétitive, de longue durée ou risquée, il présente les 2 à 4 actions à fort effet de levier qui conviennent vraiment (agents parallèles, un Workflow, un /goal autonome, une recherche approfondie, /background), chacune avec son compromis, et vous choisissez. Pas une suggestion unique à prendre ou à laisser : le menu, pour que vous choisissiez. (Pour un expert aussi : la valeur, c'est l'action à laquelle vous ne pensiez pas *à cet instant*, pas une dont vous n'auriez jamais entendu parler.)
+2. **Il fait le reste lui-même, au lieu de recommander.** Ce que Claude peut faire de lui-même, il le fait simplement : les grosses modifications passent en mode plan avant de toucher au moindre fichier, les préférences sont notées en mémoire, vos skills installés sont utilisés (et il dit lequel a aidé). Les bases de sécurité (/rewind, /clear, /btw) sont tendues au moment exact, jamais sous forme de leçon.
+3. **Il apprend à ne pas vous gêner.** Chaque suggestion que vous ignorez est une preuve locale : ce que vous refusez régulièrement se tait, pour ne jamais devenir un harcèlement. (Une personnalisation plus poussée, s'appuyant sur les actions que *vous* privilégiez en particulier, est sur la feuille de route ; le gain d'aujourd'hui, c'est la précision et le silence, pas faire semblant de déjà vous connaître.)
+
+Il ne déroule jamais une liste figée d'astuces. Il raisonne à chaque tour, signale quelque chose au plus une fois quand cela aide vraiment, et se tait le reste du temps. L'objectif : que vous cessiez de le remarquer.
+
+**Vous jetez juste un œil ?** Collez [portable/PROMPT.md](portable/PROMPT.md) dans claude.ai ou n'importe quel assistant : le comportement essentiel, rien à installer, 60 secondes.
 
 ## Installation
 
 **Le plus simple : laissez Claude l'installer pour vous.** Copiez ce bloc en entier, collez-le dans n'importe quelle conversation Claude Code, appuyez sur Entrée :
 
 ```
-Installe le plugin Command Autopilot pour moi :
-1. Localise mon CLI claude : essaie `command -v claude` ; s'il n'est pas dans le PATH, essaie `~/.local/bin/claude`
-   (l'emplacement habituel sur macOS/Linux). Si besoin, utilise le chemin complet dans les étapes suivantes.
-2. Exécute : claude plugin marketplace add WinterDDo/claude-code-command-autopilot
-3. Exécute : claude plugin install command-autopilot@claude-code-command-autopilot
-4. Montre-moi les deux confirmations de réussite, puis rappelle-moi de quitter complètement Claude Code et de le rouvrir.
+Install the Command Autopilot plugin for me:
+1. Locate my claude CLI: try `command -v claude`; if not on PATH, try `~/.local/bin/claude`
+   (the usual macOS/Linux location). Use the full path in the next steps if needed.
+2. Run: claude plugin marketplace add WinterDDo/claude-code-command-autopilot
+3. Run: claude plugin install command-autopilot@claude-code-command-autopilot
+4. Show me both success confirmations, then remind me to fully quit Claude Code, reopen it,
+   and run the autopilot doctor to verify.
 ```
 
 Claude exécute l'installation et gère les cas particuliers (CLI absent du PATH, etc.) à votre place. Aucune connaissance du terminal n'est nécessaire.
@@ -62,7 +79,25 @@ Si `claude` est introuvable, utilisez `~/.local/bin/claude` à la place, ou lanc
 
 </details>
 
-Redémarrez ensuite Claude Code (quittez-le complètement : les hooks se chargent au démarrage) et essayez la visite guidée de 2 minutes : demandez à Claude « fais-moi visiter l'autopilote ».
+Redémarrez ensuite Claude Code (quittez-le complètement : les hooks se chargent au démarrage) et demandez à Claude : **« vérifie que l'autopilote fonctionne »**. Le doctor intégré confirme que tout se déclenche de bout en bout. Faites ensuite la visite de 2 minutes : « fais-moi visiter l'autopilote ».
+
+**Ça ne marche pas ?**
+- Les suggestions n'apparaissent jamais → vous devez quitter et rouvrir complètement ; les hooks ne se chargent qu'au démarrage.
+- `/plugin` introuvable → l'application de bureau n'a pas de commande `/plugin` ; utilisez l'installation par copier-coller ci-dessus.
+- Autre chose → demandez à Claude de « lancer le doctor de l'autopilote » et collez sa sortie dans une [issue](https://github.com/WinterDDo/claude-code-command-autopilot/issues).
+
+## Mise à jour
+
+Demandez à Claude : **« mets à jour le plugin command-autopilot vers la dernière version. »** Il exécute pour vous les trois étapes ci-dessous.
+
+À la main (ou si vous tombez sur « already at the latest version », c'est que votre copie locale du marketplace est périmée : rafraîchissez-la *d'abord*) :
+
+```sh
+claude plugin marketplace update claude-code-command-autopilot   # refresh the catalog from GitHub
+claude plugin update command-autopilot@claude-code-command-autopilot
+```
+
+Puis quittez et rouvrez complètement Claude Code : les règles et les hooks se chargent au démarrage. (Les sessions cloud clonent toujours le dépôt à neuf, elles récupèrent donc les nouvelles versions d'elles-mêmes.)
 
 ## Voyez-le à l'œuvre en 2 minutes
 
@@ -77,30 +112,22 @@ Redémarrez ensuite Claude Code (quittez-le complètement : les hooks se chargen
 
 ## Le coût, en toute honnêteté
 
-L'autopilote injecte ses règles dans chaque prompt : environ 250 à 450 tokens selon le mode (discret ≈ 230, coupé = 0). C'est le prix du seul emplacement dont l'efficacité est démontrée. Le réglage vous appartient : `teaching` → `normal` → `quiet` → silence.
+L'autopilote injecte ses règles dans chaque prompt : environ 300 à 500 tokens selon le mode (discret ≈ 300, coupé = 0). C'est le prix du seul emplacement dont l'efficacité est démontrée. Le réglage vous appartient : `teaching` → `normal` → `quiet` → silence.
 
 ## Fonctionne dans le cloud et en équipe
 
-Les sessions cloud ne chargent pas votre configuration personnelle. Pour Claude Code sur le web et pour vos coéquipiers, ajoutez donc ceci au fichier `.claude/settings.json` de votre dépôt (extrait complet dans [templates/team-settings.json](templates/team-settings.json)) :
+Les sessions cloud ne chargent pas vos plugins personnels, et elles ne rafraîchissent pas le cache du marketplace. La façon fiable d'obtenir l'autopilote dans Claude Code sur le web et pour vos coéquipiers est donc d'**intégrer ses règles directement dans votre dépôt** : commitez un petit `.claude/autopilot-context.json` (les règles) plus `.claude/autopilot-cloud.sh`, et reliez-y des hooks `SessionStart` + `UserPromptSubmit` dans le `.claude/settings.json` de votre dépôt. Depuis un clone de ce dépôt, une seule commande copie les fichiers et affiche les lignes de hook exactes :
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "claude-code-command-autopilot": {
-      "source": { "source": "github", "repo": "WinterDDo/claude-code-command-autopilot" }
-    }
-  },
-  "enabledPlugins": { "command-autopilot@claude-code-command-autopilot": true }
-}
+```sh
+plugins/command-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
+# then paste the printed hook lines into /path/to/your/repo/.claude/settings.json and commit
 ```
 
-Toute personne qui fait confiance à l'espace de travail reçoit l'autopilote, en local comme dans les sessions cloud. (Limites du cloud : les invites de configuration n'y apparaissent pas, les valeurs par défaut s'appliquent donc ; l'état d'apprentissage repart de zéro à chaque session cloud.)
-
-Pas de Claude Code du tout ? [portable/PROMPT.md](portable/PROMPT.md) transporte les règles essentielles vers claude.ai, Cursor ou n'importe quel assistant : collez, c'est parti.
+Les nouvelles sessions cloud clonent votre dépôt à neuf, elles récupèrent donc les règles automatiquement, pour toute personne qui travaille dans ce dépôt. (Limite du cloud : l'état d'apprentissage y est propre à chaque session ; le menu présenté sur le moment fonctionne quand même.)
 
 ## Comment ça marche (pour les curieux)
 
-Un seul hook `UserPromptSubmit` assemble le contexte à chaque message : règles d'origine + vos règles apprises + un condensé compact des preuves. Les scripts se contentent d'enregistrer et de compresser : **tout le jugement revient au modèle**, et c'est pourquoi il n'y a aucun seuil magique nulle part. Une base de connaissances ([commands.json](plugins/command-autopilot/knowledge/commands.json), [playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)) recense le bénéfice en une ligne de chaque commande ainsi que 8 playbooks combinés ; le modèle la consulte à la demande, elle ne coûte donc rien par prompt. Détails dans [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Un seul hook `UserPromptSubmit` assemble le contexte à chaque message : une courte discipline de réflexion + vos règles apprises + un condensé compact des preuves. Il n'y a **aucune table de correspondance scénario→commande** : le modèle raisonne à neuf à chaque tour sur ce dont *votre* tâche a besoin ; la base de connaissances est une référence, pas un déclencheur. Les scripts se contentent d'enregistrer et de compresser : **tout le jugement revient au modèle**, et c'est pourquoi il n'y a aucun seuil magique nulle part. Une base de connaissances ([commands.json](plugins/command-autopilot/knowledge/commands.json), [playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)) recense le bénéfice en une ligne de chaque commande ainsi qu'un ensemble de playbooks combinés ; le modèle la consulte à la demande, elle ne coûte donc rien par prompt. Détails dans [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Skills inclus : `tutor` (visite guidée) · `doctor` (vérifier que tout fonctionne) · `config` (silence/modes) · `evolve` (condenser vos preuves en règles) · `profile` (le tableau de bord de valeur) · `whats-new` (nouvelles commandes et skills inutilisés, expliqués par leur bénéfice).
 
@@ -112,11 +139,13 @@ Python 3.8+ pour l'expérience complète. Sans Python, l'autopilote tourne en mo
 
 **Mes données sont-elles envoyées quelque part ?** Non. Zéro télémétrie. Tout vit dans des fichiers locaux sous `~/.claude/command-autopilot/` que vous pouvez ouvrir, inspecter et supprimer. La désinstallation efface tout.
 
+**Me cache-t-il quoi que ce soit ?** Non. Demandez à Claude « qu'est-ce qui te guide ? » ou de montrer l'instruction que ce plugin injecte, et il vous la dira en entier : les règles sont en texte clair dans [`plugins/command-autopilot/rules/`](plugins/command-autopilot/rules), et le guidage dit explicitement à Claude d'être transparent dès que vous le demandez. Rien dans le plugin ne vous est secret.
+
 **Va-t-il me harceler ?** Les contrats stricts disent non : au plus une suggestion par réponse, la même commande au plus une fois par session, et les suggestions que vous rejetez sans cesse s'éteignent d'elles-mêmes. Dire « coupe l'autopilote » le réduit au silence complet.
 
-**Combien ça coûte ?** Il injecte environ 250 à 450 tokens de règles par message selon le mode (discret ≈ 230, coupé = 0). C'est le prix honnête de la fiabilité ; le réglage vous appartient.
+**Combien ça coûte ?** Il injecte environ 300 à 500 tokens de règles par message selon le mode (discret ≈ 300, coupé = 0). C'est le prix honnête de la fiabilité ; le réglage vous appartient.
 
-**Fonctionne-t-il dans Claude Code sur le web / pour mon équipe ?** Oui : ajoutez deux petits blocs au `.claude/settings.json` de votre dépôt ([extrait ici](templates/team-settings.json)) et toute personne qui fait confiance à l'espace de travail en profite, sessions cloud comprises.
+**Fonctionne-t-il dans Claude Code sur le web / pour mon équipe ?** Oui : intégrez ses règles dans le `.claude/` de votre dépôt en une seule commande (`vendor-to-repo.sh`, voir [Fonctionne dans le cloud et en équipe](#fonctionne-dans-le-cloud-et-en-équipe)). Les sessions cloud clonent le dépôt à neuf et les récupèrent, donc toute personne qui travaille dans ce dépôt en profite.
 
 **Je n'ai pas Python, ça marche quand même ?** Oui, en mode sans état : tout le comportement de base fonctionne, seule la couche d'apprentissage reste en pause tant que Python 3.8+ n'est pas disponible.
 
@@ -126,6 +155,6 @@ Python 3.8+ pour l'expérience complète. Sans Python, l'autopilote tourne en mo
 
 ## Contribuer
 
-Le comportement vit dans des fichiers texte, pas dans du code : la plupart des améliorations sont des reformulations dans `rules/*.txt` ou des entrées dans `knowledge/*.json`. Lisez [docs/TUNING.md](docs/TUNING.md) pour la discipline d'itération, et déroulez [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) avant de proposer un changement de comportement. Traduire la carte des habitudes et les READMEs est la première contribution la plus accueillante.
+**Première PR en 5 minutes :** améliorez la formulation d'une suggestion dans `plugins/command-autopilot/rules/*.txt`, ou ajoutez le bénéfice en une ligne d'une commande dans `plugins/command-autopilot/knowledge/commands.json`, exécutez l'étape correspondante dans [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md), proposez votre changement. Les traductions du README sont tout aussi bienvenues. Le comportement vit dans des fichiers texte, pas dans du code : voir [docs/TUNING.md](docs/TUNING.md) pour la discipline d'itération.
 
 Sous licence MIT.
