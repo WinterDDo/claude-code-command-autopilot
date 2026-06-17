@@ -1,7 +1,7 @@
 {
   "name": "command-autopilot",
   "version": "0.6.0",
-  "description": "Use 100% of Claude Code while memorizing zero commands. Auto-runs what Claude can do itself, suggests the right command at the right moment with a one-line benefit, learns from your behavior, and proves its value with a verifiable ledger.",
+  "description": "Use all of Claude Code, beginner to expert. At the right moment it lays out a menu of the high-leverage moves that fit (you pick), handles the basics itself, and stays quiet otherwise. Open source, zero telemetry.",
   "author": {
     "name": "Win"
   },

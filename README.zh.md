@@ -6,13 +6,13 @@
 
 <!-- demo: docs/assets/demo.gif 录制后嵌入此处（LAUNCH §1 分镜） -->
 
-Claude Code 能扇出并行 agent、能自己奔着一个目标跑、能跑整套多步骤 workflow、能跨网做深度调研——可几乎没人用得上,因为**你没法主动要一个你都不知道存在的能力。** Command Autopilot 看着你正在做的事,在对的时机把高杠杆的打法端到你面前,然后记住你常用哪些。撤销、清理上下文这些小事它顺手就办了——那是地板,不是卖点。开源、MIT、零遥测。
+Claude Code 能扇出并行 agent、能自己奔着一个目标跑、能跑整套多步骤 workflow、能跨网做深度调研——但在当下,哪怕高手也常常默认埋头硬磨。Command Autopilot 看着你正在做的事,在对的时机把**几个合适的高杠杆打法摆成菜单,让你挑**。撤销、清理上下文这些小事它顺手就办。它不只是给「没听说过这些命令」的新手——哪怕高手也会在当下忘了最优解,而那第 10 次正是它的价值所在。开源、MIT、零遥测。
 
 ## 它让你能做到什么
 
 | 那个时刻 | 没有 Autopilot | 有 Autopilot |
 |---|---|---|
-| 又大又多文件、或重复的活 | 你只能一步步硬磨 | 动手前它问你要不要**扇出并行 agent / 跑 Workflow**,附上 token 代价,你定 |
+| 又大又多文件、或重复的活 | 你只能一步步硬磨 | 动手前它摆出一个**更快路径的菜单**(并行 agent、Workflow、/background),附上代价,你挑 |
 | 一件本该一口气跑完的任务 | 你一轮一轮盯着喂 | 它递上 **/goal**,让 Claude 自己干到达标 |
 | 需要真正调研的问题 | 一次浅搜 | 它跑**多来源深度调研**,给你带引用的答案 |
 | 装了却忘了的 skills | 一直吃灰 | 它**直接用上**并告诉你是哪个:「用了你的 pdf skill,直接读了文件」 |
@@ -22,19 +22,21 @@ Claude Code 能扇出并行 agent、能自己奔着一个目标跑、能跑整�
 **它实际说话的样子：**
 
 ```text
-你：    撤销刚才的改动，原来的更好
-Claude: 在我尝试任何修复之前：你可以直接回到改动之前。
-        连按两次 Esc（/rewind）——文件和对话一起恢复。
-        需要我等你操作吗？
+你：    给这个项目加一个联系人功能——表、API、表单、测试
+Claude: 动手前，给你几个更快的跑法，你定：
+          1. /goal —— 我自己一路做到一个完整 PR
+          2. 并行 agent —— 互相独立的部分同时做
+          3. 就正常做
+        （挑一个，或说「开始」）
 ```
 
 想了解命令本身？我们还维护着[白话版 Claude Code 命令速查表](docs/claude-code-commands-cheatsheet.md)和 [8 个真正省工夫的 Claude Code 工作流](docs/claude-code-workflows.md)（英文）。
 
 Claude Code 有约 100 个内置斜杠命令,加上你装的每个 skill,而其中最强的那些——编排、并行、自治——恰恰是没人会去发现的。Command Autopilot 用三招补上这个缺口:
 
-1. **把你压根想不到要问的强招端出来。** 在又大、重复、或长周期的任务开工前,它把高杠杆打法摆给你——并行 agent、Workflow、自治的 /goal、深度调研——附上代价,让你选它,而不是用慢办法硬磨。
+1. **在对的时机,把你的选项摆成菜单。** 在又大、重复、长周期、或有风险的任务开工前,它把 2-4 个真正合适的高杠杆打法端给你——并行 agent、Workflow、自治的 /goal、深度调研、/background——每个附上代价,你来挑。不是单条「要不要」,是一个菜单,让你选。(对高手也一样——价值在于你**此刻**没想到的那一招,而非你没听过的命令。)
 2. **其余的它自己做,不推荐。** 能自己干的就直接干:大改动先进计划模式再动文件、偏好直接写进记忆、你装的 skill 自动用上(并告诉你是哪个)。撤销/清桌/岔题这些安全基本功,在那一刻递到手边,而不是说教。
-3. **越用越懂你。** 你采纳或跳过的每个建议都是本地证据:总被你拒的自动安静,有用的更早出现;约每 10 个会话蒸馏成个性化规则——可查看、有证据、随时可删。
+3. **它学会别挡你的路。** 你跳过的每个建议都是本地证据:总被你拒的自动安静,绝不变成唠叨。(更深的个性化——更懂你偏爱哪些招——在路线图上;现在的本事是精准和沉默,不假装已经懂你。)
 
 它不会照着一张固定清单挨个提示。它每一轮都重新判断，真正有用时至多点一句，其余时候保持安静。终极目标是你感觉不到它的存在。
 
@@ -114,12 +116,19 @@ claude plugin update command-autopilot@claude-code-command-autopilot
 
 ## 云端与团队
 
-云端会话不加载个人配置——所以 Claude Code 网页版和团队成员要靠仓库级配置：把 [templates/team-settings.json](templates/team-settings.json) 里的两段合进你仓库的 `.claude/settings.json`，所有信任该工作区的人（含云端会话）都会自动获得 Autopilot。（云端注意：设置弹窗不会出现，使用默认值；学习状态每个云端会话重置。）
+云端会话不加载个人插件，也不刷新 marketplace 缓存——所以让 Claude Code 网页版和团队成员用上 Autopilot 的可靠办法是**把规则 vendored 进你的仓库**：提交一个小小的 `.claude/autopilot-context.json`（规则）加 `.claude/autopilot-cloud.sh`，并在仓库的 `.claude/settings.json` 里挂上 `SessionStart` + `UserPromptSubmit` 两个 hook 指向它。从本仓库的克隆里，一条命令完成拷贝并打印出该加的 hook 行：
+
+```sh
+plugins/command-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
+# 然后把打印出的 hook 行粘进 /path/to/your/repo/.claude/settings.json，提交
+```
+
+云端新会话每次重新克隆你的仓库，所以会自动拿到规则——该仓库里每个人都有。（云端注意：学习状态在那边是按会话的；当下的菜单照常工作。）
 
 
 ## 工作原理（给好奇的人）
 
-一个 `UserPromptSubmit` hook 在每条消息组装上下文：出厂规则 + 你的个性化规则 + 精简证据摘要。脚本只记录和压缩——**全部判断交给模型**，所以系统里没有任何魔法阈值。知识库（[commands.json](plugins/command-autopilot/knowledge/commands.json)、[playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)）存着每个命令的一句话收益和 8 个组合玩法，模型按需读取，每条消息零成本。详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+一个 `UserPromptSubmit` hook 在每条消息组装上下文：出厂规则 + 你的个性化规则 + 精简证据摘要。脚本只记录和压缩——**全部判断交给模型**，所以系统里没有任何魔法阈值。知识库（[commands.json](plugins/command-autopilot/knowledge/commands.json)、[playbooks.json](plugins/command-autopilot/knowledge/playbooks.json)）存着每个命令的一句话收益和一组组合玩法，模型按需读取，每条消息零成本。详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 
 内置 skills：`tutor`（引导）· `doctor`（自检）· `config`（静音/档位）· `evolve`（蒸馏你的证据）· `profile`（价值驾驶舱）· `whats-new`（新命令与闲置 skill，按收益讲解）。
 
@@ -137,7 +146,7 @@ claude plugin update command-autopilot@claude-code-command-autopilot
 
 **它花多少钱？** 每条消息注入约 300–500 token 的规则（安静模式约 300，静音为 0）。这是可靠性的真实价格，档位由你控制。
 
-**网页版 / 团队能用吗？** 能——把两小段配置提交到你仓库的 `.claude/settings.json`（[现成片段](templates/team-settings.json)），信任该工作区的所有人（包括云端会话）自动获得。
+**网页版 / 团队能用吗？** 能——用一条命令（`vendor-to-repo.sh`，见[云端与团队](#云端与团队)）把规则 vendored 进你仓库的 `.claude/`。云端会话重新克隆仓库就会拿到，该仓库里每个人都有。
 
 **我没装 Python 也能用吗？** 能，进入无状态模式：核心行为全部保留，只有学习层暂停，装上 Python 3.8+ 自动恢复。
 

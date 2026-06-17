@@ -4,13 +4,13 @@
     "name": "Win"
   },
   "metadata": {
-    "description": "Command Autopilot — use 100% of Claude Code while memorizing zero commands. Silent automation, right-moment suggestions with benefits, self-evolving to your habits."
+    "description": "Command Autopilot — use all of Claude Code, beginner to expert. At the right moment it lays out a menu of the high-leverage moves that fit; handles the basics silently; never nags. Open source, zero telemetry."
   },
   "plugins": [
     {
       "name": "command-autopilot",
       "source": "./plugins/command-autopilot",
-      "description": "Your commands on autopilot: silently does what Claude can do itself, hands you the one command only you can press with a one-line benefit, learns your habits, and shows you the value it created.",
+      "description": "Your commands on autopilot: at the right moment it offers a menu of the high-leverage moves that fit and lets you pick; silently handles the basics; defaults to silence, never nags.",
       "version": "0.6.0"
     }
   ]
