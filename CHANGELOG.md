@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0 — 2026-06-16
+
+- Suggestions are now a MENU, not a single pick. When a high-value moment clears the bar, the better-move check presents the 2-4 genuinely-fitting high-leverage moves as a clickable choice (each: command + one-line payoff) plus "no, continue" — you see your options and choose, instead of being handed one. The gate is unchanged (default silence; only at genuine high-value moments), so it is not more frequent, just more useful when it does speak. This is the "show me my options" experience.
+- Removed the v0.5.1 hardcoded /goal hint. A generalization eval showed the command-agnostic rule already recommends the right command across the whole surface (~88%), so the per-command hint was redundant; the menu surfaces /goal among the options on long autonomous tasks anyway. No per-command hardcoding.
+- Validated (menu eval): presents good 3-4 item menus on big-build / long-autonomous / debugging / multi-independent / risky-op / ship; stays silent on trivial questions. Honest: leans slightly more proactive by design — an occasional menu on a borderline-trivial edit, and research stays conservative; the anti-nag valves (mute/quiet, decline-to-stop) are unchanged.
+
 ## 0.5.1 — 2026-06-16
 
 - The better-move check's observable-signals list now explicitly names "a long task to drive autonomously to a PR (/goal)". So when you ask for a long task carried all the way to a finished PR, it reliably recommends /goal up front instead of leaving you to remember it. Validated: lifts /goal recommendation on that scenario from ~10/12 to 12/12 with no new false-positives, and no silence regressions. One phrase, no new machinery.
