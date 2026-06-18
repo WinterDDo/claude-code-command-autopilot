@@ -35,7 +35,9 @@ class CloudHookTests(unittest.TestCase):
         out = run(event="UserPromptSubmit", remote=True)
         d = json.loads(out)
         self.assertEqual(d["hookSpecificOutput"]["hookEventName"], "UserPromptSubmit")
-        self.assertIn("BETTER-MOVE CHECK", d["hookSpecificOutput"]["additionalContext"])
+        ctx = d["hookSpecificOutput"]["additionalContext"]
+        self.assertIn("BETTER-MOVE CHECK", ctx)
+        self.assertIn("FIRST TASK ONLY", ctx, "cloud must carry the first-task demo (no local state to gate it)")
 
     def test_cloud_sessionstart_event_stamped(self):
         d = json.loads(run(event="SessionStart", remote=True))

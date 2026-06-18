@@ -114,15 +114,12 @@ def main():
                      "When natural, offer the whats-new skill to show what is newly possible." % kb_version)
     state["kb_version"] = kb_version
 
-    # First run
+    # First run: arm the one-time first-task demo (the guaranteed aha). The forced
+    # welcome menu is injected by router.py on the first substantial task and
+    # cleared by tracker.py once it fires — a stronger first impression than a
+    # prose self-introduction the model may or may not deliver well.
     if not state.get("first_run_done"):
-        if zh:
-            notes.append("[AUTOPILOT one-time] 这是 Command Autopilot 安装后的第一个会话。"
-                         "用两句话自我介绍（自动执行能力 + 动作前递命令），并提议运行 tutor skill 做 2 分钟引导。仅此一次，不要说教。")
-        else:
-            notes.append("[AUTOPILOT one-time] First session since Command Autopilot was installed. "
-                         "Introduce it in two sentences (silent automation + commands handed over before the moment), "
-                         "and offer the tutor skill for a 2-minute tour. Once only, no lecturing.")
+        state["first_task_pending"] = True
         state["first_run_done"] = True
 
     # Milestones recorded by tracker but not yet announced

@@ -47,6 +47,7 @@ DEFAULT_STATE = {
         "muted": False,
     },
     "first_run_done": False,
+    "first_task_pending": False,
     "kb_version": "",
     "counters": {"commands": {}, "skills": {}, "habits": {}},
     "milestones": {},

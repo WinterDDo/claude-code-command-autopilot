@@ -103,6 +103,12 @@ def main():
     parts = [sections.get("core", ""), sections.get("safety", "")]
     if mode in ("normal", "teaching"):
         parts.append(sections.get("unlock", ""))
+    # First-task demo: the one guaranteed surfacing. Injected only while the flag
+    # is armed (set on first run, cleared by the tracker once a menu fires), so it
+    # never bloats steady-state context or nags returning users. Fires in any
+    # non-muted mode — the muted path already returned above.
+    if state.get("first_task_pending"):
+        parts.append(sections.get("welcome", ""))
     text = "\n".join(p for p in parts if p)
 
     if not state["config"].get("enable_plan_gate", True):

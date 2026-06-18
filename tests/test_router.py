@@ -118,6 +118,18 @@ class RouterTests(unittest.TestCase):
         state = json.loads((self.tmp / "state.json").read_text())
         self.assertEqual(state["last_fired"]["session_id"], "canary99")
 
+    def test_first_task_pending_injects_welcome(self):
+        state = base_state()
+        state["first_task_pending"] = True
+        out, _ = run_router(self.tmp, state=state)
+        self.assertIn("FIRST TASK ONLY", context_of(out),
+                      "an armed first-task demo must inject the forced welcome menu")
+
+    def test_no_welcome_in_steady_state(self):
+        out, _ = run_router(self.tmp)
+        self.assertNotIn("FIRST TASK ONLY", context_of(out),
+                         "the forced welcome must never appear once the flag is clear")
+
     def test_garbage_stdin_still_outputs(self):
         proc = subprocess.run([sys.executable, str(ROUTER), str(self.tmp)],
                               input="not json at all", capture_output=True, text=True, timeout=10)

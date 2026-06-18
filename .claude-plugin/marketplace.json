@@ -4,14 +4,14 @@
     "name": "Win"
   },
   "metadata": {
-    "description": "Command Autopilot — use all of Claude Code, beginner to expert. At the right moment it lays out a menu of the high-leverage moves that fit; handles the basics silently; never nags. Open source, zero telemetry."
+    "description": "Command Autopilot — use all of Claude Code, beginner to expert. From your first task on, it lays out a menu of the high-leverage moves that fit; handles the basics silently; never nags. Open source, zero telemetry."
   },
   "plugins": [
     {
       "name": "command-autopilot",
       "source": "./plugins/command-autopilot",
-      "description": "Your commands on autopilot: at the right moment it offers a menu of the high-leverage moves that fit and lets you pick; silently handles the basics; defaults to silence, never nags.",
-      "version": "0.6.0"
+      "description": "Your commands on autopilot: from your first task on, it offers a menu of the high-leverage moves that fit and lets you pick; silently handles the basics; never nags.",
+      "version": "0.7.0"
     }
   ]
 }
