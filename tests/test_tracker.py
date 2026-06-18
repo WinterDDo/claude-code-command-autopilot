@@ -95,6 +95,18 @@ class TrackerTests(unittest.TestCase):
         self.assertEqual(state["counters"]["commands"]["/clear"]["suggested"], 1,
                          "appended-bytes rescan must not recount old content")
 
+    def test_first_task_demo_disarmed_when_menu_fires(self):
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text("\n".join(json.dumps(l) for l in TRANSCRIPT_LINES), encoding="utf-8")
+        (self.tmp / "state.json").write_text(json.dumps({
+            "schema": 1,
+            "config": {"aggressiveness": "teaching", "language": "en",
+                       "enable_plan_gate": True, "muted": False},
+            "first_task_pending": True}), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "s9", "transcript_path": str(transcript)}, "stop")
+        self.assertFalse(self.state().get("first_task_pending"),
+                         "a fired menu (suggestion_made) must disarm the one-time first-task demo")
+
     def test_missing_transcript_is_silent(self):
         run_tracker(self.tmp, {"session_id": "s4", "transcript_path": "/nonexistent/x.jsonl"}, "stop")
         self.assertTrue((self.tmp / "state.json").exists())

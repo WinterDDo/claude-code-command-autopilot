@@ -31,8 +31,11 @@ def parse_sections(text):
 def build():
     sec = parse_sections(RULES.read_text(encoding="utf-8"))
     # cloud = the stateless behavior that matters in ephemeral sessions:
-    # core (self-help + discipline) + safety + unlock (capability checkpoint)
-    parts = [sec.get("core", ""), sec.get("safety", ""), sec.get("unlock", "")]
+    # core (self-help + discipline) + safety + unlock (better-move menu) +
+    # welcome (first-task demo). Cloud has no persistent state, so the welcome
+    # fires per session on the first substantial message (model-judged); the
+    # local plugin gates the same text behind a once-ever flag instead.
+    parts = [sec.get("core", ""), sec.get("safety", ""), sec.get("unlock", ""), sec.get("welcome", "")]
     body = "\n".join(p for p in parts if p)
     # KB/INDEX pointers don't exist in cloud; point at nothing rather than a stale path
     body = body.replace("{KB}", "the knowledge base (if present)").replace("{INDEX}", "your installed skills (if present)")
@@ -53,7 +56,8 @@ def main():
     assert "BETTER-MOVE CHECK" in ctx, "unlock section missing from generated cloud context"
     assert "[AUTOPILOT]" in ctx, "core section missing"
     assert "/rewind" in ctx, "safety section missing"
-    print("wrote %s (%d chars, all 3 sections present)" % (out, len(ctx)))
+    assert "FIRST TASK ONLY" in ctx, "welcome section missing"
+    print("wrote %s (%d chars, all 4 sections present)" % (out, len(ctx)))
 
 
 if __name__ == "__main__":

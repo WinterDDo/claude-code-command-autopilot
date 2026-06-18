@@ -109,6 +109,10 @@ def handle_stop(state, data_dir, payload):
         cmd = "/" + match
         ap.bump(state["counters"], "commands", cmd, "suggested")
         record(state, data_dir, "suggestion_made", cmd)
+    # The one-time first-task demo has now fired (a menu was surfaced) — disarm it
+    # so router.py stops injecting the forced welcome on later turns.
+    if suggested and state.get("first_task_pending"):
+        state["first_task_pending"] = False
     accepted = {"/" + m for m in answers} if not dismissed_all else set()
     for cmd in accepted & {"/" + m for m in suggested}:
         ap.bump(state["counters"], "commands", cmd, "accepted")

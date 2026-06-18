@@ -1,7 +1,7 @@
 {
   "name": "command-autopilot",
-  "version": "0.6.0",
-  "description": "Use all of Claude Code, beginner to expert. At the right moment it lays out a menu of the high-leverage moves that fit (you pick), handles the basics itself, and stays quiet otherwise. Open source, zero telemetry.",
+  "version": "0.7.0",
+  "description": "Use all of Claude Code, beginner to expert. From your first task on, it lays out a menu of the high-leverage moves that fit (you pick), handles the basics itself, and stays quiet otherwise. Open source, zero telemetry.",
   "author": {
     "name": "Win"
   },

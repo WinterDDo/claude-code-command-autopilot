@@ -70,6 +70,18 @@ class PowerIntroTests(unittest.TestCase):
         # all high-leverage commands used -> nothing to introduce
         self.assertNotIn("never used these high-leverage commands", ctx)
 
+    def test_first_run_arms_first_task_demo(self):
+        # genuine first run (no state file -> first_run_done False): arm the flag
+        run_ss(self.tmp, {"session_id": "first"})
+        st = self.read_state()
+        self.assertTrue(st.get("first_task_pending"), "first run arms the one-time first-task demo")
+        self.assertTrue(st.get("first_run_done"))
+
+    def test_first_task_demo_not_armed_after_first_run(self):
+        run_ss(self.tmp, {"session_id": "later"}, state=state_with_sessions(1))
+        self.assertFalse(self.read_state().get("first_task_pending"),
+                         "the demo arms only on the very first run")
+
 
 if __name__ == "__main__":
     unittest.main()
