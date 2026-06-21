@@ -130,6 +130,16 @@ class RouterTests(unittest.TestCase):
         self.assertNotIn("FIRST TASK ONLY", context_of(out),
                          "the forced welcome must never appear once the flag is clear")
 
+    def test_nudge_fires_on_substantial_prompt(self):
+        out, _ = run_router(self.tmp, payload={"session_id": "s", "prompt":
+            "Add a contacts feature to this app: table, API, form, and tests"})
+        self.assertIn("THIS TURN", context_of(out),
+                      "a substantial multi-step prompt must force the menu nudge")
+
+    def test_no_nudge_on_trivial_prompt(self):
+        out, _ = run_router(self.tmp, payload={"session_id": "s", "prompt": "what does this regex match?"})
+        self.assertNotIn("THIS TURN", context_of(out), "trivial asks must not trigger the nudge")
+
     def test_garbage_stdin_still_outputs(self):
         proc = subprocess.run([sys.executable, str(ROUTER), str(self.tmp)],
                               input="not json at all", capture_output=True, text=True, timeout=10)

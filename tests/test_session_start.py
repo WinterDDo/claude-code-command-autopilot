@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -26,7 +27,9 @@ def state_with_sessions(n, **extra):
     s = {"schema": 1,
          "config": {"aggressiveness": "teaching", "language": "en", "enable_plan_gate": True, "muted": False},
          "first_run_done": True,
-         "sessions": {"s%d" % i: {"last_seen": "2026-06-13T00:00:00Z"} for i in range(n)}}
+         # use a current timestamp: a hardcoded date silently rots once it ages past
+         # the 7-day session-retention window and gets pruned (flaky over time).
+         "sessions": {"s%d" % i: {"last_seen": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())} for i in range(n)}}
     s.update(extra)
     return s
 

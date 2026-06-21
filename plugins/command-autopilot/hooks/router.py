@@ -7,6 +7,7 @@ read state and format evidence. All judgment belongs to the model.
 """
 import calendar
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -17,6 +18,36 @@ import apcommon as ap
 PLUGIN_ROOT = Path(__file__).resolve().parent.parent
 DIGEST_MAX_CHARS = 600
 LEARNED_MAX_RULES = 5
+
+# Deterministic WHEN-trigger. Model discretion ("should I surface the menu?")
+# fired ~0 in real use, so the decision to surface moves to a coarse, command-
+# AGNOSTIC heuristic on the user's own prompt. It only decides WHEN; WHICH
+# command/skill to offer stays entirely the model's call (no scenario->command
+# table). Tuned to fire on substantial/multi-step work, stay quiet on small edits.
+SUBSTANTIAL_VERBS = re.compile(
+    r"\b(build|create|add|implement|migrat\w+|refactor|rewrite|rename|audit|"
+    r"research|design|redesign|integrate|automate|generate|overhaul|port|set up|"
+    r"scaffold|bootstrap|standardi[sz]e)\b", re.I)
+SCALE_WORDS = re.compile(r"\b(all|every|each|across|entire|whole|everywhere|throughout)\b", re.I)
+SCOPE_NOUNS = re.compile(
+    r"\b(feature|system|dashboard|app|application|pipeline|integration|service|"
+    r"module|endpoints?|schema|API|components?|pages?|website|platform|database|"
+    r"workflow|suite|architecture|test\s?suite)\b", re.I)
+
+
+def looks_substantial(prompt):
+    """Coarse, command-agnostic check: does THIS prompt look like a substantial,
+    multi-step task where a high-leverage move would help? Decides only WHEN to
+    surface the menu, never WHICH move (that stays the model's call)."""
+    if not prompt or not prompt.strip():
+        return False
+    words = prompt.split()
+    if len(words) >= 40:                          # a long, detailed ask
+        return True
+    if not SUBSTANTIAL_VERBS.search(prompt):      # needs a build/scope verb
+        return False
+    multi_item = prompt.count(",") >= 2           # "table, API, form, and tests"
+    return bool(SCALE_WORDS.search(prompt)) or multi_item or bool(SCOPE_NOUNS.search(prompt))
 
 
 def parse_sections(text):
@@ -109,6 +140,11 @@ def main():
     # non-muted mode — the muted path already returned above.
     if state.get("first_task_pending"):
         parts.append(sections.get("welcome", ""))
+    # Deterministic WHEN-trigger: when the prompt itself looks substantial, force
+    # the menu this turn instead of leaving it to discretion. Injected only on a
+    # hit, so steady-state cost is unchanged.
+    if mode in ("normal", "teaching") and looks_substantial(payload.get("prompt", "")):
+        parts.append(sections.get("nudge", ""))
     text = "\n".join(p for p in parts if p)
 
     if not state["config"].get("enable_plan_gate", True):

@@ -95,6 +95,23 @@ class TrackerTests(unittest.TestCase):
         self.assertEqual(state["counters"]["commands"]["/clear"]["suggested"], 1,
                          "appended-bytes rescan must not recount old content")
 
+    def test_capability_menu_recorded_and_clears_first_task(self):
+        # a menu offering capabilities (Workflow / parallel agents) but NO slash
+        # command must still count as a fired menu — the old tracker missed these.
+        line = {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+            "input": {"questions": [{"question": "how to run this", "options": [
+                {"label": "Run a Workflow to fan out"}, {"label": "parallel agents"}, {"label": "just proceed"}]}]}}]}}
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text(json.dumps(line), encoding="utf-8")
+        (self.tmp / "state.json").write_text(json.dumps({
+            "schema": 1, "config": {"aggressiveness": "teaching", "language": "en",
+                                    "enable_plan_gate": True, "muted": False},
+            "first_task_pending": True}), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "capm", "transcript_path": str(transcript)}, "stop")
+        self.assertFalse(self.state().get("first_task_pending"),
+                         "a capability-only menu must still disarm the first-task flag")
+        self.assertIn("menu_shown", (self.tmp / "events.jsonl").read_text())
+
     def test_first_task_demo_disarmed_when_menu_fires(self):
         transcript = self.tmp / "transcript.jsonl"
         transcript.write_text("\n".join(json.dumps(l) for l in TRANSCRIPT_LINES), encoding="utf-8")

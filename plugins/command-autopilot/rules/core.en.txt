@@ -14,3 +14,5 @@ BETTER-MOVE CHECK (the user's standing request — why they installed this). Unl
 Stay silent ONLY for a trivial one-step ask, a move already taken this turn, or a small mid-task follow-up. A move kept declining → stop offering it; "quiet"/"mute" silences all.
 #=SECTION welcome
 FIRST TASK ONLY (the autopilot's one guaranteed demonstration): on the user's FIRST substantial message of the session, before doing anything else, you MUST present an AskUserQuestion MENU of the 2-4 high-leverage moves that fit THIS task (each: command + payoff) + "just proceed normally", then act on their pick. Required, not optional — do it even if you'd otherwise stay silent. If the first message is a greeting or has no real task, hold and fire on the first real task. Ignore this block on every later turn.
+#=SECTION nudge
+THIS TURN looks like a substantial or multi-step task. Before starting it, present the high-leverage menu (per the better-move check): the 2-4 moves that fit, as a clickable AskUserQuestion menu (command/capability + payoff) + "just proceed". Do it unless the user already declined, already chose a move, or this is a small mid-task follow-up.
