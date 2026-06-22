@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import apcommon as ap
 
 PLUGIN_ROOT = Path(__file__).resolve().parent.parent
-EVOLVE_EVENT_THRESHOLD = 30  # cost-control constant: when to suggest a distillation pass
+EVOLVE_EVENT_THRESHOLD = 15  # cost-control constant: when to suggest a distillation pass (lowered to turn the learning loop on sooner)
 SKILL_SCAN_LIMIT = 400
 
 
@@ -34,7 +34,9 @@ def parse_frontmatter(path):
             if in_fm and line.startswith("name:"):
                 name = line.split(":", 1)[1].strip()
             if in_fm and line.startswith("description:"):
-                description = line.split(":", 1)[1].strip()[:120]
+                # keep enough to capture the Triggers list (the router matches a
+                # prompt against these to surface the right skill proactively).
+                description = line.split(":", 1)[1].strip()[:400]
     except Exception:
         pass
     return name, description

@@ -112,6 +112,21 @@ class TrackerTests(unittest.TestCase):
                          "a capability-only menu must still disarm the first-task flag")
         self.assertIn("menu_shown", (self.tmp / "events.jsonl").read_text())
 
+    def test_skill_menu_recorded(self):
+        # a pick-menu that offers an installed SKILL (no slash-command, no capability
+        # word) must still log menu_shown — else v1.0's skill-popups are invisible.
+        (self.tmp / "skills-index.json").write_text(json.dumps({"skills": [
+            {"name": "contract-risk-extraction", "description": "x"}]}), encoding="utf-8")
+        line = {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+            "input": {"questions": [{"question": "how to handle this", "options": [
+                {"label": "Use contract-risk-extraction to flag risks"}, {"label": "just proceed"}]}]}}]}}
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text(json.dumps(line), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "skm", "transcript_path": str(transcript)}, "stop")
+        events = (self.tmp / "events.jsonl").read_text()
+        self.assertIn("menu_shown", events)
+        self.assertIn("contract-risk-extraction", events)
+
     def test_first_task_demo_disarmed_when_menu_fires(self):
         transcript = self.tmp / "transcript.jsonl"
         transcript.write_text("\n".join(json.dumps(l) for l in TRANSCRIPT_LINES), encoding="utf-8")

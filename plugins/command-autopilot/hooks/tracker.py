@@ -80,7 +80,15 @@ def iter_new_transcript_lines(data_dir, payload):
 
 
 def handle_stop(state, data_dir, payload):
-    suggested, dismissed_all, answers, caps = set(), False, [], set()
+    suggested, dismissed_all, answers, caps, skills_seen = set(), False, [], set(), set()
+    # installed skill names — a v1.0 pick-menu often offers SKILLS (not slash
+    # commands), so without this the skill-popups would be invisible to tracking.
+    try:
+        skill_names = [s.get("name", "") for s in
+                       json.loads((data_dir / "skills-index.json").read_text(encoding="utf-8")).get("skills", [])
+                       if s.get("name") and len(s.get("name", "")) >= 4]
+    except Exception:
+        skill_names = []
     for raw in iter_new_transcript_lines(data_dir, payload):
         # tool_result lines also carry "type":"user"; file paths inside them
         # (src/export/x.js, app/context/y.ts) must never count as self-use.
@@ -94,6 +102,7 @@ def handle_stop(state, data_dir, payload):
         if '"name": "AskUserQuestion"' in raw or '"name":"AskUserQuestion"' in raw:
             suggested.update(COMMAND_RE.findall(raw))
             caps.update(c.lower() for c in CAP_RE.findall(raw))
+            skills_seen.update(n for n in skill_names if n in raw)
         if "questions have been answered" in raw or "has answered your questions" in raw:
             answers.extend(COMMAND_RE.findall(raw))
             if "User dismissed" in raw:
@@ -112,8 +121,9 @@ def handle_stop(state, data_dir, payload):
                 record(state, data_dir, "self_use_trace", cmd)
 
     # A proactive menu fired if it offered ANY high-leverage move — a slash
-    # command OR a capability (Workflow / parallel agents / deep research).
-    menu_moves = {"/" + m for m in suggested} | caps
+    # command, a capability (Workflow / parallel agents / deep research), OR an
+    # installed skill (the v1.0 pick-menu treats skills + commands as one toolset).
+    menu_moves = {"/" + m for m in suggested} | caps | skills_seen
     if menu_moves:
         record(state, data_dir, "menu_shown", ",".join(sorted(menu_moves)))
         # The one-time first-task demo has now fired — disarm it so router.py
