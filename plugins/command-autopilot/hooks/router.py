@@ -24,15 +24,21 @@ LEARNED_MAX_RULES = 5
 # AGNOSTIC heuristic on the user's own prompt. It only decides WHEN; WHICH
 # command/skill to offer stays entirely the model's call (no scenario->command
 # table). Tuned to fire on substantial/multi-step work, stay quiet on small edits.
-SUBSTANTIAL_VERBS = re.compile(
-    r"\b(build|create|add|implement|migrat\w+|refactor|rewrite|rename|audit|"
-    r"research|design|redesign|integrate|automate|generate|overhaul|port|set up|"
-    r"scaffold|bootstrap|standardi[sz]e)\b", re.I)
+# Two tiers. STRONG verbs are inherently multi-step / high-leverage (a research,
+# a migration, an audit) — they fire on their own. REGULAR build verbs need a
+# scope signal (scale word, multi-item list, or a scope noun) so small edits
+# ("rename the local var in that function") stay silent.
+STRONG_VERBS = re.compile(
+    r"\b(research|analy[sz]e|compare|investigate|migrat\w+|audit|overhaul|redesign|benchmark)\b", re.I)
+REGULAR_VERBS = re.compile(
+    r"\b(build|create|add|implement|refactor|rewrite|rename|integrate|automate|"
+    r"generate|design|set up|scaffold|bootstrap|standardi[sz]e|port)\b", re.I)
 SCALE_WORDS = re.compile(r"\b(all|every|each|across|entire|whole|everywhere|throughout)\b", re.I)
 SCOPE_NOUNS = re.compile(
     r"\b(feature|system|dashboard|app|application|pipeline|integration|service|"
     r"module|endpoints?|schema|API|components?|pages?|website|platform|database|"
-    r"workflow|suite|architecture|test\s?suite)\b", re.I)
+    r"workflow|suite|architecture|test\s?suite|report|memo|deck|slides?|"
+    r"presentation|document|spec)\b", re.I)
 
 
 def looks_substantial(prompt):
@@ -41,13 +47,14 @@ def looks_substantial(prompt):
     surface the menu, never WHICH move (that stays the model's call)."""
     if not prompt or not prompt.strip():
         return False
-    words = prompt.split()
-    if len(words) >= 40:                          # a long, detailed ask
+    if len(prompt.split()) >= 40:                 # a long, detailed ask
         return True
-    if not SUBSTANTIAL_VERBS.search(prompt):      # needs a build/scope verb
+    if STRONG_VERBS.search(prompt):               # research/migrate/audit fire alone
+        return True
+    if not REGULAR_VERBS.search(prompt):          # otherwise needs a build verb...
         return False
     multi_item = prompt.count(",") >= 2           # "table, API, form, and tests"
-    return bool(SCALE_WORDS.search(prompt)) or multi_item or bool(SCOPE_NOUNS.search(prompt))
+    return bool(SCALE_WORDS.search(prompt)) or multi_item or bool(SCOPE_NOUNS.search(prompt))  # ...plus scope
 
 
 def parse_sections(text):
