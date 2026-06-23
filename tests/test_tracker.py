@@ -127,6 +127,45 @@ class TrackerTests(unittest.TestCase):
         self.assertIn("menu_shown", events)
         self.assertIn("contract-risk-extraction", events)
 
+    def _parked_index(self):
+        (self.tmp / "skills-index.json").write_text(json.dumps({"skills": [
+            {"name": "contract-risk-extraction", "description": "x", "parked": True}]}), encoding="utf-8")
+
+    def test_wake_accepted_recorded(self):
+        # a menu offering a PARKED skill, then the user picks it → wake_accepted.
+        self._parked_index()
+        lines = [
+            {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+                "input": {"questions": [{"question": "wake?", "options": [
+                    {"label": "Wake contract-risk-extraction for this"}, {"label": "just proceed"}]}]}}]}},
+            {"type": "user", "message": {"content": [{"type": "tool_result",
+                "content": "Your questions have been answered: choice=\"Wake contract-risk-extraction for this\""}]}},
+        ]
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text("\n".join(json.dumps(l) for l in lines), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "wk1", "transcript_path": str(transcript)}, "stop")
+        events = (self.tmp / "events.jsonl").read_text()
+        self.assertIn("wake_shown", events)
+        self.assertIn("wake_accepted", events)
+        self.assertEqual(self.state()["counters"]["wake"]["contract-risk-extraction"]["accepted"], 1)
+
+    def test_wake_declined_recorded(self):
+        # parked skill offered, menu dismissed → wake_declined.
+        self._parked_index()
+        lines = [
+            {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+                "input": {"questions": [{"question": "wake?", "options": [
+                    {"label": "Wake contract-risk-extraction for this"}, {"label": "just proceed"}]}]}}]}},
+            {"type": "user", "message": {"content": [{"type": "tool_result",
+                "content": "Your questions have been answered: User dismissed the question"}]}},
+        ]
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text("\n".join(json.dumps(l) for l in lines), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "wk2", "transcript_path": str(transcript)}, "stop")
+        events = (self.tmp / "events.jsonl").read_text()
+        self.assertIn("wake_declined", events)
+        self.assertNotIn("wake_accepted", events)
+
     def test_first_task_demo_disarmed_when_menu_fires(self):
         transcript = self.tmp / "transcript.jsonl"
         transcript.write_text("\n".join(json.dumps(l) for l in TRANSCRIPT_LINES), encoding="utf-8")

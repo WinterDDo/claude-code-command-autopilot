@@ -81,14 +81,19 @@ def iter_new_transcript_lines(data_dir, payload):
 
 def handle_stop(state, data_dir, payload):
     suggested, dismissed_all, answers, caps, skills_seen = set(), False, [], set(), set()
+    parked_seen, parked_answered, answered_any = set(), set(), False
     # installed skill names — a v1.0 pick-menu often offers SKILLS (not slash
     # commands), so without this the skill-popups would be invisible to tracking.
+    # parked_names: skills native can't auto-fire (description out of context) —
+    # offering one in a menu is a WAKE popup, the core Skill Autopilot move.
+    skill_names, parked_names = [], set()
     try:
-        skill_names = [s.get("name", "") for s in
-                       json.loads((data_dir / "skills-index.json").read_text(encoding="utf-8")).get("skills", [])
-                       if s.get("name") and len(s.get("name", "")) >= 4]
+        idx = json.loads((data_dir / "skills-index.json").read_text(encoding="utf-8")).get("skills", [])
+        skill_names = [s.get("name", "") for s in idx if s.get("name") and len(s.get("name", "")) >= 4]
+        parked_names = {s.get("name", "") for s in idx
+                        if s.get("parked") and s.get("name") and len(s.get("name", "")) >= 4}
     except Exception:
-        skill_names = []
+        pass
     for raw in iter_new_transcript_lines(data_dir, payload):
         # tool_result lines also carry "type":"user"; file paths inside them
         # (src/export/x.js, app/context/y.ts) must never count as self-use.
@@ -103,8 +108,11 @@ def handle_stop(state, data_dir, payload):
             suggested.update(COMMAND_RE.findall(raw))
             caps.update(c.lower() for c in CAP_RE.findall(raw))
             skills_seen.update(n for n in skill_names if n in raw)
+            parked_seen.update(n for n in parked_names if n in raw)
         if "questions have been answered" in raw or "has answered your questions" in raw:
             answers.extend(COMMAND_RE.findall(raw))
+            answered_any = True
+            parked_answered.update(n for n in parked_names if n in raw)
             if "User dismissed" in raw:
                 dismissed_all = True
 
@@ -131,6 +139,18 @@ def handle_stop(state, data_dir, payload):
         # not just slash-commands, so capability-only menus also count.)
         if state.get("first_task_pending"):
             state["first_task_pending"] = False
+    # WAKE popups: a parked skill (native can't auto-fire it) offered in a menu —
+    # the core Skill Autopilot signal. Accepted if the choice names it; declined
+    # if there was an outcome (answer or dismissal) but it wasn't the choice.
+    for name in sorted(parked_seen):
+        ap.bump(state["counters"], "wake", name, "shown")
+        record(state, data_dir, "wake_shown", name)
+        if name in parked_answered:
+            ap.bump(state["counters"], "wake", name, "accepted")
+            record(state, data_dir, "wake_accepted", name)
+        elif dismissed_all or answered_any:
+            ap.bump(state["counters"], "wake", name, "declined")
+            record(state, data_dir, "wake_declined", name)
     for match in suggested:
         cmd = "/" + match
         ap.bump(state["counters"], "commands", cmd, "suggested")

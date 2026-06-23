@@ -1,0 +1,52 @@
+{
+  "version": "2026.06.1",
+  "source": "Curated skill combinations — job → skill-set. Seed set; grow over time.",
+  "note": "REFERENCE, not triggers. job→skill-set. Offer a combo ONLY if the user actually has these skills (check {INDEX}); decide fit by reasoning about the task, never by matching a stored condition. Native silently picks one skill and never assembles combos — these are yours to surface as a pick-menu.",
+  "combos": [
+    {
+      "id": "research-to-deck",
+      "name_en": "Research → Deck",
+      "name_zh": "研究→演示",
+      "skills": ["deerflow-deep-research", "deerflow-ppt-generation", "pptx"],
+      "job_en": "Research a topic with cited sources, then turn it into a presentation",
+      "benefit_en": "From question to slides in one pass, sources carried through.",
+      "benefit_zh": "从问题到成稿一气呵成，引用不丢。"
+    },
+    {
+      "id": "doc-to-pdf",
+      "name_en": "Document → PDF",
+      "name_zh": "文档→PDF",
+      "skills": ["docx", "pdf"],
+      "job_en": "Author a formatted document, then export / sign / merge it as PDF",
+      "benefit_en": "Write and ship the final PDF without leaving the chat.",
+      "benefit_zh": "写完直接出可交付的 PDF。"
+    },
+    {
+      "id": "data-to-report",
+      "name_en": "Data → Report",
+      "name_zh": "数据→报告",
+      "skills": ["xlsx", "docx"],
+      "job_en": "Analyze a spreadsheet, then write the findings up as a document",
+      "benefit_en": "Numbers and narrative produced together, one consistent story.",
+      "benefit_zh": "数据与结论一并产出，口径一致。"
+    },
+    {
+      "id": "ship-frontend",
+      "name_en": "Design → Test Frontend",
+      "name_zh": "设计→测试前端",
+      "skills": ["frontend-design", "webapp-testing"],
+      "job_en": "Build a UI, then verify it actually works in a browser before trusting it",
+      "benefit_en": "Design and proof-it-works in one loop, not two separate asks.",
+      "benefit_zh": "设计与验证一个回合完成。"
+    },
+    {
+      "id": "contract-review-pass",
+      "name_en": "Contract Review Pass",
+      "name_zh": "合同审查流程",
+      "skills": ["contract-risk-extraction", "cross-border-compliance-matrix"],
+      "job_en": "Review a contract for risk AND check the cross-border compliance gaps it creates",
+      "benefit_en": "Risk + regulatory in one pass, not two disconnected asks.",
+      "benefit_zh": "风险与合规一次过，不脱节。"
+    }
+  ]
+}

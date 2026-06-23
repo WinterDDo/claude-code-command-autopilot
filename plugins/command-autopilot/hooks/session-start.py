@@ -21,9 +21,9 @@ SKILL_SCAN_LIMIT = 400
 
 
 def parse_frontmatter(path):
-    name, description = path.parent.name, ""
+    name, description, desc_full, dmi = path.parent.name, "", "", False
     try:
-        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()[:30]
+        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()[:40]
         in_fm = False
         for line in lines:
             if line.strip() == "---":
@@ -36,14 +36,46 @@ def parse_frontmatter(path):
             if in_fm and line.startswith("description:"):
                 # keep enough to capture the Triggers list (the router matches a
                 # prompt against these to surface the right skill proactively).
-                description = line.split(":", 1)[1].strip()[:400]
+                desc_full = line.split(":", 1)[1].strip()
+                description = desc_full[:400]
+            if in_fm:
+                # disable-model-invocation:true keeps the description OUT of native
+                # context (native can't auto-fire it) — that's "parked".
+                flat = line.strip().replace(" ", "")
+                if flat.startswith("disable-model-invocation:"):
+                    dmi = flat.split(":", 1)[1].lower().startswith("true")
     except Exception:
         pass
-    return name, description
+    # desc budget cost mirrors native's per-skill cap (maxSkillDescriptionChars)
+    return name, description, dmi, min(len(desc_full), 1536)
+
+
+def read_skill_overrides():
+    """Merge skillOverrides from user + project settings.json (read-only).
+
+    Reflects the user's current native skill visibility into the index so the
+    router knows which skills are PARKED. We never write settings here.
+    """
+    overrides = {}
+    for p in (Path.home() / ".claude" / "settings.json",
+              Path.cwd() / ".claude" / "settings.json"):
+        try:
+            ov = json.loads(p.read_text(encoding="utf-8")).get("skillOverrides", {})
+            if isinstance(ov, dict):
+                overrides.update(ov)
+        except Exception:
+            pass
+    return overrides
+
+
+# skillOverrides values that drop a skill's DESCRIPTION from native context —
+# i.e. native can no longer auto-fire it ("parked"). "on"/absent keep it active.
+PARKED_OVERRIDES = {"name-only", "user-invocable-only", "off"}
 
 
 def scan_skills():
     skills, seen = [], set()
+    overrides = read_skill_overrides()
     roots = [
         (Path.home() / ".claude" / "skills", "user"),
         (Path.home() / ".claude" / "plugins", "plugin"),
@@ -57,11 +89,22 @@ def scan_skills():
             count += 1
             if count > SKILL_SCAN_LIMIT:
                 break
-            name, description = parse_frontmatter(skill_md)
+            name, description, dmi, desc_chars = parse_frontmatter(skill_md)
             if name in seen:
                 continue
             seen.add(name)
-            skills.append({"name": name, "description": description, "source": source})
+            ov = overrides.get(name, "")
+            if ov in PARKED_OVERRIDES:
+                parked, reason = True, "override:" + ov
+            elif dmi and ov != "on":
+                parked, reason = True, "frontmatter:disable-model-invocation"
+            else:
+                parked, reason = False, ""
+            rec = {"name": name, "description": description, "source": source,
+                   "parked": parked, "desc_chars": desc_chars}
+            if parked:
+                rec["park_reason"] = reason
+            skills.append(rec)
     skills.sort(key=lambda s: s["name"])
     return skills
 
@@ -99,12 +142,37 @@ def main():
     except Exception:
         pass
     skills = scan_skills()
-    index_path.write_text(json.dumps({"generated": ap.now_iso(), "skills": skills}, ensure_ascii=False, indent=1), encoding="utf-8")
+    # Budget facts (advisory): native spends ~1% of the context window on skill
+    # descriptions; over that, it shortens then DROPS least-used ones. We compute
+    # in chars (~4/token) against a conservative 200k window — the value isn't
+    # precision, it's flagging when the active set is crowding the matcher.
+    budget_chars = int(200_000 * 0.01 * 4)
+    active_chars = sum(s["desc_chars"] for s in skills if not s["parked"])
+    budget = {"window_tokens": 200_000, "listing_budget_chars": budget_chars,
+              "active_desc_chars": active_chars,
+              "parked_count": sum(1 for s in skills if s["parked"]),
+              "over_budget": active_chars > budget_chars,
+              "pressure": "tight" if active_chars > budget_chars * 0.8 else "ok"}
+    index_path.write_text(json.dumps({"generated": ap.now_iso(), "budget": budget, "skills": skills}, ensure_ascii=False, indent=1), encoding="utf-8")
     new_names = [s["name"] for s in skills if s["name"] not in old_names]
     if old_names and new_names:
         joined = ", ".join(new_names[:5])
         notes.append(("[AUTOPILOT one-time] User installed new skill(s) since last session: %s. "
                       "When natural, mention ONE of them with what it can do for them.") % joined)
+
+    # One-time heads-up (the user asked to be told up front, not silently optimized):
+    # explain the skill layer + its tiny, only-when-relevant per-turn cost. Once ever.
+    if not state.get("skills_headsup_done") and skills:
+        n, m = len(skills), budget["parked_count"]
+        if zh:
+            notes.append(("[AUTOPILOT one-time] 跟用户说一次:Skills Autopilot 已启用。他装了 %d 个 skill"
+                          "(其中约 %d 个 native 因预算看不见)。每一轮我会把与当下任务最相关的几个浮出来、合适就用——"
+                          "只有真有相关 skill 的那一轮才多花一点点上下文(相对窗口可忽略),无关时一个不加。随时 /doctor 看状态。") % (n, m))
+        else:
+            notes.append(("[AUTOPILOT one-time] Tell the user once, plainly: Skills Autopilot is active. They have %d installed skills"
+                          " (~%d invisible to native due to its budget). Each turn I surface the few most relevant to the task and use one if it fits"
+                          " — adding a little context ONLY on turns where a skill fits (negligible vs the window), nothing otherwise. Run /doctor anytime.") % (n, m))
+        state["skills_headsup_done"] = True
 
     # Knowledge-base version change -> whats-new announcement
     try:
