@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SS = REPO / "plugins" / "command-autopilot" / "hooks" / "session-start.py"
+SS = REPO / "plugins" / "skill-autopilot" / "hooks" / "session-start.py"
 
 
 def run_ss(data_dir, payload, state=None):
@@ -64,9 +64,9 @@ class PowerIntroTests(unittest.TestCase):
 
     def test_power_intro_skips_already_used_commands(self):
         # mark EVERY KB high-leverage command as used (single source of truth)
-        sys.path.insert(0, str(REPO / "plugins" / "command-autopilot" / "hooks"))
+        sys.path.insert(0, str(REPO / "plugins" / "skill-autopilot" / "hooks"))
         import apcommon as ap
-        high = ap.kb_high_leverage(str(REPO / "plugins" / "command-autopilot"))
+        high = ap.kb_high_leverage(str(REPO / "plugins" / "skill-autopilot"))
         st = state_with_sessions(2)
         st["counters"] = {"commands": {c: {"self_used": 1} for c in high},
                           "skills": {}, "habits": {}}

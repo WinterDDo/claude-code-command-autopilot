@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ROUTER = REPO / "plugins" / "command-autopilot" / "hooks" / "router.py"
+ROUTER = REPO / "plugins" / "skill-autopilot" / "hooks" / "router.py"
 
 
 def run_router(data_dir, payload=None, state=None, learned=None):

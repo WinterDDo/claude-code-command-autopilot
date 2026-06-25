@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-TRACKER = REPO / "plugins" / "command-autopilot" / "hooks" / "tracker.py"
+TRACKER = REPO / "plugins" / "skill-autopilot" / "hooks" / "tracker.py"
 
 
 def run_tracker(data_dir, payload, submode):

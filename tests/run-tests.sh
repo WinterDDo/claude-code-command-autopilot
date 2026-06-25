@@ -2,7 +2,7 @@
 # Full local test suite: unit tests + dispatcher smoke tests.
 set -e
 cd "$(dirname "$0")/.."
-HOOKS="plugins/command-autopilot/hooks"
+HOOKS="plugins/skill-autopilot/hooks"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Vendored cloud injection for Command Autopilot.
+# Vendored cloud injection for Skill Autopilot.
 # Committed into a repo's .claude/ so cloud sessions get the current rules
 # WITHOUT depending on the marketplace cache (which does not auto-refresh).
 #
@@ -11,7 +11,7 @@
 # installed (it takes over locally — no double injection). In cloud
 # ($CLAUDE_CODE_REMOTE=true) always inject; on a machine without the plugin,
 # inject too.
-if [ "$CLAUDE_CODE_REMOTE" != "true" ] && [ -d "$HOME/.claude/plugins/cache/claude-code-command-autopilot" ]; then
+if [ "$CLAUDE_CODE_REMOTE" != "true" ] && [ -d "$HOME/.claude/plugins/cache/claude-code-skill-autopilot" ]; then
   exit 0
 fi
 

@@ -2,7 +2,7 @@
 
 Claude Code has around 100 slash commands, and most tutorials explain them in terms of other commands. This cheat sheet does the opposite: for each Claude Code command, it tells you **the moment you need it** and **what you actually get**, in plain English. No jargon, no prior knowledge assumed.
 
-It is generated from the curated knowledge base of the [Command Autopilot plugin](../README.md) and kept fresh as Claude Code updates. (If you'd rather memorize none of these: install the plugin and it will use or hand you the right command at the right moment.)
+It is generated from the curated knowledge base of the [Skill Autopilot plugin](../README.md) and kept fresh as Claude Code updates. (If you'd rather memorize none of these: install the plugin and it will use or hand you the right command at the right moment.)
 
 ## Undo and safety — the ones that save your work
 
@@ -75,6 +75,6 @@ If you learn exactly one thing from this page, learn `/rewind`. Checkpoints are 
 
 ## Or memorize none of this
 
-These commands are powerful and almost nobody learns them — that's the actual problem. [Command Autopilot](../README.md) is a free, open-source plugin that closes the gap: what Claude can do itself it just does (big changes auto-enter plan mode), and what only you can press arrives as a clickable suggestion at the exact moment, with one line on why. It learns your habits and goes quiet. [Install takes 30 seconds.](../README.md#install)
+These commands are powerful and almost nobody learns them — that's the actual problem. [Skill Autopilot](../README.md) is a free, open-source plugin that closes the gap: what Claude can do itself it just does (big changes auto-enter plan mode), and what only you can press arrives as a clickable suggestion at the exact moment, with one line on why. It learns your habits and goes quiet. [Install takes 30 seconds.](../README.md#install)
 
 See also: [8 Claude Code workflows that save real work](claude-code-workflows.md).

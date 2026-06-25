@@ -1,6 +1,6 @@
 ---
 name: evolve
-description: Distill Command Autopilot's accumulated usage evidence into personalized rules — the self-evolution step. Use when the autopilot announces an evolution window, or the user says "evolve", "学习一下我的习惯", "update your instincts", "distill autopilot".
+description: Distill Skill Autopilot's accumulated usage evidence into personalized rules — the self-evolution step. Use when the autopilot announces an evolution window, or the user says "evolve", "学习一下我的习惯", "update your instincts", "distill autopilot".
 ---
 
 # Evolution pass (prompt-space gradient descent)

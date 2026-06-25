@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-PLUGIN = Path(__file__).resolve().parent.parent / "plugins" / "command-autopilot"
+PLUGIN = Path(__file__).resolve().parent.parent / "plugins" / "skill-autopilot"
 SH = PLUGIN / "cloud" / "autopilot-cloud.sh"
 
 
@@ -45,7 +45,7 @@ class CloudHookTests(unittest.TestCase):
 
     def test_local_with_plugin_stays_silent(self):
         # this machine has the plugin installed; not remote -> guard exits silent
-        if not (Path.home() / ".claude" / "plugins" / "cache" / "claude-code-command-autopilot").is_dir():
+        if not (Path.home() / ".claude" / "plugins" / "cache" / "claude-code-skill-autopilot").is_dir():
             self.skipTest("plugin not installed on this machine")
         self.assertEqual(run(event="UserPromptSubmit", remote=False).strip(), "")
 

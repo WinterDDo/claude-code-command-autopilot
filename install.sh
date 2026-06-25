@@ -1,8 +1,8 @@
 #!/bin/sh
 # Fallback installer for users who prefer the terminal over /plugin commands.
 # The recommended path is still:
-#   /plugin marketplace add WinterDDo/claude-code-command-autopilot
-#   /plugin install command-autopilot@claude-code-command-autopilot
+#   /plugin marketplace add WinterDDo/claude-code-skill-autopilot
+#   /plugin install skill-autopilot@claude-code-skill-autopilot
 set -e
 REPO_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 
@@ -22,7 +22,7 @@ echo "Using claude at: $CLAUDE_BIN"
 echo "Registering local marketplace..."
 "$CLAUDE_BIN" plugin marketplace add "$REPO_DIR" || true
 echo "Installing plugin..."
-"$CLAUDE_BIN" plugin install command-autopilot@claude-code-command-autopilot
+"$CLAUDE_BIN" plugin install skill-autopilot@claude-code-skill-autopilot
 
 echo ""
 echo "Done. Restart Claude Code, then say: \"give me the autopilot tour\""

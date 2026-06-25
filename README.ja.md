@@ -1,4 +1,4 @@
-# Claude Code のための Command Autopilot
+# Claude Code のための Skill Autopilot
 
 **知っている数個のコマンドだけでなく、Claude Code のすべてを使いこなす。**
 
@@ -6,7 +6,7 @@
 
 <!-- demo: docs/assets/demo.gif embeds here once recorded (LAUNCH §1 storyboard) -->
 
-Claude Code は、並列エージェントを一斉に動かし、自分でゴールを追い、複数ステップのワークフローを回し、Web を横断して調べることができます。それでもいざその瞬間になると、熟練者でさえ、ついつい手作業でやり切ろうとしてしまいます。Command Autopilot は、あなたが実際にやっていることを見ていて、ちょうどいいタイミングで、**今の状況に合った数少ない効きの大きい一手を並べてくれます。あなたが選ぶメニューとして。** 細かいこと(取り消し、コンテキストの整理)は、そのまま勝手に片づけます。これはコマンドを聞いたこともない初心者だけのためのものではありません。パワーユーザーでさえ、負荷がかかった場面では最善の一手を忘れるもので、その 10 回目こそが肝心なのです。オープンソース、MIT、テレメトリなし。
+Claude Code は、並列エージェントを一斉に動かし、自分でゴールを追い、複数ステップのワークフローを回し、Web を横断して調べることができます。それでもいざその瞬間になると、熟練者でさえ、ついつい手作業でやり切ろうとしてしまいます。Skill Autopilot は、あなたが実際にやっていることを見ていて、ちょうどいいタイミングで、**今の状況に合った数少ない効きの大きい一手を並べてくれます。あなたが選ぶメニューとして。** 細かいこと(取り消し、コンテキストの整理)は、そのまま勝手に片づけます。これはコマンドを聞いたこともない初心者だけのためのものではありません。パワーユーザーでさえ、負荷がかかった場面では最善の一手を忘れるもので、その 10 回目こそが肝心なのです。オープンソース、MIT、テレメトリなし。
 
 ## 何ができるようになるのか
 
@@ -32,7 +32,7 @@ Claude: Before I start, a few faster ways to run this — your call:
 
 コマンドそのものに初めて触れますか? [プレーンな言葉で書いた Claude Code コマンドチートシート](docs/claude-code-commands-cheatsheet.md)(英語)と [実作業を節約する 8 つの Claude Code ワークフロー](docs/claude-code-workflows.md)(英語)も用意しています。
 
-Claude Code には約 100 個の組み込みスラッシュコマンドがあり、さらにあなたがインストールしたすべてのスキルもあります。そして最も強力なもの、つまりオーケストレーション、並列処理、自律実行こそが、誰も見つけられないコマンドです。Command Autopilot は、そのギャップを 3 つの動きで埋めます。
+Claude Code には約 100 個の組み込みスラッシュコマンドがあり、さらにあなたがインストールしたすべてのスキルもあります。そして最も強力なもの、つまりオーケストレーション、並列処理、自律実行こそが、誰も見つけられないコマンドです。Skill Autopilot は、そのギャップを 3 つの動きで埋めます。
 
 1. **ちょうどいいタイミングで、選択肢をメニューとして並べる。** 大きい、繰り返しの多い、長く走る、あるいはリスクのあるタスクの前に、本当に状況に合った 2〜4 個の効きの大きい一手(並列エージェント、ワークフロー、自律的な /goal、深いリサーチ、/background)を、それぞれのトレードオフつきで提示し、あなたが選びます。受け入れるか捨てるかだけの一択ではなく、選べるメニューです。(熟練者にとっても同じで、価値があるのは聞いたこともない一手ではなく、*今この瞬間に* 思いつかなかった一手です。)
 2. **残りは、すすめるのではなく自分でやる。** Claude が自分でできることは、そのまま実行します。大きな変更はファイルに触れる前にプランモードに入り、好みはメモリに書き込まれ、インストール済みのスキルは使われます(どれが役立ったかも言います)。安全の基本(/rewind、/clear、/btw)は、説教としてではなく、まさにその瞬間に手渡されます。
@@ -47,11 +47,11 @@ Claude Code には約 100 個の組み込みスラッシュコマンドがあり
 **いちばん簡単 — Claude にインストールしてもらう。** このブロックをまるごとコピーして、Claude Code の会話に貼り付け、Enter を押してください:
 
 ```
-Install the Command Autopilot plugin for me:
+Install the Skill Autopilot plugin for me:
 1. Locate my claude CLI: try `command -v claude`; if not on PATH, try `~/.local/bin/claude`
    (the usual macOS/Linux location). Use the full path in the next steps if needed.
-2. Run: claude plugin marketplace add WinterDDo/claude-code-command-autopilot
-3. Run: claude plugin install command-autopilot@claude-code-command-autopilot
+2. Run: claude plugin marketplace add WinterDDo/claude-code-skill-autopilot
+3. Run: claude plugin install skill-autopilot@claude-code-skill-autopilot
 4. Show me both success confirmations, then remind me to fully quit Claude Code, reopen it,
    and run the autopilot doctor to verify.
 ```
@@ -64,8 +64,8 @@ Install the Command Autopilot plugin for me:
 **ターミナルから:**
 
 ```sh
-claude plugin marketplace add WinterDDo/claude-code-command-autopilot
-claude plugin install command-autopilot@claude-code-command-autopilot
+claude plugin marketplace add WinterDDo/claude-code-skill-autopilot
+claude plugin install skill-autopilot@claude-code-skill-autopilot
 ```
 
 `claude` が見つからない場合は、代わりに `~/.local/bin/claude` を使うか、このリポジトリをクローンして `./install.sh` を実行してください。
@@ -73,8 +73,8 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 **Claude Code の CLI セッション内から**(`/plugin` コマンドはデスクトップアプリでは使えません):
 
 ```
-/plugin marketplace add WinterDDo/claude-code-command-autopilot
-/plugin install command-autopilot@claude-code-command-autopilot
+/plugin marketplace add WinterDDo/claude-code-skill-autopilot
+/plugin install skill-autopilot@claude-code-skill-autopilot
 ```
 
 </details>
@@ -84,7 +84,7 @@ claude plugin install command-autopilot@claude-code-command-autopilot
 **うまく動かない?**
 - 提案がまったく出てこない → 完全に終了して開き直す必要があります。フックは起動時にしか読み込まれません。
 - `/plugin` が見つからない → デスクトップアプリには `/plugin` コマンドがありません。上のコピペ式インストールを使ってください。
-- それ以外 → Claude に「autopilot doctor を実行して」と頼み、その出力を [issue](https://github.com/WinterDDo/claude-code-command-autopilot/issues) に貼ってください。
+- それ以外 → Claude に「autopilot doctor を実行して」と頼み、その出力を [issue](https://github.com/WinterDDo/claude-code-skill-autopilot/issues) に貼ってください。
 
 ## アップデート
 
@@ -93,8 +93,8 @@ Claude に **「command-autopilot プラグインを最新版にアップデー�
 手動でやる場合(あるいは「すでに最新版です」と出た場合 — それはローカルのマーケットプレイスのコピーが古いということなので、*まず* リフレッシュしてください):
 
 ```sh
-claude plugin marketplace update claude-code-command-autopilot   # refresh the catalog from GitHub
-claude plugin update command-autopilot@claude-code-command-autopilot
+claude plugin marketplace update claude-code-skill-autopilot   # refresh the catalog from GitHub
+claude plugin update skill-autopilot@claude-code-skill-autopilot
 ```
 
 そのあと Claude Code を完全に終了して開き直してください。ルールとフックは起動時に読み込まれます。(クラウドセッションは常にリポジトリを新しくクローンするので、新しいバージョンを自分で取り込みます。)
@@ -119,7 +119,7 @@ Autopilot は、すべてのプロンプトにルールを注入します。モ�
 クラウドのセッションは個人のプラグインを読み込まず、マーケットプレイスのキャッシュもリフレッシュしません。そのため、Web 版の Claude Code やチームメイトにも確実に Autopilot を効かせる方法は、**そのルールをリポジトリにベンダリングすること** です。小さな `.claude/autopilot-context.json`(ルール)に加えて `.claude/autopilot-cloud.sh` をコミットし、リポジトリの `.claude/settings.json` で `SessionStart` + `UserPromptSubmit` フックをそこに紐づけます。このリポジトリのクローンから、1 つのコマンドでファイルをコピーし、正確なフックの行を表示できます:
 
 ```sh
-plugins/command-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
+plugins/skill-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
 # then paste the printed hook lines into /path/to/your/repo/.claude/settings.json and commit
 ```
 
@@ -127,7 +127,7 @@ plugins/command-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
 
 ## 仕組み(興味がある人向け)
 
-1 つの `UserPromptSubmit` フックが、メッセージごとにコンテキストを組み立てます。中身は、短い思考の規律 + あなたが学習させたルール + 圧縮された証拠ダイジェストです。**シナリオ→コマンドの対応表はありません** — モデルは毎ターン、*あなたの* タスクが何を必要としているかを新たに考えます。ナレッジベースはトリガーではなく参照用です。スクリプトがやるのは記録と圧縮だけ — **判断はすべてモデルに委ねられている** ので、どこにもマジックナンバー的なしきい値はありません。ナレッジベース([commands.json](plugins/command-autopilot/knowledge/commands.json)、[playbooks.json](plugins/command-autopilot/knowledge/playbooks.json))には、全コマンドの一行メリットと一連の組み合わせプレイブックが入っていて、モデルが必要なときだけ読むため、プロンプトごとのコストはゼロです。詳しくは [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) をどうぞ。
+1 つの `UserPromptSubmit` フックが、メッセージごとにコンテキストを組み立てます。中身は、短い思考の規律 + あなたが学習させたルール + 圧縮された証拠ダイジェストです。**シナリオ→コマンドの対応表はありません** — モデルは毎ターン、*あなたの* タスクが何を必要としているかを新たに考えます。ナレッジベースはトリガーではなく参照用です。スクリプトがやるのは記録と圧縮だけ — **判断はすべてモデルに委ねられている** ので、どこにもマジックナンバー的なしきい値はありません。ナレッジベース([commands.json](plugins/skill-autopilot/knowledge/commands.json)、[playbooks.json](plugins/skill-autopilot/knowledge/playbooks.json))には、全コマンドの一行メリットと一連の組み合わせプレイブックが入っていて、モデルが必要なときだけ読むため、プロンプトごとのコストはゼロです。詳しくは [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) をどうぞ。
 
 同梱スキル: `tutor`(ガイドツアー)· `doctor`(動作確認)· `config`(ミュートやモード切替)· `evolve`(あなたの証拠をルールに蒸留)· `profile`(価値ダッシュボード)· `whats-new`(新しいコマンドと未使用スキルを、メリットつきで紹介)。
 
@@ -139,7 +139,7 @@ plugins/command-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
 
 **データはどこかに送信されますか?** いいえ。テレメトリはゼロです。すべては `~/.claude/command-autopilot/` のローカルファイルにあり、自分で開いて、監査して、削除できます。アンインストールすればすべて消えます。
 
-**何か隠していませんか?** いいえ。Claude に「何があなたを導いているの?」と聞くか、このプラグインが注入している指示を見せてと頼めば、すべてを教えてくれます。ルールは [`plugins/command-autopilot/rules/`](plugins/command-autopilot/rules) にプレーンテキストで置かれていて、ガイダンスは Claude に対して、あなたが尋ねたらいつでも透明であるよう明示的に指示しています。このプラグインに、あなたから見て秘密のものは何もありません。
+**何か隠していませんか?** いいえ。Claude に「何があなたを導いているの?」と聞くか、このプラグインが注入している指示を見せてと頼めば、すべてを教えてくれます。ルールは [`plugins/skill-autopilot/rules/`](plugins/skill-autopilot/rules) にプレーンテキストで置かれていて、ガイダンスは Claude に対して、あなたが尋ねたらいつでも透明であるよう明示的に指示しています。このプラグインに、あなたから見て秘密のものは何もありません。
 
 **しつこく提案してきませんか?** 固い約束で「いいえ」と決まっています。提案は 1 回の返答につき最大 1 つ、同じコマンドは 1 セッションに最大 1 回、却下し続けた提案は自然に消えます。「mute autopilot」と言えば、完全に黙ります。
 
@@ -149,12 +149,12 @@ plugins/command-autopilot/scripts/vendor-to-repo.sh /path/to/your/repo
 
 **Python が入っていなくても動きますか?** はい、ステートレスモードで動きます。コアの動作はすべて使えて、Python 3.8 以上が用意できるまで、学習レイヤーだけが一時停止します。
 
-**アンインストールするには?** `claude plugin uninstall command-autopilot@claude-code-command-autopilot` を実行して(Claude に頼んでも OK)、`~/.claude/command-autopilot/` を削除してください。何も残りません。
+**アンインストールするには?** `claude plugin uninstall skill-autopilot@claude-code-skill-autopilot` を実行して(Claude に頼んでも OK)、`~/.claude/command-autopilot/` を削除してください。何も残りません。
 
 **CLAUDE.md にルールを書くのと、何が違うのですか?** 最初はそれを試しました。2 回も。でも CLAUDE.md のルールは、競合する他の指示に負けてしまいます。プロンプトごとのフック注入だけが、モデルに 100% 届くと実証できた唯一の置き場所でした。この発見と、マジックナンバーなしの学習設計こそが、これが Markdown スニペットではなくプラグインである理由のすべてです。詳しくは [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) をどうぞ。
 
 ## コントリビュート
 
-**5 分で最初の PR:** `plugins/command-autopilot/rules/*.txt` のどれか 1 つの提案の文言を改善するか、`plugins/command-autopilot/knowledge/commands.json` にコマンドの一行メリットを追加し、[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) の対応するステップを実行して、提出してください。README の翻訳も同じくらい歓迎です。動作はコードではなくテキストファイルにあります。反復の進め方については [docs/TUNING.md](docs/TUNING.md) をご覧ください。
+**5 分で最初の PR:** `plugins/skill-autopilot/rules/*.txt` のどれか 1 つの提案の文言を改善するか、`plugins/skill-autopilot/knowledge/commands.json` にコマンドの一行メリットを追加し、[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) の対応するステップを実行して、提出してください。README の翻訳も同じくらい歓迎です。動作はコードではなくテキストファイルにあります。反復の進め方については [docs/TUNING.md](docs/TUNING.md) をご覧ください。
 
 ライセンスは MIT です。

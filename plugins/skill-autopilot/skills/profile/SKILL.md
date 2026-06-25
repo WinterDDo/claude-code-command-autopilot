@@ -1,6 +1,6 @@
 ---
 name: profile
-description: Show the Command Autopilot dashboard — what it did for you, before/after comparison, learned rules with evidence, mastered commands. Also drafts a feedback issue. Use when the user asks "what has the autopilot done", "show my profile", "驾驶舱", "autopilot 报告", "学到了什么", or wants to give feedback about suggestions.
+description: Show the Skill Autopilot dashboard — what it did for you, before/after comparison, learned rules with evidence, mastered commands. Also drafts a feedback issue. Use when the user asks "what has the autopilot done", "show my profile", "驾驶舱", "autopilot 报告", "学到了什么", or wants to give feedback about suggestions.
 ---
 
 # Autopilot dashboard
@@ -19,7 +19,7 @@ Read from `~/.claude/command-autopilot/`: `state.json` (counters, milestones, co
 5. **Controls** — one line: config skill to quiet/mute, evolve skill to re-distill, "delete rule N" works right here.
 
 ## Feedback draft
-If the user is dissatisfied with any suggestion behavior, offer to draft a GitHub issue for `WinterDDo/claude-code-command-autopilot`: title, what happened, expected behavior, and (only with explicit consent) the relevant anonymized evidence lines. Show the draft; the user files it themselves.
+If the user is dissatisfied with any suggestion behavior, offer to draft a GitHub issue for `WinterDDo/claude-code-skill-autopilot`: title, what happened, expected behavior, and (only with explicit consent) the relevant anonymized evidence lines. Show the draft; the user files it themselves.
 
 ## Rule deletion
 "Delete rule N" → remove it from learned.json, confirm in one line.

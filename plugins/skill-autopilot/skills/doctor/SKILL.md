@@ -1,6 +1,6 @@
 ---
 name: doctor
-description: Diagnose whether Command Autopilot's hooks are actually firing and config is valid. Use when the autopilot seems inactive, suggestions never appear, after install or update to verify setup, or the user says "autopilot不工作", "check autopilot", "autopilot broken".
+description: Diagnose whether Skill Autopilot's hooks are actually firing and config is valid. Use when the autopilot seems inactive, suggestions never appear, after install or update to verify setup, or the user says "autopilot不工作", "check autopilot", "autopilot broken".
 ---
 
 # Autopilot health check

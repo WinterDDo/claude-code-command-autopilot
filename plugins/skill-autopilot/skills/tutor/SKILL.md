@@ -1,9 +1,9 @@
 ---
 name: tutor
-description: Guided first tour of Command Autopilot — see auto plan mode happen, learn the 4 habit commands (/clear, /btw, /rewind, plan mode), and what Claude now handles silently. Use when the user asks how the autopilot works, what commands they should learn, how to undo Claude's changes, says "tour", "教我命令", "怎么用命令", or right after installation.
+description: Guided first tour of Skill Autopilot — see auto plan mode happen, learn the 4 habit commands (/clear, /btw, /rewind, plan mode), and what Claude now handles silently. Use when the user asks how the autopilot works, what commands they should learn, how to undo Claude's changes, says "tour", "教我命令", "怎么用命令", or right after installation.
 ---
 
-# Command Autopilot tour (2 minutes, hands-on)
+# Skill Autopilot tour (2 minutes, hands-on)
 
 Run a short interactive tour. Speak the user's language. Keep every step to 2-3 sentences. Never lecture.
 

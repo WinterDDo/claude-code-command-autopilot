@@ -1,13 +1,13 @@
 {
   "extraKnownMarketplaces": {
-    "claude-code-command-autopilot": {
+    "claude-code-skill-autopilot": {
       "source": {
         "source": "github",
-        "repo": "WinterDDo/claude-code-command-autopilot"
+        "repo": "WinterDDo/claude-code-skill-autopilot"
       }
     }
   },
   "enabledPlugins": {
-    "command-autopilot@claude-code-command-autopilot": true
+    "skill-autopilot@claude-code-skill-autopilot": true
   }
 }
