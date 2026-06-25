@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-TRACKER = REPO / "plugins" / "command-autopilot" / "hooks" / "tracker.py"
+TRACKER = REPO / "plugins" / "skill-autopilot" / "hooks" / "tracker.py"
 
 
 def run_tracker(data_dir, payload, submode):
@@ -94,6 +94,77 @@ class TrackerTests(unittest.TestCase):
         self.assertEqual(state["counters"]["commands"]["/compact"]["self_used"], 1)
         self.assertEqual(state["counters"]["commands"]["/clear"]["suggested"], 1,
                          "appended-bytes rescan must not recount old content")
+
+    def test_capability_menu_recorded_and_clears_first_task(self):
+        # a menu offering capabilities (Workflow / parallel agents) but NO slash
+        # command must still count as a fired menu — the old tracker missed these.
+        line = {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+            "input": {"questions": [{"question": "how to run this", "options": [
+                {"label": "Run a Workflow to fan out"}, {"label": "parallel agents"}, {"label": "just proceed"}]}]}}]}}
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text(json.dumps(line), encoding="utf-8")
+        (self.tmp / "state.json").write_text(json.dumps({
+            "schema": 1, "config": {"aggressiveness": "teaching", "language": "en",
+                                    "enable_plan_gate": True, "muted": False},
+            "first_task_pending": True}), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "capm", "transcript_path": str(transcript)}, "stop")
+        self.assertFalse(self.state().get("first_task_pending"),
+                         "a capability-only menu must still disarm the first-task flag")
+        self.assertIn("menu_shown", (self.tmp / "events.jsonl").read_text())
+
+    def test_skill_menu_recorded(self):
+        # a pick-menu that offers an installed SKILL (no slash-command, no capability
+        # word) must still log menu_shown — else v1.0's skill-popups are invisible.
+        (self.tmp / "skills-index.json").write_text(json.dumps({"skills": [
+            {"name": "contract-risk-extraction", "description": "x"}]}), encoding="utf-8")
+        line = {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+            "input": {"questions": [{"question": "how to handle this", "options": [
+                {"label": "Use contract-risk-extraction to flag risks"}, {"label": "just proceed"}]}]}}]}}
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text(json.dumps(line), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "skm", "transcript_path": str(transcript)}, "stop")
+        events = (self.tmp / "events.jsonl").read_text()
+        self.assertIn("menu_shown", events)
+        self.assertIn("contract-risk-extraction", events)
+
+    def _parked_index(self):
+        (self.tmp / "skills-index.json").write_text(json.dumps({"skills": [
+            {"name": "contract-risk-extraction", "description": "x", "parked": True}]}), encoding="utf-8")
+
+    def test_wake_accepted_recorded(self):
+        # a menu offering a PARKED skill, then the user picks it → wake_accepted.
+        self._parked_index()
+        lines = [
+            {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+                "input": {"questions": [{"question": "wake?", "options": [
+                    {"label": "Wake contract-risk-extraction for this"}, {"label": "just proceed"}]}]}}]}},
+            {"type": "user", "message": {"content": [{"type": "tool_result",
+                "content": "Your questions have been answered: choice=\"Wake contract-risk-extraction for this\""}]}},
+        ]
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text("\n".join(json.dumps(l) for l in lines), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "wk1", "transcript_path": str(transcript)}, "stop")
+        events = (self.tmp / "events.jsonl").read_text()
+        self.assertIn("wake_shown", events)
+        self.assertIn("wake_accepted", events)
+        self.assertEqual(self.state()["counters"]["wake"]["contract-risk-extraction"]["accepted"], 1)
+
+    def test_wake_declined_recorded(self):
+        # parked skill offered, menu dismissed → wake_declined.
+        self._parked_index()
+        lines = [
+            {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "AskUserQuestion",
+                "input": {"questions": [{"question": "wake?", "options": [
+                    {"label": "Wake contract-risk-extraction for this"}, {"label": "just proceed"}]}]}}]}},
+            {"type": "user", "message": {"content": [{"type": "tool_result",
+                "content": "Your questions have been answered: User dismissed the question"}]}},
+        ]
+        transcript = self.tmp / "transcript.jsonl"
+        transcript.write_text("\n".join(json.dumps(l) for l in lines), encoding="utf-8")
+        run_tracker(self.tmp, {"session_id": "wk2", "transcript_path": str(transcript)}, "stop")
+        events = (self.tmp / "events.jsonl").read_text()
+        self.assertIn("wake_declined", events)
+        self.assertNotIn("wake_accepted", events)
 
     def test_first_task_demo_disarmed_when_menu_fires(self):
         transcript = self.tmp / "transcript.jsonl"

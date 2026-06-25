@@ -1,17 +1,17 @@
 {
-  "name": "claude-code-command-autopilot",
+  "name": "claude-code-skill-autopilot",
   "owner": {
     "name": "Win"
   },
   "metadata": {
-    "description": "Command Autopilot — use all of Claude Code, beginner to expert. From your first task on, it lays out a menu of the high-leverage moves that fit; handles the basics silently; never nags. Open source, zero telemetry."
+    "description": "Skill Autopilot — surfaces the installed skills most relevant to what you're doing, so the right one isn't forgotten. Also offers fitting high-leverage commands; handles the basics silently; never nags. Open source, zero telemetry, local-first."
   },
   "plugins": [
     {
-      "name": "command-autopilot",
-      "source": "./plugins/command-autopilot",
-      "description": "Your commands on autopilot: from your first task on, it offers a menu of the high-leverage moves that fit and lets you pick; silently handles the basics; never nags.",
-      "version": "0.7.0"
+      "name": "skill-autopilot",
+      "source": "./plugins/skill-autopilot",
+      "description": "Each turn, surfaces your most prompt-relevant installed skills (and fitting high-leverage commands) so the right move is in front of you; handles the basics silently; never nags.",
+      "version": "1.0.0"
     }
   ]
 }

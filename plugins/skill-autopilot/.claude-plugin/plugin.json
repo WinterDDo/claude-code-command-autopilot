@@ -1,13 +1,13 @@
 {
-  "name": "command-autopilot",
-  "version": "0.7.0",
-  "description": "Use all of Claude Code, beginner to expert. From your first task on, it lays out a menu of the high-leverage moves that fit (you pick), handles the basics itself, and stays quiet otherwise. Open source, zero telemetry.",
+  "name": "skill-autopilot",
+  "version": "1.0.0",
+  "description": "Use all the skills you've installed — not just the ones you remember. Each turn it surfaces the installed skills most relevant to your task, so a fitting one is in front of you instead of forgotten. Also offers high-leverage commands when they fit; handles the basics silently. Open source, zero telemetry, local-first.",
   "author": {
     "name": "Win"
   },
   "license": "MIT",
-  "homepage": "https://github.com/WinterDDo/claude-code-command-autopilot",
-  "repository": "https://github.com/WinterDDo/claude-code-command-autopilot",
+  "homepage": "https://github.com/WinterDDo/claude-code-skill-autopilot",
+  "repository": "https://github.com/WinterDDo/claude-code-skill-autopilot",
   "hooks": "./hooks/hooks.json",
   "userConfig": {
     "aggressiveness": {

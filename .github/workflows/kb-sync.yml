@@ -34,4 +34,4 @@ jobs:
           git push
           gh issue create \
             --title "KB sync: official command docs changed — review knowledge/commands.json" \
-            --body "The official commands documentation changed since the last snapshot. Review the diff in .github/kb-snapshot/, update plugins/command-autopilot/knowledge/commands.json (and playbooks.json if workflows changed), bump the knowledge version field, and ship a minor release so users get a whats-new announcement."
+            --body "The official commands documentation changed since the last snapshot. Review the diff in .github/kb-snapshot/, update plugins/skill-autopilot/knowledge/commands.json (and playbooks.json if workflows changed), bump the knowledge version field, and ship a minor release so users get a whats-new announcement."

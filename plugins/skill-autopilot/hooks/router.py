@@ -7,6 +7,7 @@ read state and format evidence. All judgment belongs to the model.
 """
 import calendar
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -79,6 +80,45 @@ def build_learned(data_dir):
                      for r in rules[:LEARNED_MAX_RULES])
 
 
+SURFACE_MAX = 8
+_STOP = {"this", "that", "with", "from", "your", "have", "will", "what", "when",
+         "make", "need", "want", "into", "help", "just", "like", "some", "then",
+         "them", "they", "also", "here", "more", "very", "does", "please", "could",
+         "would", "should", "about", "there", "their", "been", "being", "give"}
+
+
+def _tokens(s):
+    return {t for t in re.findall(r"[a-z0-9]+", s.lower()) if len(t) >= 4 and t not in _STOP}
+
+
+def build_relevant(data_dir, prompt):
+    # Rank ALL installed skills by cheap lexical overlap with the live prompt and
+    # surface the top NAMES — attention-narrowing, NOT a scorer the model must
+    # trust (matching stays the model's job). No assumptions about which skills
+    # matter: low past usage never demotes a skill. Parked skills (native can't
+    # auto-fire them) get a small boost — surfacing them is the only way they fire.
+    ptoks = _tokens(prompt)
+    if not ptoks:
+        return ""
+    try:
+        skills = json.loads((data_dir / "skills-index.json").read_text(encoding="utf-8")).get("skills", [])
+    except Exception:
+        return ""
+    scored = []
+    for s in skills:
+        name = s.get("name") or ""
+        if not name:
+            continue
+        overlap = len(ptoks & _tokens(name + " " + (s.get("description") or "")))
+        if overlap <= 0:
+            continue
+        scored.append((overlap + (1 if s.get("parked") else 0), name))
+    if not scored:
+        return ""
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return ", ".join(n for _, n in scored[:SURFACE_MAX])
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -100,9 +140,19 @@ def main():
     # core (self-help + discipline) and safety are always present; the unlock
     # track (proactively surfacing high-leverage capabilities) is dropped in
     # quiet mode, where the autopilot only helps silently and guards /rewind.
+    prompt = payload.get("prompt", "") or ""
+    relevant = build_relevant(data_dir, prompt)
+    # suppress-on-repeat: re-injecting the identical slice every turn trains the
+    # model to glide past it; surface only when the relevant set actually changes.
+    surface = relevant if (relevant and relevant != state.get("last_surfaced")) else ""
+
     parts = [sections.get("core", ""), sections.get("safety", "")]
     if mode in ("normal", "teaching"):
         parts.append(sections.get("unlock", ""))
+        # §skills surfaces the most prompt-relevant installed skills — only when
+        # there are any (no relevant match → inject nothing, don't train blindness).
+        if surface:
+            parts.append(sections.get("skills", ""))
     # First-task demo: the one guaranteed surfacing. Injected only while the flag
     # is armed (set on first run, cleared by the tracker once a menu fires), so it
     # never bloats steady-state context or nags returning users. Fires in any
@@ -116,6 +166,11 @@ def main():
 
     text = text.replace("{KB}", str(PLUGIN_ROOT / "knowledge"))
     text = text.replace("{INDEX}", str(data_dir / "skills-index.json"))
+    if surface and mode in ("normal", "teaching"):
+        hdr = "RELEVANT SKILL NAMES (use/offer one if it truly fits): " if lang == "en" else "相关 skill 名字（确实合适就用/提议）："
+        text += "\n" + hdr + surface
+        ap.append_event(data_dir, {"type": "skills_surfaced", "key": surface[:120]})
+    state["last_surfaced"] = relevant
 
     learned = build_learned(data_dir)
     if learned:
@@ -126,7 +181,6 @@ def main():
         header = ("EVIDENCE — this user's observed behavior (weigh it; current context wins):"
                   if lang == "en" else "行为证据（请权衡；当下语境优先）：")
         text += "\n" + header + "\n" + digest
-    text += "\nRespond in the user's language."
 
     state["last_fired"] = {"ts": ap.now_iso(), "session_id": payload.get("session_id", "")}
     ap.touch_session(state, payload.get("session_id", ""))

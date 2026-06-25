@@ -19,7 +19,7 @@ Behavior lives in text, not code. This file is how maintainers and contributors 
 2. `sh tests/run-tests.sh` — must stay green.
 3. Restart Claude Code, run the relevant steps of [ACCEPTANCE.md](ACCEPTANCE.md) **cold-start** (rules load at startup; testing in a warm session proves nothing).
 4. **One failure → tune the wording and retest. The same step failing twice in a row → it's a design problem, not a wording problem. Stop editing text and rethink the mechanism.**
-5. Token check: `python3 plugins/command-autopilot/hooks/router.py <tmpdir> <<< '{"prompt":"x"}' | wc -c` — teaching mode must stay under ~2300 chars (~470 tokens).
+5. Token check: `python3 plugins/skill-autopilot/hooks/router.py <tmpdir> <<< '{"prompt":"x"}' | wc -c` — teaching mode must stay under ~2300 chars (~470 tokens).
 
 ## Single source of truth (a hard rule)
 

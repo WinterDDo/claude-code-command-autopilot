@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-PLUGIN = REPO / "plugins" / "command-autopilot"
+PLUGIN = REPO / "plugins" / "skill-autopilot"
 HOOKS = PLUGIN / "hooks"
 sys.path.insert(0, str(HOOKS))
 import apcommon as ap  # noqa: E402

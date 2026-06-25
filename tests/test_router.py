@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ROUTER = REPO / "plugins" / "command-autopilot" / "hooks" / "router.py"
+ROUTER = REPO / "plugins" / "skill-autopilot" / "hooks" / "router.py"
 
 
 def run_router(data_dir, payload=None, state=None, learned=None):
@@ -40,6 +40,13 @@ def base_state(**config):
 
 def context_of(output):
     return output.get("hookSpecificOutput", {}).get("additionalContext", "")
+
+
+def write_index(data_dir, skills, budget=None):
+    Path(data_dir).mkdir(parents=True, exist_ok=True)
+    (Path(data_dir) / "skills-index.json").write_text(
+        json.dumps({"generated": "2026-01-01T00:00:00Z", "budget": budget or {}, "skills": skills}),
+        encoding="utf-8")
 
 
 class RouterTests(unittest.TestCase):
@@ -129,6 +136,59 @@ class RouterTests(unittest.TestCase):
         out, _ = run_router(self.tmp)
         self.assertNotIn("FIRST TASK ONLY", context_of(out),
                          "the forced welcome must never appear once the flag is clear")
+
+    def test_unified_toolset_rule_present(self):
+        # the always-on unified rule: skills + commands as ONE toolset (no code WHICH)
+        out, _ = run_router(self.tmp)
+        ctx = context_of(out)
+        self.assertIn("ONE toolset", ctx, "the unified skills+commands rule must be present in teaching mode")
+        self.assertIn("installed skills", ctx)
+        self.assertNotIn("classify", ctx)
+
+    def test_relevant_skill_surfaced(self):
+        write_index(self.tmp, [
+            {"name": "contract-risk-extraction", "description": "review contracts for risk", "parked": True},
+            {"name": "algorithmic-art", "description": "generative art with p5", "parked": False}])
+        ctx = context_of(run_router(self.tmp, payload={"session_id": "s", "prompt": "please review this contract for risks"})[0])
+        self.assertIn("RELEVANT SKILL NAMES", ctx, "relevant skills must surface when the prompt overlaps")
+        self.assertIn("contract-risk-extraction", ctx)
+        self.assertNotIn("algorithmic-art", ctx, "an unrelated skill must not be surfaced")
+        self.assertIn("MIGHT FIT", ctx, "the §skills rule must be present")
+
+    def test_nothing_surfaced_when_irrelevant(self):
+        write_index(self.tmp, [{"name": "contract-risk-extraction", "description": "review contracts", "parked": True}])
+        ctx = context_of(run_router(self.tmp, payload={"session_id": "s", "prompt": "hello there friend"})[0])
+        self.assertNotIn("RELEVANT SKILL NAMES", ctx, "no overlap → inject nothing (don't train blindness)")
+        self.assertNotIn("MIGHT FIT", ctx)
+
+    def test_surfaced_names_capped(self):
+        write_index(self.tmp, [{"name": "contract-skill-%02d" % i, "description": "contract review risk", "parked": True}
+                               for i in range(20)])
+        ctx = context_of(run_router(self.tmp, payload={"session_id": "s", "prompt": "review this contract risk"})[0])
+        line = [l for l in ctx.splitlines() if l.startswith("RELEVANT SKILL NAMES")][0]
+        self.assertLessEqual(line.count("contract-skill-"), 8, "surfaced names are capped at SURFACE_MAX")
+
+    def test_surfacing_dropped_in_quiet(self):
+        write_index(self.tmp, [{"name": "contract-risk-extraction", "description": "review contracts", "parked": True}])
+        ctx = context_of(run_router(self.tmp, state=base_state(aggressiveness="quiet"),
+                                    payload={"session_id": "s", "prompt": "review this contract"})[0])
+        self.assertNotIn("RELEVANT SKILL NAMES", ctx, "surfacing is dropped in quiet mode")
+
+    def test_suppress_on_repeat(self):
+        write_index(self.tmp, [{"name": "contract-risk-extraction", "description": "review contracts", "parked": True}])
+        p = {"session_id": "s", "prompt": "review this contract for risk"}
+        first = context_of(run_router(self.tmp, payload=p)[0])
+        second = context_of(run_router(self.tmp, payload=p)[0])
+        self.assertIn("contract-risk-extraction", first)
+        self.assertNotIn("RELEVANT SKILL NAMES", second, "identical relevant slice must not re-inject next turn")
+
+    def test_token_budget_with_surfacing(self):
+        # Steady state with no relevant match stays < 2500 (test_token_budget). When
+        # skills do surface, the payload (rule + <=8 names) adds a bounded amount.
+        write_index(self.tmp, [{"name": "contract-skill-%02d" % i, "description": "contract review risk", "parked": True}
+                               for i in range(20)])
+        out, _ = run_router(self.tmp, payload={"session_id": "s", "prompt": "review this contract risk"})
+        self.assertLess(len(context_of(out)), 3000, "surfacing payload must stay bounded")
 
     def test_garbage_stdin_still_outputs(self):
         proc = subprocess.run([sys.executable, str(ROUTER), str(self.tmp)],

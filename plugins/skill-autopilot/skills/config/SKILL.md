@@ -1,6 +1,6 @@
 ---
 name: config
-description: Adjust Command Autopilot settings — mute it, change aggressiveness (teaching/normal/quiet), switch guidance language (en/zh), or toggle the auto plan-mode gate. Use when the user says the autopilot is too noisy, too quiet, "mute autopilot", "autopilot太烦了", "别再提示了", or wants teaching tips back.
+description: Adjust Skill Autopilot settings — mute it, change aggressiveness (teaching/normal/quiet), switch guidance language (en/zh), or toggle the auto plan-mode gate. Use when the user says the autopilot is too noisy, too quiet, "mute autopilot", "autopilot太烦了", "别再提示了", or wants teaching tips back.
 ---
 
 # Autopilot settings

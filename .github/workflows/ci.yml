@@ -35,7 +35,7 @@ jobs:
       - name: Shellcheck
         run: |
           sudo apt-get install -y shellcheck
-          shellcheck plugins/command-autopilot/hooks/run.sh install.sh uninstall.sh tests/run-tests.sh
+          shellcheck plugins/skill-autopilot/hooks/run.sh install.sh uninstall.sh tests/run-tests.sh
       - name: JSON validity
         run: |
           python3 - <<'EOF'

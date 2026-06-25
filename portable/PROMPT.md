@@ -1,4 +1,4 @@
-# Portable Command Autopilot (no-hooks surfaces)
+# Portable Skill Autopilot (no-hooks surfaces)
 
 For claude.ai custom instructions, Cursor rules, or any assistant without Claude Code's plugin system. Paste the block below. You lose: evidence learning, the value ledger, auto skill indexing. You keep: the core behavioral contract.
 

@@ -26,6 +26,11 @@ HABITS = {"/clear": "clear", "/btw": "btw", "/rewind": "rewind", "/plan": "plan"
 # Longest-first so multi-word commands (code-review) win over prefixes.
 _NAMES = sorted(ap.kb_command_names(PLUGIN_ROOT), key=len, reverse=True)
 COMMAND_RE = re.compile(r"/(" + "|".join(re.escape(n) for n in _NAMES) + r")\b")
+# A high-leverage MENU often offers capabilities that are NOT slash-commands
+# (a Workflow, parallel agents, deep research). COMMAND_RE misses those, so a
+# fired menu went unrecorded and first_task_pending never cleared. Recognize the
+# capability vocabulary too, so "did the menu fire" is finally observable.
+CAP_RE = re.compile(r"workflows?|parallel|sub-?agents?|fan[ -]?out|deep research", re.I)
 SCAN_TAIL_BYTES = 200_000
 
 
@@ -75,7 +80,20 @@ def iter_new_transcript_lines(data_dir, payload):
 
 
 def handle_stop(state, data_dir, payload):
-    suggested, dismissed_all, answers = set(), False, []
+    suggested, dismissed_all, answers, caps, skills_seen = set(), False, [], set(), set()
+    parked_seen, parked_answered, answered_any = set(), set(), False
+    # installed skill names — a v1.0 pick-menu often offers SKILLS (not slash
+    # commands), so without this the skill-popups would be invisible to tracking.
+    # parked_names: skills native can't auto-fire (description out of context) —
+    # offering one in a menu is a WAKE popup, the core Skill Autopilot move.
+    skill_names, parked_names = [], set()
+    try:
+        idx = json.loads((data_dir / "skills-index.json").read_text(encoding="utf-8")).get("skills", [])
+        skill_names = [s.get("name", "") for s in idx if s.get("name") and len(s.get("name", "")) >= 4]
+        parked_names = {s.get("name", "") for s in idx
+                        if s.get("parked") and s.get("name") and len(s.get("name", "")) >= 4}
+    except Exception:
+        pass
     for raw in iter_new_transcript_lines(data_dir, payload):
         # tool_result lines also carry "type":"user"; file paths inside them
         # (src/export/x.js, app/context/y.ts) must never count as self-use.
@@ -88,8 +106,13 @@ def handle_stop(state, data_dir, payload):
 
         if '"name": "AskUserQuestion"' in raw or '"name":"AskUserQuestion"' in raw:
             suggested.update(COMMAND_RE.findall(raw))
+            caps.update(c.lower() for c in CAP_RE.findall(raw))
+            skills_seen.update(n for n in skill_names if n in raw)
+            parked_seen.update(n for n in parked_names if n in raw)
         if "questions have been answered" in raw or "has answered your questions" in raw:
             answers.extend(COMMAND_RE.findall(raw))
+            answered_any = True
+            parked_answered.update(n for n in parked_names if n in raw)
             if "User dismissed" in raw:
                 dismissed_all = True
 
@@ -105,14 +128,33 @@ def handle_stop(state, data_dir, payload):
                     ap.bump(state["counters"], "habits", HABITS[cmd], "self_used")
                 record(state, data_dir, "self_use_trace", cmd)
 
+    # A proactive menu fired if it offered ANY high-leverage move — a slash
+    # command, a capability (Workflow / parallel agents / deep research), OR an
+    # installed skill (the v1.0 pick-menu treats skills + commands as one toolset).
+    menu_moves = {"/" + m for m in suggested} | caps | skills_seen
+    if menu_moves:
+        record(state, data_dir, "menu_shown", ",".join(sorted(menu_moves)))
+        # The one-time first-task demo has now fired — disarm it so router.py
+        # stops injecting the forced welcome on later turns. (Keyed on ANY menu,
+        # not just slash-commands, so capability-only menus also count.)
+        if state.get("first_task_pending"):
+            state["first_task_pending"] = False
+    # WAKE popups: a parked skill (native can't auto-fire it) offered in a menu —
+    # the core Skill Autopilot signal. Accepted if the choice names it; declined
+    # if there was an outcome (answer or dismissal) but it wasn't the choice.
+    for name in sorted(parked_seen):
+        ap.bump(state["counters"], "wake", name, "shown")
+        record(state, data_dir, "wake_shown", name)
+        if name in parked_answered:
+            ap.bump(state["counters"], "wake", name, "accepted")
+            record(state, data_dir, "wake_accepted", name)
+        elif dismissed_all or answered_any:
+            ap.bump(state["counters"], "wake", name, "declined")
+            record(state, data_dir, "wake_declined", name)
     for match in suggested:
         cmd = "/" + match
         ap.bump(state["counters"], "commands", cmd, "suggested")
         record(state, data_dir, "suggestion_made", cmd)
-    # The one-time first-task demo has now fired (a menu was surfaced) — disarm it
-    # so router.py stops injecting the forced welcome on later turns.
-    if suggested and state.get("first_task_pending"):
-        state["first_task_pending"] = False
     accepted = {"/" + m for m in answers} if not dismissed_all else set()
     for cmd in accepted & {"/" + m for m in suggested}:
         ap.bump(state["counters"], "commands", cmd, "accepted")

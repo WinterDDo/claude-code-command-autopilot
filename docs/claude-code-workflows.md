@@ -2,13 +2,13 @@
 
 Individual Claude Code commands are useful; combined, they change how you work. These eight workflows are the combinations we verified against the official docs and use daily. Each one answers a real "how do I..." moment for beginners and power users alike.
 
-(They're encoded in the [Command Autopilot plugin](../README.md)'s knowledge base — install it and the right workflow gets suggested at the right moment, with reasons.)
+(They're encoded in the [Skill Autopilot plugin](../README.md)'s knowledge base — install it and the right workflow gets suggested at the right moment, with reasons.)
 
 ## 1. The safe big change
 
 **When:** any refactor, feature, or edit you'd hate to get wrong.
 
-1. Ask for the change — with [Command Autopilot](../README.md), Claude enters **plan mode** by itself (or press Shift+Tab)
+1. Ask for the change — with [Skill Autopilot](../README.md), Claude enters **plan mode** by itself (or press Shift+Tab)
 2. Review and approve the plan — nothing is touched until you do
 3. `/goal tests pass and the feature works` — Claude keeps working until it's true
 4. `/diff` to inspect what changed
@@ -87,4 +87,4 @@ That's the whole workflow. The answer appears in an overlay; your session's cont
 
 ---
 
-**Want these suggested automatically?** [Command Autopilot](../README.md) watches for the moments above and offers the right move with a one-line reason — then learns which ones you actually use. Free, MIT, zero telemetry. See also: [the plain-English command cheat sheet](claude-code-commands-cheatsheet.md).
+**Want these suggested automatically?** [Skill Autopilot](../README.md) watches for the moments above and offers the right move with a one-line reason — then learns which ones you actually use. Free, MIT, zero telemetry. See also: [the plain-English command cheat sheet](claude-code-commands-cheatsheet.md).
