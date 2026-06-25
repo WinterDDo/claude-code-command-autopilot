@@ -1,12 +1,12 @@
 # Skill Autopilot para Claude Code
 
-**Use todo o Claude Code, não apenas os poucos comandos que você conhece.**
+**Use as skills que você instalou, não só as que você lembra.**
 
-[English](README.md) | [中文](README.zh.md) | [Español](README.es.md) | Português | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
+English | [中文](README.zh.md) | [Español](README.es.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
 <!-- demo: docs/assets/demo.gif embeds here once recorded (LAUNCH §1 storyboard) -->
 
-O Claude Code consegue disparar agentes em paralelo, perseguir uma meta sozinho, rodar fluxos de trabalho de vários passos, pesquisar pela web inteira, mas, na hora, até quem é experiente acaba fazendo tudo no braço. O Skill Autopilot observa o que você está realmente fazendo e, no momento certo, **apresenta as poucas jogadas de maior alavancagem que se encaixam, como um menu para você escolher.** As coisas pequenas (desfazer, higiene de contexto) ele simplesmente cuida. Não é só para iniciantes que nunca ouviram falar dos comandos; até quem é avançado esquece a melhor jogada sob pressão, e é justamente essa décima vez que importa. Código aberto, MIT, zero telemetria.
+Você instala skills para ampliar o Claude Code e depois esquece quais tem, ou quando elas se encaixam. E *piora* à medida que você instala mais: passado o orçamento de skills do Claude Code, ele silenciosamente descarta as descrições das skills que você menos usa, então a skill perfeita para *esta* tarefa pode ficar invisível para o modelo. **O Skill Autopilot apresenta as skills instaladas mais relevantes para o que você está fazendo, a cada turno, para que uma que se encaixa esteja diante de você em vez de esquecida.** Ele também dispõe as jogadas de maior alavancagem que se encaixam em uma tarefa grande ou arriscada (agentes em paralelo, um Workflow, um /goal autônomo, pesquisa profunda) como um menu para você escolher, e cuida das coisas pequenas (desfazer, higiene de contexto) em silêncio. Novo e experimental: código aberto, MIT, zero telemetria, local em primeiro lugar.
 
 ## O que ele torna possível
 
@@ -15,7 +15,7 @@ O Claude Code consegue disparar agentes em paralelo, perseguir uma meta sozinho,
 | Um trabalho grande, com vários arquivos, ou repetitivo | Você faz tudo no braço, um passo de cada vez | Ele apresenta um **menu de caminhos mais rápidos** (agentes em paralelo, um Workflow, /background) antes de começar, com os trade-offs, e você escolhe |
 | Uma tarefa que deveria simplesmente ir até o fim | Você fica supervisionando turno a turno | Ele oferece **/goal** para o Claude trabalhar até o fim por conta própria |
 | Uma pergunta que precisa de pesquisa de verdade | Uma busca rasa | Ele roda **pesquisa profunda em várias fontes** e te entrega uma resposta com citações |
-| Skills que você instalou mas esqueceu | Ficam paradas, sem uso | Ele **as usa** e diz qual acabou de ajudar: "usei sua skill de pdf: li o arquivo direto" |
+| Skills que você instalou mas esqueceu | Ficam paradas, sem uso, ou são descartadas do contexto assim que você passa do orçamento | Ele **apresenta as relevantes para sua tarefa**, para que uma skill que se encaixa esteja diante do modelo |
 | Você vive descartando uma sugestão | A maioria das ferramentas insiste para sempre | Ele percebe o clima e abandona aquela sugestão: ele aprende *você* |
 | O básico: desfazer, contexto, comentários à parte | Você nunca aprendeu os comandos | Cuidado em silêncio: **/rewind** antes de qualquer conserto, **/clear** nas trocas de assunto, **/btw** para comentários à parte |
 
@@ -32,10 +32,10 @@ Claude: Before I start, a few faster ways to run this — your call:
 
 Novo nos comandos em si? Também mantemos [a cola dos comandos do Claude Code em linguagem simples](docs/claude-code-commands-cheatsheet.md) e [8 fluxos de trabalho do Claude Code que poupam trabalho de verdade](docs/claude-code-workflows.md) (ambos em inglês).
 
-O Claude Code tem uns 100 comandos de barra embutidos, mais todas as skills que você instalou, e os mais poderosos (orquestração, paralelismo, autonomia) são justamente os que ninguém descobre. O Skill Autopilot fecha essa lacuna com três movimentos:
+O Claude Code roda sobre as skills e comandos que você instalou, mas a certa raramente aparece no momento certo, e uma biblioteca grande de skills *piora* isso (passado o orçamento, o Claude Code descarta do contexto as descrições das skills menos usadas). O Skill Autopilot fecha essa lacuna com três movimentos:
 
-1. **No momento certo, ele apresenta suas opções como um menu.** Antes de uma tarefa grande, repetitiva, longa ou arriscada, ele apresenta as 2 a 4 jogadas de maior alavancagem que realmente se encaixam (agentes em paralelo, um Workflow, um /goal autônomo, pesquisa profunda, /background), cada uma com seu trade-off, e você escolhe. Não é uma única sugestão do tipo pega ou larga: é o menu, para você escolher. (Para quem é experiente também: o valor está na jogada em que você não pensou *agora*, não em uma que você nunca ouviu falar.)
-2. **Ele faz o resto sozinho, em vez de recomendar.** O que o Claude consegue fazer por conta própria, ele simplesmente faz: mudanças grandes entram no modo de planejamento antes de qualquer arquivo ser tocado, preferências são gravadas na memória, suas skills instaladas são usadas (e ele diz qual ajudou). O básico de segurança (/rewind, /clear, /btw) é entregue no momento exato, nunca como um sermão.
+1. **Ele apresenta as skills que se encaixam, bem na hora em que se encaixam.** A cada turno ele classifica suas skills instaladas em relação ao que você está realmente pedindo e coloca as mais relevantes diante do modelo (pelo nome; o modelo lê a descrição completa sob demanda), incluindo as que o Claude Code descartou do contexto por estar acima do orçamento. E quando várias jogadas de grande alavancagem se encaixam em uma tarefa grande ou arriscada (agentes em paralelo, um Workflow, um /goal autônomo, pesquisa profunda), ele as dispõe como um menu e você escolhe.
+2. **Ele faz o resto sozinho, em vez de recomendar.** O que o Claude consegue fazer por conta própria, ele simplesmente faz: mudanças grandes entram no modo de planejamento antes de qualquer arquivo ser tocado, preferências são gravadas na memória, uma skill instalada que se encaixa é usada. O básico de segurança (/rewind, /clear, /btw) é entregue no momento exato, nunca como um sermão.
 3. **Ele aprende a sair do seu caminho.** Cada sugestão que você ignora é evidência local: o que você vive descartando fica em silêncio, então nunca vira insistência. (Uma personalização mais profunda, inclinando-se para as jogadas que *você* especificamente prefere, está no roadmap; a vitória de hoje é precisão e silêncio, não fingir que já te conhece.)
 
 Ele nunca percorre uma lista fixa de dicas. Ele raciocina sobre cada turno, aponta algo no máximo uma vez quando isso genuinamente ajuda, e fora isso fica quieto. A meta é você parar de notar que ele existe.
@@ -88,7 +88,7 @@ Depois reinicie o Claude Code (feche por completo: os hooks carregam na iniciali
 
 ## Atualização
 
-Peça ao Claude: **"update the command-autopilot plugin to the latest version."** Ele roda os três passos abaixo para você.
+Peça ao Claude: **"update the Skill Autopilot plugin to the latest version."** Ele roda os três passos abaixo para você.
 
 Fazendo na mão (ou se você bater em "already at the latest version" — isso significa que sua cópia local do marketplace está desatualizada, então atualize-a *primeiro*):
 
@@ -112,7 +112,7 @@ Depois feche por completo e abra de novo o Claude Code: regras e hooks carregam 
 
 ## O custo, sem rodeios
 
-O autopilot injeta as regras dele em cada prompt: algo entre 300 e 500 tokens dependendo do modo (quiet ≈ 300, mudo = 0). Esse é o preço do único posicionamento que comprovadamente funciona. O botão fica na sua mão: `teaching` → `normal` → `quiet` → mudo.
+O autopilot injeta as regras dele em cada prompt: aproximadamente 500 a 600 tokens em regime estável (menos em `quiet`, 0 quando mudo). Nos turnos em que skills instaladas são relevantes, ele acrescenta os nomes delas: um extra pequeno e limitado (~140 tokens), com teto, e nada nos turnos em que nenhuma se encaixa. Diante de uma janela de contexto de 200k, isso é uma fração de um por cento. O botão fica na sua mão: `teaching` → `normal` → `quiet` → mudo.
 
 ## Funciona na nuvem e para equipes
 
@@ -127,7 +127,7 @@ Novas sessões na nuvem clonam seu repositório do zero, então pegam as regras 
 
 ## Como funciona (para os curiosos)
 
-Um único hook de `UserPromptSubmit` monta o contexto a cada mensagem: uma disciplina curta de raciocínio + suas regras aprendidas + um resumo compacto de evidências. **Não há tabela de consulta cenário→comando** — o modelo raciocina do zero a cada turno sobre o que a *sua* tarefa precisa; a base de conhecimento é referência, não gatilho. Os scripts só registram e comprimem — **todo o julgamento pertence ao modelo**, e é por isso que não existe nenhum limite mágico em lugar nenhum. Uma base de conhecimento ([commands.json](plugins/skill-autopilot/knowledge/commands.json), [playbooks.json](plugins/skill-autopilot/knowledge/playbooks.json)) guarda o benefício em uma linha de cada comando e um conjunto de jogadas combinadas; o modelo lê sob demanda, então não custa nada por prompt. Detalhes em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Um único hook de `UserPromptSubmit` monta o contexto a cada mensagem: uma disciplina curta de raciocínio + as skills instaladas mais relevantes para o seu prompt + suas regras aprendidas + um resumo compacto de evidências. A apresentação de skills é deliberadamente burra e honesta: no início da sessão ele monta um índice local das suas skills instaladas, e a cada turno as classifica por uma simples sobreposição de palavras com o seu prompt e injeta apenas os poucos *nomes* mais relevantes (o modelo lê cada descrição completa sob demanda e decide se usa alguma); nada é injetado quando nada se encaixa. **Não há tabela de consulta cenário→comando** nem um pontuador de similaridade que o modelo seja mandado confiar: o modelo raciocina do zero a cada turno sobre o que a *sua* tarefa precisa; a base de conhecimento é referência, não gatilho. Os scripts só registram e comprimem — **todo o julgamento pertence ao modelo**, e é por isso que não existe nenhum limite mágico em lugar nenhum. Uma base de conhecimento ([commands.json](plugins/skill-autopilot/knowledge/commands.json), [playbooks.json](plugins/skill-autopilot/knowledge/playbooks.json)) guarda o benefício em uma linha de cada comando e um conjunto de jogadas combinadas; o modelo lê sob demanda, então não custa nada por prompt. Detalhes em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Skills incluídas: `tutor` (tour guiado) · `doctor` (verifica se está funcionando) · `config` (mudo/modos) · `evolve` (destila suas evidências em regras) · `profile` (o painel de valor) · `whats-new` (comandos novos e skills paradas, explicados pelo benefício).
 
@@ -143,7 +143,7 @@ Python 3.8+ para a experiência completa. Sem Python, o autopilot roda em modo s
 
 **Ele vai ficar me enchendo?** Os contratos rígidos dizem que não: no máximo uma sugestão por resposta, o mesmo comando no máximo uma vez por sessão, e sugestões que você vive descartando somem sozinhas. Dizer "mute autopilot" cala ele por completo.
 
-**Quanto custa?** Ele injeta algo entre 300 e 500 tokens de regras por mensagem dependendo do modo (quiet ≈ 300, mudo = 0). É o preço honesto da confiabilidade; o botão fica na sua mão.
+**Quanto custa?** Aproximadamente 500 a 600 tokens de regras por mensagem em regime estável (menos em quiet, 0 quando mudo), mais um pequeno extra limitado (~140 tokens) nos turnos em que skills instaladas são relevantes: uma fração de um por cento de uma janela de 200k. O botão fica na sua mão.
 
 **Funciona no Claude Code na web / para a minha equipe?** Sim: incorpore as regras dele ao `.claude/` do seu repositório com um comando (`vendor-to-repo.sh`, veja [Funciona na nuvem e para equipes](#funciona-na-nuvem-e-para-equipes)). As sessões na nuvem clonam o repositório do zero e pegam as regras, então todo mundo que trabalha naquele repositório recebe.
 
